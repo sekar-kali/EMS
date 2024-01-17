@@ -75,7 +75,7 @@ export const updateDetails = async (req, res) => {
   try {
     const { userId } = req.userData;
 
-    // Assuming you receive updated details from the request body
+    // Assuming to receive updated details from the request body
     const { newFirstName, newLastName } = req.body;
 
     // Fetch the user from the database using the userId

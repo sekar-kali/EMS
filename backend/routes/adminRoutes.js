@@ -1,5 +1,3 @@
-// adminRoutes.js
-
 import express from 'express';
 const adminRoutes = express.Router();
 import { createStaff, getAllStaff } from '../controllers/adminController.js';

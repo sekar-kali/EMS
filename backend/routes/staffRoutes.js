@@ -1,5 +1,3 @@
-// staffRoutes.js
-
 import express from 'express';
 import {
   getStaffMissions,

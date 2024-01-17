@@ -4,7 +4,7 @@ import LeaveRequestModel from '../models/LeaveRequest.js';
 
 export const getStaffInfo = async (req, res) => {
     try {
-      const { email } = req.params; // Assuming you pass the email as a parameter in the URL
+      const { email } = req.params; // Assuming to pass the email as a parameter in the URL
   
       // Fetch staff information from the database based on email
       const staffInfo = await StaffModel.findOne({ email });
@@ -23,7 +23,7 @@ export const getStaffInfo = async (req, res) => {
   
 export const getStaffMissions = async (req, res) => {
   try {
-    // Assuming you to receive the staff email from the request
+    // Assuming to receive the staff email from the request
     const staffEmail = req.query.email;
 
     // Fetch staff information from the database using Mongoose
@@ -46,7 +46,7 @@ export const getStaffMissions = async (req, res) => {
 
 export const getStaffLeaveRequests = async (req, res) => {
   try {
-    // Assuming you receive the staff email from the request
+    // Assuming to receive the staff email from the request
     const staffEmail = req.query.email; 
 
     // Fetch staff information from the database using Mongoose
@@ -69,7 +69,7 @@ export const getStaffLeaveRequests = async (req, res) => {
 
 export const createLeaveRequest = async (req, res) => {
   try {
-    // Assuming you receive the staff email and leave request details from the request
+    // Assuming to receive the staff email and leave request details from the request
     const { email, startDate, endDate } = req.body; 
 
     // Fetch staff information from the database using Mongoose
@@ -99,7 +99,7 @@ export const createLeaveRequest = async (req, res) => {
 
 export const changeDetailsRequest = async (req, res) => {
   try {
-    // Assuming you receive the staff email and new details from the request
+    // Assuming to receive the staff email and new details from the request
     const { email, newFirstName, newLastName } = req.body; 
 
     // Fetch staff information from the database using Mongoose

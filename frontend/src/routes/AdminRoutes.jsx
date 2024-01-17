@@ -6,7 +6,7 @@ import UserDetailsForm from '../components/UserDetailsForm';
 
 const AdminRoutes = () => {
   return (
-    <Routes> {/* Change from Switch to Routes */}
+    <Routes>
       <Route path="/admin/dashboard" element={<AdminDashboard />} />
       <Route path="/admin/missions" element={<MissionList />} />
       <Route path="/admin/user-details" element={<UserDetailsForm />} />

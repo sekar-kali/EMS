@@ -5,7 +5,7 @@ import nodemailer from 'nodemailer';
 
 export const createStaff = async (req, res) => {
   try {
-    // Assuming you receive staff details from the request body
+    // Assuming to receive staff details from the request body
     const { email, firstName, lastName, position } = req.body;
 
     // Check if the email is already registered
@@ -83,7 +83,7 @@ export const getAllStaff = async (req, res) => {
   
 export const approveLeaveRequest = async (req, res) => {
   try {
-    // Assuming you receive the leave request ID from the request
+    // Assuming to receive the leave request ID from the request
     const { leaveRequestId } = req.body;
 
     // Fetch the leave request from the database using Mongoose
@@ -107,7 +107,7 @@ export const approveLeaveRequest = async (req, res) => {
 
 export const rejectLeaveRequest = async (req, res) => {
   try {
-    // Assuming you receive the leave request ID from the request
+    // Assuming to receive the leave request ID from the request
     const { leaveRequestId } = req.body;
 
     // Fetch the leave request from the database using Mongoose
@@ -131,7 +131,7 @@ export const rejectLeaveRequest = async (req, res) => {
 
 export const createMission = async (req, res) => {
   try {
-    // Assuming you receive the mission details from the request
+    // Assuming to receive the mission details from the request
     const { title, description, staffId, startDate, endDate } = req.body;
 
     // Fetch staff information from the database using Mongoose
