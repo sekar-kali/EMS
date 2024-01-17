@@ -1,14 +1,43 @@
+// LeaveRequestForm.jsx
 import React, { useState } from 'react';
 
-const LeaveRequestForm = () => {
+const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
   const [leaveRequestForm, setLeaveRequestForm] = useState({
     startDate: '',
     endDate: '',
   });
 
-  const handleLeaveRequestSubmit = () => {
-    // Implement leave request submission logic
-    console.log('Leave request form submitted:', leaveRequestForm);
+  const handleLeaveRequest = async () => {
+    try {
+      // Validate leave request form fields
+      if (!leaveRequestForm.startDate || !leaveRequestForm.endDate) {
+        console.error('Please fill in all leave request fields.');
+        return;
+      }
+
+      // Send leave request to the backend for processing
+      const response = await fetch('/api/staff/createLeaveRequest', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(leaveRequestForm),
+      });
+
+      if (response.ok) {
+        console.log('Leave request created successfully!');
+        // Reset the form after successful submission
+        setLeaveRequestForm({
+          startDate: '',
+          endDate: '',
+        });
+      } else {
+        const data = await response.json();
+        console.error('Leave request creation failed:', data.message);
+      }
+    } catch (error) {
+      console.error('Error during leave request creation:', error.message);
+    }
   };
 
   return (
@@ -29,7 +58,7 @@ const LeaveRequestForm = () => {
           onChange={(e) => setLeaveRequestForm({ ...leaveRequestForm, endDate: e.target.value })}
         />
         
-        <button type="button" onClick={handleLeaveRequestSubmit}>
+        <button type="button" onClick={handleLeaveRequest}>
           Submit Leave Request
         </button>
       </form>

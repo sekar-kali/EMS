@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import LeaveRequestForm from './LeaveRequestForm';
 
 const StaffDashboard = () => {
     const [staffInfo, setStaffInfo] = useState({
@@ -37,7 +39,7 @@ const StaffDashboard = () => {
         .catch((error) => console.error('Error fetching leave requests:', error));
     }, []);
 
-  const handleLeaveRequest = async () => {
+  const handleLeaveRequestSubmit = async () => {
     try {
       // Validate leave request form fields
       if (!leaveRequestForm.startDate || !leaveRequestForm.endDate) {
@@ -172,9 +174,10 @@ const StaffDashboard = () => {
 
       <div className="leave-request-form">
         <h2>Create Leave Request</h2>
-        {/* Leave request form can go here */}
-        <button onClick={handleLeaveRequest}>Create Leave Request</button>
+        <LeaveRequestForm handleLeaveRequestSubmit={handleLeaveRequestSubmit} />
       </div>
+
+      <Link to="/leave-request-form">Open Leave Request Form</Link>
 
       <div className="change-details-form">
         <h2>Change Personal Details Request</h2>

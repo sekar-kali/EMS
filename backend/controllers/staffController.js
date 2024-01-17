@@ -1,6 +1,6 @@
-import StaffModel from '../models/Staff.js'; // Assuming you have a Staff model
-import MissionModel from '../models/Mission.js'; // Assuming you have a Mission model
-import LeaveRequestModel from '../models/LeaveRequest.js'; // Assuming you have a LeaveRequest model
+import StaffModel from '../models/Staff.js';
+import MissionModel from '../models/Mission.js';
+import LeaveRequestModel from '../models/LeaveRequest.js';
 
 export const getStaffInfo = async (req, res) => {
     try {
@@ -24,7 +24,7 @@ export const getStaffInfo = async (req, res) => {
 export const getStaffMissions = async (req, res) => {
   try {
     // Assuming you to receive the staff email from the request
-    const staffEmail = req.query.email; // Adjust as needed based on route
+    const staffEmail = req.query.email;
 
     // Fetch staff information from the database using Mongoose
     const staff = await StaffModel.findOne({ email: staffEmail });
@@ -47,7 +47,7 @@ export const getStaffMissions = async (req, res) => {
 export const getStaffLeaveRequests = async (req, res) => {
   try {
     // Assuming you receive the staff email from the request
-    const staffEmail = req.query.email; // Adjust as needed based on route
+    const staffEmail = req.query.email; 
 
     // Fetch staff information from the database using Mongoose
     const staff = await StaffModel.findOne({ email: staffEmail });
@@ -70,7 +70,7 @@ export const getStaffLeaveRequests = async (req, res) => {
 export const createLeaveRequest = async (req, res) => {
   try {
     // Assuming you receive the staff email and leave request details from the request
-    const { email, startDate, endDate } = req.body; // Adjust as needed based on route
+    const { email, startDate, endDate } = req.body; 
 
     // Fetch staff information from the database using Mongoose
     const staff = await StaffModel.findOne({ email });
@@ -84,7 +84,7 @@ export const createLeaveRequest = async (req, res) => {
       staffId: staff._id,
       startDate,
       endDate,
-      status: 'pending', // You might set an initial status
+      status: 'pending',
     });
 
     await newLeaveRequest.save();
@@ -100,7 +100,7 @@ export const createLeaveRequest = async (req, res) => {
 export const changeDetailsRequest = async (req, res) => {
   try {
     // Assuming you receive the staff email and new details from the request
-    const { email, newFirstName, newLastName } = req.body; // Adjust as needed based on route
+    const { email, newFirstName, newLastName } = req.body; 
 
     // Fetch staff information from the database using Mongoose
     const staff = await StaffModel.findOne({ email });

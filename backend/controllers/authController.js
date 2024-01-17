@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
-import StaffModel from '../models/Staff.js'; // Assuming you have a Staff model
+import StaffModel from '../models/Staff.js';
 
 
 const generateToken = (userId) => {
@@ -73,7 +73,7 @@ export const login = async (req, res) => {
 
 export const updateDetails = async (req, res) => {
   try {
-    const { userId } = req.userData; // Assuming you attach user data to the request
+    const { userId } = req.userData;
 
     // Assuming you receive updated details from the request body
     const { newFirstName, newLastName } = req.body;
