@@ -8,6 +8,7 @@ import authRoutes from './routes/authRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import staffRoutes from './routes/staffRoutes.js';
 
+dotenv.config();
 const app = express();
 
 // MongoDB connection
@@ -16,7 +17,7 @@ mongoose.connect(
   process.env.MONGO_URL,
   { useNewUrlParser: true, useUnifiedTopology: true },
   () => {
-    console.log('Connected to MongoDB');
+    console.log('Connected to MongoDB');	
   }
 );
 

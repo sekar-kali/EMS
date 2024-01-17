@@ -1,4 +1,3 @@
-// App.jsx
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
@@ -7,6 +6,8 @@ import Menu from './components/Menu';
 import AdminRoutes from './routes/AdminRoutes';
 import StaffRoutes from './routes/StaffRoutes';
 import AuthRoutes from './routes/AuthRoutes';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 
 const PrivateRoute = ({ element: Element, roles, ...rest }) => {
   const authToken = localStorage.getItem('authToken');
@@ -16,9 +17,11 @@ const PrivateRoute = ({ element: Element, roles, ...rest }) => {
 
 const App = () => {
   return (
-    <>
-      <Header />
-      <Router>
+      <div>
+        {/* Header and other common components */}
+        <Header />
+        <Menu />
+
         <Routes>
           {/* For Staff */}
           <Route
@@ -48,9 +51,10 @@ const App = () => {
             }
           />
         </Routes>
-      </Router>
-      <Footer />
-    </>
+
+        {/* Footer and other common components */}
+        <Footer />
+      </div>
   );
 };
 

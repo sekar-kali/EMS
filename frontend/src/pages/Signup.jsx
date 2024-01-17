@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import '../styles.css'
 
 const Signup = () => {
-  const [username, setUsername] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [username, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -21,7 +22,7 @@ const Signup = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify({ firstName, lastName, email, password }),
       });
 
       const data = await response.json();
@@ -43,8 +44,11 @@ const Signup = () => {
     <div className="auth-container">
       <h2>Sign up</h2>
       <form>
-        <label>Username:</label>
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+        <label>First Name:</label>
+        <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+
+        <label>Last Name:</label>
+        <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
 
         <label>Email:</label>
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />

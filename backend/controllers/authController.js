@@ -3,15 +3,14 @@ import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import StaffModel from '../models/Staff.js';
 
-
 const generateToken = (userId) => {
   // Generate a JSON Web Token (JWT)
-  return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  return jwt.sign({ userId }, process.env.JWT_SECRET_KEY, { expiresIn: process.env.JWT_EXPIRES_TOKEN });
 };
 
 export const signup = async (req, res) => {
   try {
-    const { email, password, firstName, lastName } = req.body;
+    const { email, password, firstName, lastName} = req.body;
 
     // Check if the email is already registered
     const existingUser = await StaffModel.findOne({ email });
@@ -36,13 +35,19 @@ export const signup = async (req, res) => {
     // Generate a JWT for the new user
     const token = generateToken(newUser._id);
 
+    // Update the user immediately after saving
+    await StaffModel.updateOne(
+      { _id: newUser._id },
+      { $set: { email: newUser.email, firstName: newUser.firstName, lastName: newUser.lastName, password: newUser.password }});
+
     // Return the token and user details as JSON
-    res.json({ token, userId: newUser._id, email: newUser.email });
+    res.json({ token, userId: newUser._id, email: newUser.email, firstName: newUser.firstName, lastName: newUser.lastName, password: newUser.password });
   } catch (error) {
     console.error('Error during signup:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 
 export const login = async (req, res) => {
   try {
