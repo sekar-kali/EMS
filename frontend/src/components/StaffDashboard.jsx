@@ -4,9 +4,9 @@ import LeaveRequestForm from './LeaveRequestForm';
 
 const StaffDashboard = () => {
     const [staffInfo, setStaffInfo] = useState({
-      name : staffInfo.name,
-        email: staffInfo.email,
-        position:staffInfo.position
+      name:"staff",
+        email:"staff",
+        position:"staff",
     });
   
     const [missions, setMissions] = useState([]);
