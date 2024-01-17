@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Header from './Header';
 
 const AdminDashboard = () => {
   const [staffList, setStaffList] = useState([]);
@@ -93,6 +94,8 @@ const AdminDashboard = () => {
 
 
   return (
+    <>
+    <Header />
     <div className="dashboard">
       <h1>Admin Dashboard</h1>
       <p>Welcome, Admin!</p>
@@ -153,6 +156,8 @@ const AdminDashboard = () => {
       </div>
 
     </div>
+    <Footer />
+    </>
   );
 };
 

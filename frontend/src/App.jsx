@@ -18,10 +18,6 @@ const PrivateRoute = ({ element: Element, roles, ...rest }) => {
 const App = () => {
   return (
       <div>
-        {/* Header and other common components */}
-        <Header />
-        <Menu />
-
         <Routes>
           {/* For Staff */}
           <Route
@@ -51,9 +47,6 @@ const App = () => {
             }
           />
         </Routes>
-
-        {/* Footer and other common components */}
-        <Footer />
       </div>
   );
 };

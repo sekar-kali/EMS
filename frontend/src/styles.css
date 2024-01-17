@@ -3,8 +3,8 @@
 body {
     margin: 0;
     font-family: 'Arial', sans-serif;
-    background-image: url(./bg.jpg);
-    background-size:cover ;
+    background-image: url(./bg.png);
+    background-size:cover;
   }
   
   .app {

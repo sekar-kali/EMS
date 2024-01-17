@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import LeaveRequestForm from './LeaveRequestForm';
+import Header from './Header';
+import Footer from './Footer';
 
 const StaffDashboard = () => {
     const [staffInfo, setStaffInfo] = useState({
@@ -124,6 +126,8 @@ const StaffDashboard = () => {
   );
 
   return (
+    <>
+    <Header />
     <div className="dashboard">
       <h1>Staff Dashboard</h1>
       <p>Welcome, {staffInfo.name}!</p>
@@ -187,6 +191,8 @@ const StaffDashboard = () => {
       </div>
 
     </div>
+    <Footer />
+    </>
   );
 };
 
