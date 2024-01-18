@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from './Header';
+import Footer from './Footer';
+import Menu from './Menu';
 
 const AdminDashboard = () => {
   const [staffList, setStaffList] = useState([]);
@@ -95,21 +97,22 @@ const AdminDashboard = () => {
 
   return (
     <>
-    <Header />
-    <div className="dashboard">
-      <h1>Admin Dashboard</h1>
-      <p>Welcome, Admin!</p>
+      <Header />
 
-      <div className="staff-list">
-        <h2>Staff Members</h2>
-        <ul>
-          {staffList.map((staff) => (
-            <li key={staff._id}>
-              {staff.name} - {staff.position}
-            </li>
-          ))}
-        </ul>
-      </div>
+      <div className="dashboard">
+        <h1>Admin Dashboard</h1>
+        <p>Welcome, Admin!</p>
+
+        <div className="staff-list">
+          <h2>Staff Members</h2>
+          <ul>
+            {staffList && staffList.map((staff) => (
+              <li key={staff._id}>
+                {staff.name} - {staff.position}
+              </li>
+            ))}
+          </ul>
+        </div>
       <div className="create-staff-form">
         <h2>Create Staff Account</h2>
         <label>Email:</label>
@@ -123,40 +126,41 @@ const AdminDashboard = () => {
         <button onClick={handleCreateStaff}>Create Staff Account</button>
       </div>
       <div className="missions">
-        <h2>Missions</h2>
-        <ul>
-          {missions.map((mission) => (
-            <li key={mission._id}>
-              {mission.title} - {mission.description}
-            </li>
-          ))}
-        </ul>
+          <h2>Missions</h2>
+          <ul>
+            {missions && missions.map((mission) => (
+              <li key={mission._id}>
+                {mission.title} - {mission.description}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="leave-requests">
+          <h2>Leave Requests</h2>
+          <ul>
+            {leaveRequests && leaveRequests.map((request) => (
+              <li key={request._id}>
+                {request.staffName} - {request.startDate} to {request.endDate}
+                Status: {request.status}
+                {request.status === 'pending' && (
+                  <>
+                    <button onClick={() => handleLeaveRequestApproval(request._id, 'approved')}>
+                      Approve
+                    </button>
+                    <button onClick={() => handleLeaveRequestApproval(request._id, 'rejected')}>
+                      Reject
+                    </button>
+                  </>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
-      <div className="leave-requests">
-        <h2>Leave Requests</h2>
-        <ul>
-          {leaveRequests.map((request) => (
-            <li key={request._id}>
-              {request.staffName} - {request.startDate} to {request.endDate}
-              Status: {request.status}
-              {request.status === 'pending' && (
-                <>
-                  <button onClick={() => handleLeaveRequestApproval(request._id, 'approved')}>
-                    Approve
-                  </button>
-                  <button onClick={() => handleLeaveRequestApproval(request._id, 'rejected')}>
-                    Reject
-                  </button>
-                </>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-    </div>
-    <Footer />
+      <Menu />
+      <Footer />
     </>
   );
 };

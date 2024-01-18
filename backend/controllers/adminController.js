@@ -1,7 +1,7 @@
 import StaffModel from '../models/Staff.js';
-import LeaveRequestModel from '../models/LeaveRequest.js';
-import MissionModel from '../models/Mission.js';
-import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+
+dotenv.config();  
 
 export const createStaff = async (req, res) => {
   try {
@@ -20,7 +20,7 @@ export const createStaff = async (req, res) => {
       firstName,
       lastName,
       position,
-      isStaff: true, 
+      isStaff: true,
     });
 
     // Save the new staff member to the database
@@ -36,7 +36,7 @@ export const createStaff = async (req, res) => {
       },
     });
 
-    const confirmationLink = `${process.env.FRONTEND_URL}/create-password?email=${email}`;
+    const confirmationLink = `${process.env.FRONTEND_URL}/create-password?email=${email}`; // Update with your frontend URL
 
     const mailOptions = {
       from: process.env.MAIL,
@@ -48,7 +48,8 @@ export const createStaff = async (req, res) => {
     await transporter.sendMail(mailOptions);
 
     // Return success message as JSON
-    res.json({ message: 'Staff account created successfully. Confirmation email sent.' });
+    console.log('Response:', { message: 'Staff account created successfully. Confirmation email sent.' });
+res.json({ message: 'Staff account created successfully. Confirmation email sent.' });
   } catch (error) {
     console.error('Error creating staff account:', error);
     res.status(500).json({ message: 'Internal server error' });

@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import '../styles.css'
+import { Link, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import '../styles.css';
 
 const Signup = () => {
   const [firstName, setFirstName] = useState('');
-  const [username, setLastName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSignup = async () => {
     try {
       // Validate input fields (you may add more validation)
-      if (!username || !email || !password) {
-        console.log('Please fill in all fields.');
+      if (!firstName || !lastName || !email || !password) {
+        toast.error('Please fill in all fields.');
         return;
       }
 
@@ -26,21 +29,27 @@ const Signup = () => {
       });
 
       const data = await response.json();
-
       if (response.ok) {
-        // Signup successful, redirect to login or any other page
-        console.log('Signup successful:', data.message);
-        // Redirect to login page or any other page
+        // Signup successful, show success toast
+        toast.success('Signup successful! Redirecting to login...');
+  
+        // Redirect to login page after a short delay (adjust the delay as needed)
+        setTimeout(() => {
+          navigate('/auth/login');
+        }, 2000); // 2000 milliseconds (2 seconds)
       } else {
-        // Signup failed, log the error message
-        console.error('Signup failed:', data.message);
+        // Signup failed, show error toast
+        toast.error(`Signup failed: ${data.message}`);
       }
     } catch (error) {
-      console.error('Error during signup:', error.message);
+      // Error during signup, show error toast
+      toast.error(`Error during signup: ${error.message}`);
     }
   };
 
   return (
+    <>
+    <ToastContainer />
     <div className="auth-container">
       <h2>Sign up</h2>
       <form>
@@ -62,9 +71,10 @@ const Signup = () => {
       </form>
 
       <p>
-        Already have an account? <Link to="/">Login</Link>
+        Already have an account? <Link to="/auth/login">Login</Link>
       </p>
     </div>
+    </>
   );
 };
 

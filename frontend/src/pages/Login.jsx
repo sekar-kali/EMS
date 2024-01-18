@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -10,11 +12,11 @@ const Login = () => {
     try {
       // Validate input fields
       if (!email || !password) {
-        console.log('Please fill in all fields.');
+        toast.error('Please fill in all fields.');
         return;
       }
 
-      // Send a login request to backend
+      // Send a login request to the backend
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
@@ -27,27 +29,29 @@ const Login = () => {
       if (response.ok) {
         // Login successful
         const authToken = data.token;
-  
+
         // Store the authentication token in localStorage
         localStorage.setItem('authToken', authToken);
-  
+
         // Redirect to the user dashboard based on the user's role
         if (data.role === 'admin') {
-          // Redirect to the admin dashboard
-          navigate.push('/admin/dashboard');
+          navigate('/admin/dashboard');
         } else if (data.role === 'staff') {
-          // Redirect to the staff dashboard
-          navigate.push('/staff/dashboard');
-        } else {
-          // Handle unknown role or redirect to a default page
-          navigate.push('/');
+          navigate('/staff/dashboard');
         }
+        console.log('Login successful!', data.message);
+        // Show success toast
+        toast.success('Login successful!');
       } else {
         // Login failed, log the error message
         console.error('Login failed:', data.message);
+
+        // Show error toast
+        toast.error(`Login failed: ${data.message}`);
       }
     } catch (error) {
       console.error('Error during login:', error.message);
+      toast.error('Error during login. Please try again.');
     }
   };
 
@@ -67,8 +71,10 @@ const Login = () => {
       </form>
 
       <p>
-        Don't have an account? <Link to="/signup">Sign up</Link>
+        Don't have an account? <Link to="/auth/signup">Sign up</Link>
       </p>
+
+      <ToastContainer />
     </div>
   );
 };

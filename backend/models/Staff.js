@@ -14,8 +14,8 @@ const staffSchema = new mongoose.Schema({
   lastName: { type: String, required: true},
   role :{
     type: String,
-    enum: ["STAFF", "ADMIN"],
-    default: "STAFF",
+    enum: ["staff", "admin"],
+    default: "staff",
     required: true,
 },
 },

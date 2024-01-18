@@ -1,58 +1,59 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import LeaveRequestForm from './LeaveRequestForm';
 import Header from './Header';
 import Footer from './Footer';
+import Menu from './Menu';
+import LeaveRequestForm from './LeaveRequestForm';
 
 const StaffDashboard = () => {
-    const [staffInfo, setStaffInfo] = useState({
-      name:"staff",
-        email:"staff",
-        position:"staff",
-    });
-  
-    const [missions, setMissions] = useState([]);
-    const [leaveRequests, setLeaveRequests] = useState([]);
-    const [leaveRequestForm, setLeaveRequestForm] = useState({
-      startDate: '',
-      endDate: '',
-    });
-  
-    const [changeDetailsForm, setChangeDetailsForm] = useState({
-      newFirstName: '',
-      newLastName: '',
-    });
-  
-    useEffect(() => {
-      // Fetch staff's information
-      fetch('/api/staff/info')
-        .then((response) => response.json())
-        .then((data) => setStaffInfo(data))
-        .catch((error) => console.error('Error fetching staff information:', error));
-  
+  const [staffInfo, setStaffInfo] = useState({
+    name: 'staff',
+    email: 'staff',
+    position: 'staff',
+  });
+
+  const [missions, setMissions] = useState([]);
+  const [leaveRequests, setLeaveRequests] = useState([]);
+  const [leaveRequestForm, setLeaveRequestForm] = useState({
+    startDate: '',
+    endDate: '',
+  });
+
+  const [changeDetailsForm, setChangeDetailsForm] = useState({
+    newFirstName: '',
+    newLastName: '',
+  });
+
+  useEffect(() => {
       // Fetch staff's missions
       fetch('/api/staff/missions')
         .then((response) => response.json())
         .then((data) => setMissions(data))
+        .then((data) => {
+          console.log('Fetched missions data:', data);
+          setMissions(data);
+        })        
         .catch((error) => console.error('Error fetching missions:', error));
-  
-      // Fetch staff's leave requests
-      fetch('/api/staff/leaveRequests')
-        .then((response) => response.json())
-        .then((data) => setLeaveRequests(data))
-        .catch((error) => console.error('Error fetching leave requests:', error));
-    }, []);
+
+    // Fetch staff's information
+    fetch('/api/staff/info')
+      .then((response) => response.json())
+      .then((data) => setStaffInfo(data))
+      .catch((error) => console.error('Error fetching staff information:', error));
+
+    // Fetch staff's leave requests
+    fetch('/api/staff/leaveRequests')
+      .then((response) => response.json())
+      .then((data) => setLeaveRequests(data))
+      .catch((error) => console.error('Error fetching leave requests:', error));
+  }, []);
 
   const handleLeaveRequestSubmit = async () => {
     try {
       // Validate leave request form fields
       if (!leaveRequestForm.startDate || !leaveRequestForm.endDate) {
         console.error('Please fill in all leave request fields.');
-        // Update the missions and leave requests state after successful submission
-    setMissions([...missions, /* newly created mission */]);
-    setLeaveRequests([...leaveRequests, /* newly created leave request */]);
         return;
-        
       }
 
       // Send leave request to the backend for processing
@@ -114,7 +115,6 @@ const StaffDashboard = () => {
   };
 
   const filterStaffMissions = (mission) => {
-    
     return mission.staffId === staffInfo._id;
   };
   const upcomingMissions = missions.filter(
@@ -127,73 +127,73 @@ const StaffDashboard = () => {
 
   return (
     <>
-    <Header />
-    <div className="dashboard">
-      <h1>Staff Dashboard</h1>
-      <p>Welcome, {staffInfo.name}!</p>
+      <Header />
+      <Menu />
+      <div className="dashboard">
+        <h1>Staff Dashboard</h1>
+        <p>Welcome, {staffInfo.name}!</p>
 
-      
-      <div className="personal-info">
-        <h2>Personal Information</h2>
-        <p>Name: {staffInfo.name}</p>
-        <p>Email: {staffInfo.email}</p>
-        <p>Position: {staffInfo.position}</p>
-        <button onClick={handleChangeDetailsRequest}>Request Change in Details</button>
+        <div className="personal-info">
+          <h2>Personal Information</h2>
+          <p>Name: {staffInfo.name}</p>
+          <p>Email: {staffInfo.email}</p>
+          <p>Position: {staffInfo.position}</p>
+          <button onClick={handleChangeDetailsRequest}>Request Change in Details</button>
+        </div>
+
+        <div className="upcoming-missions">
+          <h2>Upcoming Missions</h2>
+          <ul>
+            {upcomingMissions.map((mission) => (
+              <li key={mission._id}>
+                {mission.title} - {mission.description}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="past-missions">
+          <h2>Past Missions</h2>
+          <ul>
+            {pastMissions.map((mission) => (
+              <li key={mission._id}>
+                {mission.title} - {mission.description}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="leave-requests">
+          <h2>Leave Requests</h2>
+          <ul>
+            {leaveRequests.map((request) => (
+              <li key={request._id}>
+                {request.startDate} to {request.endDate}
+                Status: {request.status}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="leave-request-form">
+          <h2>Create Leave Request</h2>
+          <LeaveRequestForm
+            leaveRequestForm={leaveRequestForm}
+            setLeaveRequestForm={setLeaveRequestForm}
+            handleLeaveRequestSubmit={handleLeaveRequestSubmit}
+          />
+        </div>
+
+        <Link to="/leave-request-form">Open Leave Request Form</Link>
+
+        <div className="change-details-form">
+          <h2>Change Personal Details Request</h2>
+        </div>
       </div>
-
-      <div className="upcoming-missions">
-        <h2>Upcoming Missions</h2>
-        <ul>
-          {upcomingMissions.map((mission) => (
-            <li key={mission._id}>
-              {mission.title} - {mission.description}
-             
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="past-missions">
-        <h2>Past Missions</h2>
-        <ul>
-          {pastMissions.map((mission) => (
-            <li key={mission._id}>
-              {mission.title} - {mission.description}
-              
-            </li>
-          ))}
-        </ul>
-      </div>
-      
-      <div className="leave-requests">
-        <h2>Leave Requests</h2>
-        <ul>
-          {leaveRequests.map((request) => (
-            <li key={request._id}>
-              {request.startDate} to {request.endDate}
-              Status: {request.status}
-             
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="leave-request-form">
-        <h2>Create Leave Request</h2>
-        <LeaveRequestForm handleLeaveRequestSubmit={handleLeaveRequestSubmit} />
-      </div>
-
-      <Link to="/leave-request-form">Open Leave Request Form</Link>
-
-      <div className="change-details-form">
-        <h2>Change Personal Details Request</h2>
-        
-      </div>
-
-    </div>
-    <Footer />
+      <Footer />
     </>
   );
 };
 
 export default StaffDashboard;
+

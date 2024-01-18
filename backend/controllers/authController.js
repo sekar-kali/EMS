@@ -69,7 +69,7 @@ export const login = async (req, res) => {
     const token = generateToken(user._id);
 
     // Return the token and user details as JSON
-    res.json({ token, userId: user._id, email: user.email });
+    res.json({ token, userId: user._id, email: user.email, role: user.role });
   } catch (error) {
     console.error('Error during login:', error);
     res.status(500).json({ message: 'Internal server error' });
