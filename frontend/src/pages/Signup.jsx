@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import '../styles.css';
+import '../auth.css';
+
 
 const Signup = () => {
   const [firstName, setFirstName] = useState('');
@@ -50,7 +51,7 @@ const Signup = () => {
   return (
     <>
     <ToastContainer />
-    <div className="auth-container">
+    <div className="register-container">
       <h2>Sign up</h2>
       <form>
         <label>First Name:</label>

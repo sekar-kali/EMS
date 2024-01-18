@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import Menu from './Menu';
+import '../menu.css';
+import '../styles.css';
 
 const AdminDashboard = () => {
   const [staffList, setStaffList] = useState([]);
@@ -11,7 +13,7 @@ const AdminDashboard = () => {
     email: '',
     firstName: '',
     lastName: '',
-    position: '',
+    serviceName: '',
   });
 
   const handleInputChange = (e) => {
@@ -98,6 +100,7 @@ const AdminDashboard = () => {
   return (
     <>
       <Header />
+      <Menu />
 
       <div className="dashboard">
         <h1>Admin Dashboard</h1>
@@ -158,8 +161,6 @@ const AdminDashboard = () => {
           </ul>
         </div>
       </div>
-
-      <Menu />
       <Footer />
     </>
   );

@@ -4,13 +4,24 @@ import Header from './Header';
 import Footer from './Footer';
 import Menu from './Menu';
 import LeaveRequestForm from './LeaveRequestForm';
+import '../menu.css';
+import '../styles.css';
 
 const StaffDashboard = () => {
   const [staffInfo, setStaffInfo] = useState({
-    name: 'staff',
-    email: 'staff',
-    position: 'staff',
+    firstName: '',
+    lastName: '',
+    email: '',
+    serviceName: '',
   });
+
+  useEffect(() => {
+    // Fetch staff's information
+    fetch('/api/staff/info')
+      .then((response) => response.json())
+      .then((data) => setStaffInfo(data))
+      .catch((error) => console.error('Error fetching staff information:', error));
+  }, []);
 
   const [missions, setMissions] = useState([]);
   const [leaveRequests, setLeaveRequests] = useState([]);
@@ -25,27 +36,28 @@ const StaffDashboard = () => {
   });
 
   useEffect(() => {
-      // Fetch staff's missions
-      fetch('/api/staff/missions')
-        .then((response) => response.json())
-        .then((data) => setMissions(data))
-        .then((data) => {
-          console.log('Fetched missions data:', data);
-          setMissions(data);
-        })        
-        .catch((error) => console.error('Error fetching missions:', error));
+    // Fetch staff's missions and leave requests
+    const fetchStaffData = async () => {
+      try {
+        const missionsResponse = await fetch('/api/staff/missions');
+        const leaveRequestsResponse = await fetch('/api/staff/leaveRequests');
 
-    // Fetch staff's information
-    fetch('/api/staff/info')
-      .then((response) => response.json())
-      .then((data) => setStaffInfo(data))
-      .catch((error) => console.error('Error fetching staff information:', error));
+        if (!missionsResponse.ok || !leaveRequestsResponse.ok) {
+          console.error('Error fetching missions or leave requests');
+          return;
+        }
 
-    // Fetch staff's leave requests
-    fetch('/api/staff/leaveRequests')
-      .then((response) => response.json())
-      .then((data) => setLeaveRequests(data))
-      .catch((error) => console.error('Error fetching leave requests:', error));
+        const missionsData = await missionsResponse.json();
+        const leaveRequestsData = await leaveRequestsResponse.json();
+
+        setMissions(missionsData);
+        setLeaveRequests(leaveRequestsData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchStaffData();
   }, []);
 
   const handleLeaveRequestSubmit = async () => {
@@ -114,30 +126,40 @@ const StaffDashboard = () => {
     }
   };
 
-  const filterStaffMissions = (mission) => {
-    return mission.staffId === staffInfo._id;
-  };
-  const upcomingMissions = missions.filter(
-    (mission) => filterStaffMissions(mission) && new Date(mission.startDate) > new Date()
-  );
+  const filterStaffMissions = (mission) => mission.staffId === staffInfo._id;
 
-  const pastMissions = missions.filter(
-    (mission) => filterStaffMissions(mission) && new Date(mission.endDate) < new Date()
-  );
+  const upcomingMissions = Array.isArray(missions)
+    ? missions.filter((mission) => filterStaffMissions(mission) && new Date(mission.startDate) > new Date())
+    : [];
+
+  const pastMissions = Array.isArray(missions)
+    ? missions.filter((mission) => filterStaffMissions(mission) && new Date(mission.endDate) < new Date())
+    : [];
+
+  const leaveRequestItems = Array.isArray(leaveRequests)
+    ? leaveRequests.map((request) => (
+        <li key={request._id}>
+          {request.startDate} to {request.endDate}
+          Status: {request.status}
+        </li>
+      ))
+    : null;
 
   return (
     <>
       <Header />
       <Menu />
+      
       <div className="dashboard">
         <h1>Staff Dashboard</h1>
-        <p>Welcome, {staffInfo.name}!</p>
+        <p>Welcome, {staffInfo.firstName}!</p>
 
         <div className="personal-info">
           <h2>Personal Information</h2>
-          <p>Name: {staffInfo.name}</p>
+          <p>First Name: {staffInfo.firstName}</p>
+          <p>Last Name: {staffInfo.lastName}</p>
           <p>Email: {staffInfo.email}</p>
-          <p>Position: {staffInfo.position}</p>
+          <p>Service Name: {staffInfo.serviceName}</p>
           <button onClick={handleChangeDetailsRequest}>Request Change in Details</button>
         </div>
 
@@ -165,14 +187,7 @@ const StaffDashboard = () => {
 
         <div className="leave-requests">
           <h2>Leave Requests</h2>
-          <ul>
-            {leaveRequests.map((request) => (
-              <li key={request._id}>
-                {request.startDate} to {request.endDate}
-                Status: {request.status}
-              </li>
-            ))}
-          </ul>
+          <ul>{leaveRequestItems}</ul>
         </div>
 
         <div className="leave-request-form">
@@ -190,10 +205,10 @@ const StaffDashboard = () => {
           <h2>Change Personal Details Request</h2>
         </div>
       </div>
+      
       <Footer />
     </>
   );
 };
 
 export default StaffDashboard;
-

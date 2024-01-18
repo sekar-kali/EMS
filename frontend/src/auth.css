@@ -1,0 +1,68 @@
+ body{
+    margin: 0;
+    background-image: url(./bg.png);
+    background-size:cover;
+ }
+
+ h2{
+    text-align: center;
+ }
+.register-container {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    background-color: rgba(47, 154, 225, 0.5);
+    text-shadow: 3px 3px 5px black;
+    border: 1px solid #ddd;
+    border-radius: 40px;
+    margin-top: 2%;
+    color: rgb(220, 162, 80);
+  }
+
+  .login-container {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    background-color: rgba(92, 63, 13, 0.5);
+    text-shadow: 3px 3px 5px black;
+    border: 1px solid #ddd;
+    border-radius: 40px;
+    margin-top: 8%;
+    color: rgb(114, 167, 213);
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    margin-bottom: 5px;
+  }
+  
+  input {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+  }
+  
+  button {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 15px;
+    width: 50%;
+    margin: auto 25%;
+  }
+  
+  button:hover {
+    background-color: #555;
+  }
+  
+  p {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import '../auth.css';
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -56,7 +58,7 @@ const Login = () => {
   };
 
   return (
-    <div className="auth-container">
+    <div className="login-container">
       <h2>Login</h2>
       <form>
         <label>Email:</label>

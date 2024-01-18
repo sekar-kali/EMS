@@ -19,7 +19,7 @@ export const createStaff = async (req, res) => {
       email,
       firstName,
       lastName,
-      position,
+      serviceName,
       isStaff: true,
     });
 

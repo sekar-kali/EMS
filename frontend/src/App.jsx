@@ -35,7 +35,7 @@ const App = () => {
       <Routes>
         {/* Default route - Redirect to login */}
         <Route path="/" element={<Navigate to="/auth/login" />} />
-        
+       
         {/* Auth routes */}
         <Route path="/auth/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/auth/signup" element={<Signup />} />
