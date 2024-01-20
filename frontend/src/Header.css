@@ -240,7 +240,7 @@
         margin: 0 15px;
       }
       .header-container {
-        background-color: rgba(51, 51, 51,0.9);
+        background-color: rgb(51, 51, 51);
           color: #fff;
           text-align: center;
           position: fixed;

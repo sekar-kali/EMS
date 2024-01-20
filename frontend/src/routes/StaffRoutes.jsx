@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import StaffDashboard from '../components/StaffDashboard';
+import StaffDashboard from '../pages/StaffDashboard';
 import LeaveRequestForm from '../components/LeaveRequestForm';
 import UserDetailsForm from '../components/UserDetailsForm';
 

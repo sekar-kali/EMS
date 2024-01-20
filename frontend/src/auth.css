@@ -10,12 +10,12 @@
 .register-container {
     max-width: 400px;
     margin: auto;
-    padding: 20px;
+    padding: 10px 20px;
     background-color: rgba(47, 154, 225, 0.5);
     text-shadow: 3px 3px 5px black;
     border: 1px solid #ddd;
     border-radius: 40px;
-    margin-top: 2%;
+    margin-top: 5%;
     color: rgb(220, 162, 80);
   }
 
@@ -31,6 +31,11 @@
     color: rgb(114, 167, 213);
   }
 
+  .form-flex{
+  display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
   form {
     display: flex;
     flex-direction: column;
@@ -38,12 +43,14 @@
   
   label {
     margin-bottom: 5px;
+    width: 30%;
   }
   
   input {
     padding: 10px;
     margin-bottom: 15px;
     border-radius: 15px;
+    width: 70%;
   }
   
   button {
@@ -65,4 +72,12 @@
     margin-top: 10px;
   }
 
+  .logo{
+    text-align: center;
+    margin: 0;
+    font-size: 10px;
+  }
   
+  .logo img{
+    width: 30px;
+  }

@@ -6,13 +6,19 @@
     "@reduxjs/toolkit": "^1.8.6",
     "apexcharts": "^3.36.0",
     "axios": "^1.6.5",
+    "browserify": "^17.0.0",
+    "buffer": "^6.0.3",
     "classnames": "^2.3.2",
+    "crypto": "^1.0.1",
+    "crypto-browserify": "^3.12.0",
+    "crypto-js": "^4.2.0",
     "easymde": "^2.18.0",
     "export-from-json": "^1.7.0",
     "formik": "^2.4.5",
     "html-react-parser": "^3.0.4",
     "jsvectormap": "1.3.1",
     "moment": "^2.29.4",
+    "process": "^0.11.10",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.0",
     "react-bootstrap": "^2.5.0",
@@ -38,14 +44,18 @@
     "react-toastify": "^10.0.3",
     "sass": "^1.55.0",
     "simplebar-react": "^2.4.3",
+    "stream": "^0.0.2",
+    "stream-browserify": "^3.0.0",
     "sweetalert2": "^11.6.2",
-    "tailwind": "^4.0.0"
+    "tailwind": "^4.0.0",
+    "util": "^0.12.5",
+    "webpack": "^5.89.0"
   },
   "proxy": "http://localhost:5000",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "react-scripts-rewired start",
+    "build": "react-scripts-rewired build",
+    "test": "react-scripts-rewired test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -65,5 +75,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "react-app-rewired": "^2.2.1"
   }
 }

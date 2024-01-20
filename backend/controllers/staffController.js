@@ -84,7 +84,9 @@ export const createLeaveRequest = async (req, res) => {
       staffId: staff._id,
       startDate,
       endDate,
-      status: 'pending',
+      reason,
+      description,
+      status: 'Pending',
     });
 
     await newLeaveRequest.save();

@@ -2,17 +2,22 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Menu from './components/Menu';
+import Menu from './components/MenuAdmin';
 import AdminRoutes from './routes/AdminRoutes';
 import StaffRoutes from './routes/StaffRoutes';
 import AuthRoutes from './routes/AuthRoutes';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import AdminDashboard from './components/AdminDashboard';
-import StaffDashboard from './components/StaffDashboard';
-import MissionList from './components/MissionList';
+import AdminDashboard from './pages/AdminDashboard';
+import StaffDashboard from './pages/StaffDashboard';
+import MissionList from './pages/MissionList';
 import UserDetailsForm from './components/UserDetailsForm';
 import LeaveRequestForm from './components/LeaveRequestForm';
+import StaffList from './pages/StaffList';
+import Missions from './pages/Missions';
+import CreateMission from './pages/CreateMission';
+import CreateStaff from './pages/CreateStaff';
+import LeaveRequestList from './pages/LeaveRequestList';
 
 const PrivateRoute = ({ element: Element, roles, ...rest }) => {
   const authToken = localStorage.getItem('authToken');
@@ -46,8 +51,12 @@ const App = () => {
           element={<PrivateRoute roles={["admin"]} element={<AdminDashboard />} />}
         />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/missions" element={<MissionList />} />
+        <Route path="/admin/create-mission" element={<CreateMission />} />
+        <Route path="/admin/missions-list" element={<MissionList />} />
+        <Route path="/admin/leave-request" element={<LeaveRequestList />} />
         <Route path="/admin/user-details" element={<UserDetailsForm />} />
+        <Route path="/admin/staff-list" element={<StaffList />} />
+        <Route path="/admin/create-staff" element={<CreateStaff />} />
 
         {/* Staff routes */}
         <Route

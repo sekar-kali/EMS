@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
+import logoImage from '../logo.png';
 import 'react-toastify/dist/ReactToastify.css';
 import '../auth.css';
 
@@ -59,14 +60,19 @@ const Login = () => {
 
   return (
     <div className="login-container">
+      <div className="logo">
+                      <img src={logoImage} alt="logo-EMS" />
+        <p>EMS</p></div>
       <h2>Login</h2>
       <form>
+      <div className="form-flex">
         <label>Email:</label>
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-
+        </div>
+        <div className="form-flex">
         <label>Password:</label>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-
+        </div>
         <button type="button" onClick={handleLogin}>
           Login
         </button>

@@ -1,10 +1,14 @@
 /* styles.css */
 
-body {
+body{
+  background-image: url(./bg_auth.jpg);
+  background-size:cover;
+  text-align: center;
+}
+
+.main-container {
     margin: 8% 15%;
     font-family: 'Arial', sans-serif;
-    background-image: url(./bg_auth.jpg);
-    background-size:cover;
   }
   
   .app {
@@ -41,6 +45,64 @@ body {
     text-align: center;
   } */
 
+  .create-staff-form,.create-mission-form, .create-leave-form{
+      max-width: 400px;
+      margin: auto;
+      padding: 10px 20px;
+      background-color: rgba(47, 154, 225, 0.5);
+      text-shadow: 3px 3px 5px black;
+      border: 1px solid #ddd;
+      border-radius: 40px;
+      margin-top: 1%;
+      color: rgb(220, 162, 80);
+      display: flex;
+    flex-direction: column;
+  }
+
+  textarea {
+    margin-bottom: 4%;
+    width: 70%;
+    resize:none
+  }
+
+  .create-staff-form .form-flex, .create-mission-form .form-flex, .create-leave-form .form-flex {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  
+  .create-staff-form label,.create-mission-form label,.create-leave-form label{
+    margin-bottom: 5px;
+    width: 30%;
+  }
+  
+  .create-staff-form input,.create-mission-form input,.create-leave-form input {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    width: 70%;
+  }
+
+  .create-mission-form select,.create-leave-form select {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    width: 70%;
+  }
+  
+  button {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 15px;
+    width: 50%;
+    margin: auto 25%;
+  }
+  
+  button:hover {
+    background-color: #555;
+  }
   
   @media only screen and (max-width: 600px) {
     .menu {
