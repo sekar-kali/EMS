@@ -2,6 +2,8 @@
     margin: 0;
     background-image: url(./bg.png);
     background-size:cover;
+    color: aliceblue;
+    text-align: center;
  }
 
  h2{
@@ -29,6 +31,18 @@
     border-radius: 40px;
     margin-top: 8%;
     color: rgb(114, 167, 213);
+  }
+
+  .logout-container {
+    max-width: 300px;
+    margin: auto;
+    padding: 50px;
+    background-color: rgba(47, 154, 225, 0.5);
+    text-shadow: 3px 3px 5px black;
+    border: 1px solid #ddd;
+    border-radius: 40px;
+    margin-top: 8%;
+    color: rgb(220, 162, 80);
   }
 
   .form-flex{
@@ -75,9 +89,9 @@
   .logo{
     text-align: center;
     margin: 0;
-    font-size: 10px;
+    font-size: 15px;
   }
   
   .logo img{
-    width: 30px;
+    width: 50px;
   }

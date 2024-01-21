@@ -1,4 +1,4 @@
-.menu-admin{
+.menu-admin,.menu-staff{
     border: 1px solid white;
     width: max-content;
     display: flex;
@@ -7,7 +7,7 @@
     color: brown;
     background-color: rgb(240, 248, 255);
 }
-.menu-staff{
+/* .menu-staff{
     border: 1px solid white;
     width: max-content;
     display: flex;
@@ -16,9 +16,9 @@
     position: fixed;
     color: brown;
     background-color: rgb(240, 248, 255);
-}
+} */
 
-.menu-admin li {
+/* .menu-admin li {
     padding: 5% 5%;
     text-decoration: none;
     list-style: none;
@@ -26,26 +26,26 @@
 }
 
 .menu-staff li {
-    padding: 43% 5%;
+    padding: 2% 5%;
     text-decoration: none;
     list-style: none;
     color: brown;
-}
+} */
 
-.menu-admin {
+.menu-admin,.menu-staff {
     display: flex;
     justify-content: center;
     
   }
   
-  .menu-admin > ul > li {
+  .menu-admin > ul > li,.menu-staff > ul > li {
     list-style-type: none;
     position: relative;
     display: inline-block;
     text-decoration: none;
   }
   
-  .menu-admin > ul > ul > li > span {
+  .menu-admin > ul > ul > li > span,.menu-staff > ul > ul > li > span {
     display: block;
     padding: 12px;
     cursor: pointer;
@@ -54,7 +54,7 @@
 
   }
   
-  .menu-admin > ul > ul> li > ul {
+  .menu-admin > ul > ul> li > ul,  .menu-staff > ul > ul> li > ul {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
@@ -64,18 +64,18 @@
     cursor: pointer;
   }
   
-  .menu-admin > ul > ul > li > ul > li > a {
+  .menu-admin > ul > ul > li > ul > li > a,.menu-staff > ul > ul > li > ul > li > a {
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
   }
   
-  .menu-admin > ul > ul > li > ul > li > a:hover {
+  .menu-admin > ul > ul > li > ul > li > a:hover,.menu-staff > ul > ul > li > ul > li > a:hover {
     background-color: #f1f1f1;
   }
   
-  .menu-admin > ul > ul > li:hover > ul {
+  .menu-admin > ul > ul > li:hover > ul,.menu-staff > ul > ul > li:hover > ul {
     display: block;
   }
   

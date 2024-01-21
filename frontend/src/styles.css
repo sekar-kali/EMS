@@ -1,14 +1,15 @@
 /* styles.css */
 
-body{
+/* body{
   background-image: url(./bg_auth.jpg);
   background-size:cover;
   text-align: center;
-}
+} */
 
 .main-container {
     margin: 8% 15%;
     font-family: 'Arial', sans-serif;
+    text-align: center;
   }
   
   .app {
@@ -45,7 +46,7 @@ body{
     text-align: center;
   } */
 
-  .create-staff-form,.create-mission-form, .create-leave-form{
+  .create-staff-form,.create-mission-form, .create-leave-form, .personal-info, .upcoming-missions{
       max-width: 400px;
       margin: auto;
       padding: 10px 20px;
@@ -59,24 +60,36 @@ body{
     flex-direction: column;
   }
 
+  .past-missions {
+    max-width: 400px;
+    margin: auto;
+    padding: 10px 20px;
+    background-color: rgba(92, 63, 13, 0.5);
+    text-shadow: 3px 3px 5px black;
+    border: 1px solid #ddd;
+    border-radius: 40px;
+    margin-top: 1%;
+    color: rgb(114, 167, 213);
+  }
+
   textarea {
     margin-bottom: 4%;
     width: 70%;
     resize:none
   }
 
-  .create-staff-form .form-flex, .create-mission-form .form-flex, .create-leave-form .form-flex {
+  .create-staff-form .form-flex, .create-mission-form .form-flex, .create-leave-form .form-flex,.personal-info .form-flex {
     display: flex;
     justify-content: space-around;
     align-items: center;
   }
   
-  .create-staff-form label,.create-mission-form label,.create-leave-form label{
+  .create-staff-form label,.create-mission-form label,.create-leave-form label,.personal-info label{
     margin-bottom: 5px;
     width: 30%;
   }
   
-  .create-staff-form input,.create-mission-form input,.create-leave-form input {
+  .create-staff-form input,.create-mission-form input,.create-leave-form input,.create-l.personal-info input {
     padding: 10px;
     margin-bottom: 15px;
     border-radius: 15px;

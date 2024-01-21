@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const leaveRequestSchema = new mongoose.Schema({
   staffId: { type: mongoose.Schema.Types.ObjectId, ref: 'Staff', required: true },
@@ -6,6 +6,7 @@ const leaveRequestSchema = new mongoose.Schema({
   endDate: { type: Date, required: true },
   reason: { type: String, required: true },
   description: { type: String, required: true },
+  documentUrl: { type: String },
   status: { type: String, enum: ['Pending', 'Approved', 'Rejected'], default: 'Pending' },
 });
 

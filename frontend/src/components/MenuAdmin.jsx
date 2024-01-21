@@ -1,4 +1,3 @@
-// MenuAdmin.jsx
 import React, { useState } from 'react';
 import '../menu.css';
 import { Link } from 'react-router-dom';
@@ -16,7 +15,7 @@ const MenuAdmin = ({ role }) => {
     <Header />
     <div className="menu-admin">
       <ul>
-        <span onClick={() => handleSubMenuToggle('leaveRequest')}><li><Link to={`/admin/dashboard`}>Dashboard</Link></li></span>
+        <span onClick={() => handleSubMenuToggle('dashboard')}><li><Link to={`/admin/dashboard`}>Admin Dashboard</Link></li></span>
         <ul>
         <li>
           <span onClick={() => handleSubMenuToggle('missions')}>
@@ -47,7 +46,7 @@ const MenuAdmin = ({ role }) => {
           </ul>
         </li>
       </ul>
-      <li><Link to="/auth/login">Logout</Link></li>
+      <li><Link to="/auth/logout">Logout</Link></li>
       </ul>
     </div>
     </>

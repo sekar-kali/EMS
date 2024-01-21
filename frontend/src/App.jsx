@@ -1,40 +1,31 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import Menu from './components/MenuAdmin';
-import AdminRoutes from './routes/AdminRoutes';
-import StaffRoutes from './routes/StaffRoutes';
-import AuthRoutes from './routes/AuthRoutes';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import AdminDashboard from './pages/AdminDashboard';
-import StaffDashboard from './pages/StaffDashboard';
-import MissionList from './pages/MissionList';
+import Login from './pages/Auth/Login';
+import Signup from './pages/Auth/Signup';
+import AdminDashboard from './pages/Admin/AdminDashboard';
+import StaffDashboard from './pages/Staff/StaffDashboard';
+import MissionList from './pages/Admin/MissionList';
 import UserDetailsForm from './components/UserDetailsForm';
-import LeaveRequestForm from './components/LeaveRequestForm';
-import StaffList from './pages/StaffList';
-import Missions from './pages/Missions';
-import CreateMission from './pages/CreateMission';
-import CreateStaff from './pages/CreateStaff';
-import LeaveRequestList from './pages/LeaveRequestList';
+import LeaveRequestForm from './pages/Staff/LeaveRequestForm';
+import StaffList from './pages/Admin/StaffList';
+import CreateMission from './pages/Admin/CreateMission';
+import CreateStaff from './pages/Admin/CreateStaff';
+import LeaveRequestList from './pages/Admin/LeaveRequestList';
+import Logout from './pages/Auth/Logout';
+import StaffPersonalInfo from './pages/Staff/StaffPersonalInfo';
+import StaffMissionsList from './pages/Staff/StaffMissionsList';
+import StaffLeaveRequestList from './pages/Staff/StaffLeaveRequest';
+import ModifyStaffForm from './pages/Admin/ModifyStaffForm';
 
-const PrivateRoute = ({ element: Element, roles, ...rest }) => {
+const PrivateRoute = ({ children }) => {
   const authToken = localStorage.getItem('authToken');
 
-  return authToken ? <Element /> : <Navigate to="/auth/login" />;
+  return authToken ? children : <Navigate to="/auth/login" />;
 };
 
+
 const App = () => {
-  const [user, setUser] = useState(null);
 
-  const handleLogin = (loggedInUser) => {
-    setUser(loggedInUser);
-  };
-
-  const handleLogout = () => {
-    setUser(null);
-  };
   return (
     <Router>
       <Routes>
@@ -42,8 +33,9 @@ const App = () => {
         <Route path="/" element={<Navigate to="/auth/login" />} />
        
         {/* Auth routes */}
-        <Route path="/auth/login" element={<Login onLogin={handleLogin} />} />
+        <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/signup" element={<Signup />} />
+        <Route path="/auth/logout" element={<Logout />} />
 
         {/* Admin routes */}
         <Route
@@ -57,6 +49,7 @@ const App = () => {
         <Route path="/admin/user-details" element={<UserDetailsForm />} />
         <Route path="/admin/staff-list" element={<StaffList />} />
         <Route path="/admin/create-staff" element={<CreateStaff />} />
+        <Route path="/modify-staff/:id" render={({ match }) => <ModifyStaffForm staffId={match.params.id} />} />
 
         {/* Staff routes */}
         <Route
@@ -64,7 +57,10 @@ const App = () => {
           element={<PrivateRoute roles={["staff"]} element={<StaffDashboard />} />}
         />
         <Route path="/staff/dashboard" element={<StaffDashboard />} />
-        <Route path="/staff/leave-request" element={<LeaveRequestForm />} />
+        <Route path="/staff/create-leave-request" element={<LeaveRequestForm />} />
+        <Route path="/staff/leave-request-list" element={<StaffLeaveRequestList />} />
+        <Route path="/staff/mission-list" element={<StaffMissionsList />} />
+        <Route path="/staff/personal-info" element={<StaffPersonalInfo/>} />
         <Route path="/staff/user-details" element={<UserDetailsForm />} />
 
         {/* Catch-all route for unknown paths - Redirect to login */}
