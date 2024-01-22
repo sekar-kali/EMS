@@ -5,7 +5,6 @@ import Signup from './pages/Auth/Signup';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import StaffDashboard from './pages/Staff/StaffDashboard';
 import MissionList from './pages/Admin/MissionList';
-import UserDetailsForm from './components/UserDetailsForm';
 import LeaveRequestForm from './pages/Staff/LeaveRequestForm';
 import StaffList from './pages/Admin/StaffList';
 import CreateMission from './pages/Admin/CreateMission';
@@ -23,6 +22,13 @@ const PrivateRoute = ({ children }) => {
   return authToken ? children : <Navigate to="/auth/login" />;
 };
 
+const CenteredContent = ({ children }) => {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      {children}
+    </div>
+  );
+};
 
 const App = () => {
 
@@ -40,13 +46,12 @@ const App = () => {
         {/* Admin routes */}
         <Route
           path="/admin/*"
-          element={<PrivateRoute roles={["admin"]} element={<AdminDashboard />} />}
+          element={<PrivateRoute roles={["admin"]} element={<CenteredContent><AdminDashboard /></CenteredContent>} />}
         />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/create-mission" element={<CreateMission />} />
         <Route path="/admin/missions-list" element={<MissionList />} />
         <Route path="/admin/leave-request" element={<LeaveRequestList />} />
-        <Route path="/admin/user-details" element={<UserDetailsForm />} />
         <Route path="/admin/staff-list" element={<StaffList />} />
         <Route path="/admin/create-staff" element={<CreateStaff />} />
         <Route path="/modify-staff/:id" render={({ match }) => <ModifyStaffForm staffId={match.params.id} />} />
@@ -54,14 +59,13 @@ const App = () => {
         {/* Staff routes */}
         <Route
           path="/staff/*"
-          element={<PrivateRoute roles={["staff"]} element={<StaffDashboard />} />}
+          element={<PrivateRoute roles={["staff"]} element={<CenteredContent><StaffDashboard /></CenteredContent>} />}
         />
         <Route path="/staff/dashboard" element={<StaffDashboard />} />
         <Route path="/staff/create-leave-request" element={<LeaveRequestForm />} />
         <Route path="/staff/leave-request-list" element={<StaffLeaveRequestList />} />
         <Route path="/staff/mission-list" element={<StaffMissionsList />} />
         <Route path="/staff/personal-info" element={<StaffPersonalInfo/>} />
-        <Route path="/staff/user-details" element={<UserDetailsForm />} />
 
         {/* Catch-all route for unknown paths - Redirect to login */}
         <Route path="*" element={<Navigate to="/auth/login" />} />

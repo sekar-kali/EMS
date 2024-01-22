@@ -11,6 +11,20 @@
     font-family: 'Arial', sans-serif;
     text-align: center;
   }
+
+  .dashboard-stats{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 2%;
+  }
+
+  .dashboard-stat{
+    border: 1px dashed #ffffff;
+    background-color: #0685b8;
+    padding: 10px;
+  }
   
   .app {
     display: flex;

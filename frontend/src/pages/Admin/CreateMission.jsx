@@ -78,7 +78,6 @@ const CreateMission = () => {
 
   return (
     <>
-      <Header />
       <MenuAdmin />
       <div className="main-container">
       <div className="create-mission-form">

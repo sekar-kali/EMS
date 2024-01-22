@@ -34,7 +34,6 @@ const StaffDashboard = () => {
 
   return (
     <>
-      <Header />
       <MenuStaff/>
       
       <div className="main-container">

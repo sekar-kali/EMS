@@ -82,7 +82,6 @@ const StaffPersonalInfo = () => {
 
   return (
     <>
-      <Header />
       <MenuStaff />
       <div className='main-container'>
         <div className="personal-info">

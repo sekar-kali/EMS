@@ -64,7 +64,6 @@ const ModifyStaffForm = ({ staffId }) => {
 
   return (
     <>
-    <Header />
     <MenuAdmin />
     <div className='main-container'>
       <div className="personal-info">

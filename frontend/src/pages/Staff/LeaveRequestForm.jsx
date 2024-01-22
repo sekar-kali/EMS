@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Footer from '../../components/Footer';
-import Header from '../../components/Header';
 import MenuStaff from '../../components/MenuStaff';
 import '../../styles.css';
 import { toast, ToastContainer } from 'react-toastify';
@@ -101,7 +100,6 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
   
   return (
     <>
-      <Header />
       <MenuStaff />
       <div className="main-container">
         <div className='create-leave-form'>

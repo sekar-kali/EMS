@@ -10,10 +10,13 @@ import {
 
 const staffRoutes = express.Router();
 
+//Get method routes
 staffRoutes.get('/info/:email', getStaffInfo);
-staffRoutes.post('/change-details-request', changeDetailsRequest);
 staffRoutes.get('/missions', getStaffMissions);
 staffRoutes.get('/leave-requests', getStaffLeaveRequests);
+
+//Post method routes
+staffRoutes.post('/change-details-request', changeDetailsRequest);
 staffRoutes.post('/create-leave-request', createLeaveRequest);
 staffRoutes.post('/leave-request/upload-document', uploadDocument);
 staffRoutes.post('/change-details-request', changeDetailsRequest);

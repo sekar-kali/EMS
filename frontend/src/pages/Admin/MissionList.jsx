@@ -27,7 +27,6 @@ const MissionList = () => {
 
   return (
     <>
-      <Header />
       <MenuAdmin/>
 
       <div className="main-container">

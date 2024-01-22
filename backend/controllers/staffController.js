@@ -100,14 +100,14 @@ export const uploadDocument = async (req, res) => {
       return res.status(400).json({ message: 'Document size exceeds the limit of 2MB.' });
     }
 
-    // Define the upload path (adjust as per your server setup)
-    const uploadPath = __dirname + '/path/to/your/upload/folder/' + document.name;
+    // Define the upload path
+    const uploadPath = __dirname + '/api/staff/leave-request/upload/folder/' + document.name;
 
     // Move the uploaded file to the defined path
     await document.mv(uploadPath);
 
-    // Return the file URL or any relevant information
-    res.json({ url: `/path/to/your/upload/folder/${document.name}` });
+    // Return the file URL
+    res.json({ url: `/api/staff/leave-request/upload/folder/${document.name}` });
   } catch (error) {
     console.error('Error uploading document:', error);
     res.status(500).json({ message: 'Internal server error' });

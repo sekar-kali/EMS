@@ -101,7 +101,6 @@ const LeaveRequestList = () => {
 
   return (
     <div>
-      <Header />
       <MenuAdmin />
       <div className="main-container">
         <div className="leave-request-list-container">

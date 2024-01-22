@@ -1,54 +1,102 @@
 import React, { useState } from 'react';
 import '../menu.css';
-import { Link, useNavigate } from 'react-router-dom';
-import Header from './Header';
+import { Link} from 'react-router-dom';
+import logoImage from '../logo.png';
 
-const MenuStaff = ({ role }) => {
-  const [openSubMenu, setOpenSubMenu] = useState(null);
+const MenuStaff = () => {
+  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [openSubMenu, setOpenSubMenu] = useState('');
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
 
   const handleSubMenuToggle = (menu) => {
-    setOpenSubMenu(openSubMenu === menu ? null : menu);
+    setOpenSubMenu(openSubMenu === menu ? '' : menu);
   };
 
   return (
-    <>
-    <Header />
-    <div className="menu-staff">
-      <ul>
-        <span onClick={() => handleSubMenuToggle('dashboard')}><li><Link to={`/staff/dashboard`}>Staff Dashboard</Link></li></span>
-        <ul>
-        <li>
-          <span onClick={() => handleSubMenuToggle('missions')}>
-            Missions
-          </span>
-          <ul className={openSubMenu === 'missions' ? 'sub-menu-open' : 'sub-menu-closed'}>
-            <li><Link to={`/staff/mission-list`}>Missions List</Link></li>
-          </ul>
-        </li>
+    <div className={`toggle-sidebar sidebar ${isSidebarOpen ? '' : 'close'}`}>
+      <div className={`sidebar ${isSidebarOpen ? '' : 'close'}`}>
+        <div className="sidebar-header" onClick={toggleSidebar}>
+          <i className={`bx ${isSidebarOpen ? 'bx-chevron-left' : 'bx-menu'}`}></i>
+        </div>
+        <div className="logo-box">
+          <img src={logoImage} alt="logo-EMS" />
+          <p className="logo-name">EMS</p>
+        </div>
 
-        <li>
-          <span onClick={() => handleSubMenuToggle('leaveRequest')}>
-            Leave Request
-          </span>
-          <ul className={openSubMenu === 'leaveRequest' ? 'sub-menu-open' : 'sub-menu-closed'}>
-            <li><Link to={`/staff/leave-request-list`}>Leave Request List</Link></li>
-            <li><Link to={`/staff/create-leave-request`}>Create Leave Request</Link></li>
-          </ul>
-        </li>
+        <ul className="sidebar-list">
+          <li>
+            <div className="title" onClick={() => handleSubMenuToggle('dashboard')}>
+              <div className="link">
+                <i className='bx bx-grid-alt'></i>
+                <span className="name">Dashboard</span>
+              </div>
+              <i className={`bx bxs-chevron-down ${openSubMenu === 'dashboard' ? 'rotate' : ''}`}></i>
+            </div>
+            <div className="submenu">
+              <Link to={`/staff/dashboard`} className="link submenu-title">Staff Dashboard</Link>
+              </div>
+          </li>
 
-        <li>
-          <span onClick={() => handleSubMenuToggle('info')}>
-           Personal Info
-          </span>
-          <ul className={openSubMenu === 'info' ? 'sub-menu-open' : 'sub-menu-closed'}>
-            <li><Link to={`/staff/personal-info`}>My Info</Link></li>
-          </ul>
-        </li>
-      </ul>
-      <li><Link to="/auth/logout">Logout</Link></li>
-      </ul>
+            <li className="dropdown">
+                <div className="title">
+                    <div className="link">
+                        <i className='bx bx-collection'></i>
+                        <span className="name">Missions</span>
+                    </div>
+                    <i className='bx bxs-chevron-down'></i>
+                </div>
+                <div className="submenu">
+                    <span className="link submenu-title">Missions</span>
+                    <Link to={`/staff/mission-list`} className='link'>Missions List</Link>
+                </div>
+            </li>
+
+            <li className="dropdown">
+                <div className="title">
+                    <div className="link">
+                        <i className='bx bx-book-alt'></i>
+                        <span className="name">Leave Request</span>
+                    </div>
+                    <i className='bx bxs-chevron-down'></i>
+                </div>
+                <div className="submenu">
+                <span className="link submenu-title">Leave Request</span>
+                <Link to={`/staff/leave-request-list`} className='link'>Leave Request List</Link>
+                <Link to={`/staff/create-leave-request`} className='link'>Create Leave Request</Link>
+                </div>
+            </li>
+
+            <li>
+                <div className="title">
+                    <div className="link">
+                        <i className='bx bxs-user-detail'></i>
+                        <span className="name">Personal Info</span>
+                    </div>
+                    <i className='bx bxs-chevron-down'></i>
+                </div>
+                < div className="submenu">
+                    <span className="link submenu-title">Personal Info</span>
+                    <Link to={`/staff/personal-info`} className='link'>My Info</Link>
+                </div>
+            </li>
+
+            <li>
+                <div className="title">
+                    <div className="link">
+                        <i className='bx bx-log-out'></i>
+                        <span className="name">Logout</span>
+                    </div>
+                </div>
+                <div className="submenu">
+                    <Link to="/auth/logout" className='link'>Logout</Link>
+                </div>
+            </li>
+        </ul>
+      </div>
     </div>
-    </>
   );
 };
 

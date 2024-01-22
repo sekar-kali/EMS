@@ -40,7 +40,6 @@ const StaffMissionsList = () => {
 
   return (
     <>
-      <Header />
       <MenuStaff />
       <div className="main-container">
       <div className="missions-list">

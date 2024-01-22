@@ -59,7 +59,6 @@ const StaffList = () => {
 
   return (
     <>
-      <Header />
       <MenuAdmin />
       <div className="main-container">
         <h1>Staff List</h1>

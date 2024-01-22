@@ -2,8 +2,46 @@ import nodemailer from 'nodemailer';
 import StaffModel from '../models/Staff.js';
 import LeaveRequestModel from '../models/LeaveRequest.js';
 import dotenv from 'dotenv';
+import MissionModel from '../models/Mission.js';
 
 dotenv.config();  
+
+export const getDashboardStats = async (req, res) => {
+  try {
+    // Calculate total staff
+    const totalStaff = await StaffModel.countDocuments();
+
+    // Calculate new staff this month
+    const currentMonth = new Date().getMonth() + 1;
+    const newStaffThisMonth = await Staff.countDocuments({
+      createdAt: { $gte: new Date(new Date().getFullYear(), currentMonth - 1, 1) },
+    });
+
+    // Calculate total missions this month
+    const totalMissionsThisMonth = await MissionModel.countDocuments({
+      startDate: { $gte: new Date(new Date().getFullYear(), currentMonth - 1, 1) },
+    });
+
+    // Calculate staff on leave this month
+    const staffOnLeaveThisMonth = await LeaveRequestModel.countDocuments({
+      status: 'Approved',
+      startDate: { $lte: new Date() },
+      endDate: { $gte: new Date() },
+    });
+
+    // Send the calculated statistics as JSON
+    res.json({
+      totalStaff,
+      newStaffThisMonth,
+      totalMissionsThisMonth,
+      staffOnLeaveThisMonth,
+    });
+  } catch (error) {
+    console.error('Error getting dashboard statistics:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 
 export const createStaff = async (req, res) => {
   try {
