@@ -30,7 +30,7 @@ const MissionList = () => {
       <MenuAdmin/>
 
       <div className="main-container">
-      <h2>Mission List</h2>
+      <h1>Mission List</h1>
       <div className='staff-list'>
         <table>
           <thead>

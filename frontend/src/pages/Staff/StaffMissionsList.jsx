@@ -43,7 +43,7 @@ const StaffMissionsList = () => {
       <MenuStaff />
       <div className="main-container">
       <div className="missions-list">
-        <h1>Staff Missions List</h1>
+        <h1>Missions List</h1>
         <div className='form-flex'>
         <div className="upcoming-missions">
           <h2>Upcoming Missions</h2>

@@ -47,7 +47,7 @@ const StaffLeaveRequestList = () => {
       <MenuStaff />
       <div className="main-container">
       <div className="leave-request-list">
-        <h1>Staff Leave Request List</h1>
+        <h1>Leave Request List</h1>
 
         <div className="filter-bar">
           <label htmlFor="statusFilter">Filter by Status:</label>
