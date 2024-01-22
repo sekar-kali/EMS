@@ -35,11 +35,11 @@ const MissionList = () => {
         <table>
           <thead>
             <tr>
-              <th>Title:</th>
-              <th>Description:</th>
-              <th>Start Date:</th>
-              <th>End Date:</th>
-              <th>Assigned Staff:</th>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th>Assigned Staff</th>
             </tr>
           </thead>
           <tbody>

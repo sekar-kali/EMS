@@ -267,6 +267,8 @@ export const sendApprovalEmail = async (leaveRequestId) => {
     // Set up nodemailer transporter
     const transporter = nodemailer.createTransport({
       service: 'gmail',
+      port : 587,
+      host : 'smtp.gmail.com',
       auth: {
         user: process.env.MAIL,
         pass: process.env.MAIL_PASSWORD,
@@ -299,6 +301,8 @@ export const sendRejectionEmail = async (leaveRequestId) => {
     // Set up nodemailer transporter
     const transporter = nodemailer.createTransport({
       service: 'gmail',
+      port : 587,
+      host : 'smtp.gmail.com',
       auth: {
         user: process.env.MAIL,
         pass: process.env.MAIL_PASSWORD,
@@ -329,6 +333,8 @@ export const sendEmail = async (emailOptions) => {
     // Create a nodemailer transporter
     const transporter = nodemailer.createTransport({
       service: 'gmail',
+      port : 587,
+      host : 'smtp.gmail.com',
       auth: {
         user: process.env.MAIL,
         pass: process.env.MAIL_PASSWORD,
