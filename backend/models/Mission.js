@@ -6,7 +6,7 @@ const missionSchema = new mongoose.Schema({
   assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: 'Staff', required: true },
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: true },
-});
+},{ timestamps: true });
 
 const MissionModel = mongoose.model('Mission', missionSchema);
 

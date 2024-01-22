@@ -68,7 +68,7 @@ export const createStaff = async (req, res) => {
 
     // Send a confirmation email to the new staff member
     const transporter = nodemailer.createTransport({
-      // Configure nodemailer transporter
+      // Nodemailer transporter
       service: 'gmail',
       auth: {
         user: process.env.MAIL,

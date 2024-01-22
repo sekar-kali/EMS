@@ -20,7 +20,7 @@ const staffSchema = new mongoose.Schema({
     required: true,
 },
 },
-{ timestamps: true },);
+{ timestamps: true });
 
 const StaffModel = mongoose.model('Staff', staffSchema);
 

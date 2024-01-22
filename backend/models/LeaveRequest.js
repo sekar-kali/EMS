@@ -8,7 +8,7 @@ const leaveRequestSchema = new mongoose.Schema({
   description: { type: String, required: true },
   documentUrl: { type: String },
   status: { type: String, enum: ['Pending', 'Approved', 'Rejected'], default: 'Pending' },
-});
+},{ timestamps: true });
 
 const LeaveRequestModel = mongoose.model('LeaveRequest', leaveRequestSchema);
 
