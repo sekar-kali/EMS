@@ -74,6 +74,70 @@
     flex-direction: column;
   }
 
+
+  .staff-list,.leave-request-list{
+    text-align: center;
+    margin-top: 2%;
+  }
+
+  .staff-list button, .leave-request-list button {
+    background-color: #333;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 15px;
+    width: 60%;
+    margin: auto 25%;
+  }
+  .staff-list table,.leave-request-list table{
+    border: 1px dashed white;
+    border-radius: 5px;
+    padding: 10px 50px;
+    width: 100%;
+    text-align: center;
+    background-color: rgba(36, 35, 33, 0.7);
+  }
+
+  thead{
+    color: white;
+    text-shadow: 1px 1px 1px black;
+  }
+  th {
+    letter-spacing: 2px;
+  }
+  
+  td {
+    letter-spacing: 1px;
+  }
+  
+  tbody td {
+    text-align: center;
+  }
+  
+  tfoot th {
+    text-align: right;
+  }
+
+  thead th,
+  tfoot th,
+  tfoot td {
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.1),
+      rgba(0, 0, 0, 0.5)
+    );
+    border: 3px solid brown;
+  }
+
+  tbody tr:nth-child(odd) {
+    background-color: rgba(164, 95, 45, 0.822);
+    color: rgba(227, 125, 51, 0.822);
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: rgba(227, 125, 51, 0.822);
+    color:  rgba(164, 95, 45, 0.822);;
+  }
   .past-missions {
     max-width: 400px;
     margin: auto;

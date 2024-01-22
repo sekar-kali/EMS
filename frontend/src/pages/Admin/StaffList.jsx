@@ -14,7 +14,6 @@ const StaffList = () => {
     const fetchStaffList = async () => {
       try {
         const authToken = localStorage.getItem('authToken');
-        console.log('Authorization Token:', authToken);
 
         const response = await fetch('http://localhost:5000/api/admin/staff-list', {
           headers: {
@@ -22,15 +21,11 @@ const StaffList = () => {
           },
         });
 
-        console.log('Response Status:', response.status);
-
         if (!response.ok) {
           throw new Error('Error fetching staff list');
         }
 
         const data = await response.json();
-        console.log('Fetched Data:', data);
-
         setStaffList(data);
       } catch (error) {
         console.error('Error:', error);
@@ -40,13 +35,11 @@ const StaffList = () => {
     fetchStaffList();
   }, []);
 
-  const filteredStaffList = Array.isArray(staffList)
-    ? staffList.filter(
-        (staff) =>
-          staff.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          staff.lastName.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    : [];
+  const filteredStaffList = staffList.filter(
+    (staff) =>
+      staff.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      staff.lastName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -69,18 +62,36 @@ const StaffList = () => {
           value={searchTerm}
           onChange={handleSearchChange}
         />
-
-        <ul>
-          {filteredStaffList.map((staff) => (
-            <li key={staff._id}>
-              <Link to={`/staff/${staff._id}`}>
-                {staff.firstName} {staff.lastName}
-              </Link>
-              
-              <button onClick={() => handleModifyClick(staff._id)}>Modify</button>
-            </li>
-          ))}
-        </ul>
+<div className='staff-list'>
+        <table>
+          <thead>
+            <tr>
+              <th>Staff Name</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredStaffList.length > 0 ? (
+              filteredStaffList.map((staff) => (
+                <tr key={staff._id}>
+                  <td>
+                    <Link to={`/staff/${staff._id}`}>
+                      {staff.firstName} {staff.lastName}
+                    </Link>
+                  </td>
+                  <td>
+                    <button onClick={() => handleModifyClick(staff._id)}>Edit</button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="2">No matching staff found.</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+        </div>
       </div>
       <Footer />
     </>

@@ -61,8 +61,8 @@ export const createLeaveRequest = async (req, res) => {
   try {
     const { email, startDate, endDate, reason, description, documentUrl } = req.body;
 
-    const staff = await StaffModel.findOne({ email });
-
+    const staff = await StaffModel.findOne({ email});
+    console.log(email);
     if (!staff) {
       return res.status(404).json({ message: 'Staff not found' });
     }
@@ -81,7 +81,7 @@ export const createLeaveRequest = async (req, res) => {
 
     res.json({ message: 'Leave request created successfully' });
   } catch (error) {
-    console.error('Error creating leave request:', error);
+    console.log('Error creating leave request:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };

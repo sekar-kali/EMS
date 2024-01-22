@@ -4,11 +4,14 @@ import Header from '../../components/Header';
 import MenuAdmin from '../../components/MenuAdmin';
 import Footer from '../../components/Footer';
 
+
 const LeaveRequestList = () => {
   const [leaveRequests, setLeaveRequests] = useState([]);
   const [filteredLeaveRequests, setFilteredLeaveRequests] = useState([]);
   const [filterStatus, setFilterStatus] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     // Fetch all leave requests on component mount
@@ -17,13 +20,15 @@ const LeaveRequestList = () => {
 
   const fetchLeaveRequests = async () => {
     try {
-      // Fetch all leave requests from the backend
       const response = await fetch('http://localhost:5000/api/admin/leave-request');
       const data = await response.json();
       setLeaveRequests(data);
       setFilteredLeaveRequests(data);
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching leave requests:', error);
+      setError('Error fetching leave requests. Please try again.');
+      setLoading(false);
     }
   };
 
@@ -59,46 +64,28 @@ const LeaveRequestList = () => {
     setFilteredLeaveRequests(filtered);
   };
 
-  const handleApproveLeaveRequest = async (leaveRequestId) => {
+  const handleApprovalOrRejection = async (leaveRequestId, action) => {
     try {
-      // Send request to approve leave request to the backend
-      const response = await fetch(`http://localhost:5000/api/admin/approve-leave-request/${leaveRequestId}`, {
+      const response = await fetch(`http://localhost:5000/api/admin/${action}-leave-request/${leaveRequestId}`, {
         method: 'PUT',
       });
 
       if (response.ok) {
-        console.log('Leave request approved successfully!');
-        // Refresh leave requests after approval
+        console.log(`Leave request ${action}ed successfully!`);
+        // Refresh leave requests after approval or rejection
         fetchLeaveRequests();
       } else {
         const data = await response.json();
-        console.error('Error approving leave request:', data.message);
+        console.error(`Error ${action}ing leave request:`, data.message);
+        setError(`Error ${action}ing leave request. Please try again.`);
       }
     } catch (error) {
-      console.error('Error approving leave request:', error);
+      console.error(`Error ${action}ing leave request:`, error);
+      setError(`Error ${action}ing leave request. Please try again.`);
     }
   };
 
-  const handleRejectLeaveRequest = async (leaveRequestId) => {
-    try {
-      // Send request to reject leave request to the backend
-      const response = await fetch(`http://localhost:5000/api/admin/reject-leave-request/${leaveRequestId}`, {
-        method: 'PUT',
-      });
-
-      if (response.ok) {
-        console.log('Leave request rejected successfully!');
-        // Refresh leave requests after rejection
-        fetchLeaveRequests();
-      } else {
-        const data = await response.json();
-        console.error('Error rejecting leave request:', data.message);
-      }
-    } catch (error) {
-      console.error('Error rejecting leave request:', error);
-    }
-  };
-
+ 
   return (
     <div>
       <MenuAdmin />
@@ -126,7 +113,7 @@ const LeaveRequestList = () => {
               />
             </div>
           </div>
-
+<div className='leave-request-list'>
           <table>
             <thead>
               <tr>
@@ -168,6 +155,7 @@ const LeaveRequestList = () => {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
       <Footer />

@@ -32,9 +32,10 @@ const Login = () => {
       if (response.ok) {
         // Login successful
         const authToken = data.token;
-  
+        const user = data.email;
         // Store the authentication token in localStorage
         localStorage.setItem('authToken', authToken);
+        localStorage.setItem('user',JSON.stringify(user));
   
         // Show success toast
         toast.success('Login successful!');

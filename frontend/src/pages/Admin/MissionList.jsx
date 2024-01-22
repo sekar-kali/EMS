@@ -31,17 +31,30 @@ const MissionList = () => {
 
       <div className="main-container">
       <h2>Mission List</h2>
-      <ul>
+      <div className='staff-list'>
+        <table>
+          <thead>
+            <tr>
+              <th>Title:</th>
+              <th>Description:</th>
+              <th>Start Date:</th>
+              <th>End Date:</th>
+              <th>Assigned Staff:</th>
+            </tr>
+          </thead>
+          <tbody>
         {missions.map((mission) => (
-          <li key={mission._id}>
-            <strong>Title:</strong> {mission.title} <br />
-            <strong>Description:</strong> {mission.description} <br />
-            <strong>Start Date:</strong> {mission.startDate} <br />
-            <strong>End Date:</strong> {mission.endDate} <br />
-            <strong>Assigned Staff:</strong> {mission.staffId ? `${mission.staffId.firstName} ${mission.staffId.lastName}` : 'N/A'}
-          </li>
+          <tr key={mission._id}>
+            <td>{mission.title}</td>
+            <td>{mission.description}</td>
+            <td>{mission.startDate}</td>
+            <td>{mission.endDate}</td>
+            <td>{mission.staffId ? `${mission.staffId.firstName} ${mission.staffId.lastName}` : 'N/A'}</td>
+          </tr>
         ))}
-      </ul>
+        </tbody>
+        </table>
+        </div>
     </div>
     <Footer />
     </>

@@ -13,7 +13,7 @@ export const getDashboardStats = async (req, res) => {
 
     // Calculate new staff this month
     const currentMonth = new Date().getMonth() + 1;
-    const newStaffThisMonth = await Staff.countDocuments({
+    const newStaffThisMonth = await StaffModel.countDocuments({
       createdAt: { $gte: new Date(new Date().getFullYear(), currentMonth - 1, 1) },
     });
 
@@ -70,6 +70,8 @@ export const createStaff = async (req, res) => {
     const transporter = nodemailer.createTransport({
       // Nodemailer transporter
       service: 'gmail',
+      port : 587,
+      host : 'smtp.gmail.com',
       auth: {
         user: process.env.MAIL,
         pass: process.env.MAIL_PASSWORD,
@@ -223,15 +225,37 @@ export const getAvailableStaff = async (req, res) => {
   try {
     const { startDate, endDate } = req.query;
 
-    // Fetch staff members who are not on leave for the selected dates
+    // Fetch staff members who are not on leave or assigned to a mission for the selected dates
     const availableStaff = await StaffModel.find({
       onLeave: { $ne: true }, // Find staff members who are not on leave
+      _id: {
+        $nin: await getStaffOnMission(startDate, endDate),
+      },
     });
 
     res.json(availableStaff);
   } catch (error) {
     console.error('Error fetching available staff:', error);
     res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+// Helper function to get staff IDs on a mission during a specific date range
+const getStaffOnMission = async (startDate, endDate) => {
+  try {
+    // Fetch staff members assigned to a mission during the specified date range
+    const staffOnMission = await MissionModel.distinct('staffId', {
+      $or: [
+        { startDate: { $lte: endDate }, endDate: { $gte: startDate } }, // Mission overlaps in start and end dates
+        { startDate: { $gte: startDate, $lte: endDate } }, // Mission starts during the specified date range
+        { endDate: { $gte: startDate, $lte: endDate } }, // Mission ends during the specified date range
+      ],
+    });
+
+    return staffOnMission;
+  } catch (error) {
+    console.error('Error fetching staff on mission:', error);
+    throw error;
   }
 };
 

@@ -1,6 +1,6 @@
 import express from 'express';
 const adminRoutes = express.Router();
-import { approveLeaveRequest, createMission, createStaff, getAllMissions, getAllStaff, getDashboardStats, getLeaveRequests, getStaffList, rejectLeaveRequest } from '../controllers/adminController.js';
+import { approveLeaveRequest, createMission, createStaff, getAllMissions, getAllStaff, getAvailableStaff, getDashboardStats, getLeaveRequests, getStaffList, rejectLeaveRequest } from '../controllers/adminController.js';
 import authMiddleware from '../middleware/authMiddleware.js';
 
 //Get method routes
@@ -9,6 +9,7 @@ adminRoutes.get('/allstaff', authMiddleware, getAllStaff);
 adminRoutes.get('/staff-list', authMiddleware, getStaffList);
 adminRoutes.get('/dashboard-stats', getDashboardStats);
 adminRoutes.get('/leave-request', authMiddleware, getLeaveRequests);
+adminRoutes.get('/api/admin/staff/available', getAvailableStaff);
 
 //Post method routes
 adminRoutes.post('/create-mission', authMiddleware, createMission);

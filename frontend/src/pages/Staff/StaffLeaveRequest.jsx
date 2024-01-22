@@ -59,13 +59,26 @@ const StaffLeaveRequestList = () => {
           </select>
         </div>
 
-        <ul>
+        <div className='leave-request-list'>
+          <table>
+            <thead>
+              <tr>
+                <th>Leave starting date</th>
+                <th>Leave ending date</th>
+                <th>Status</th>
+                </tr>
+              </thead>
+            <tbody>
           {filteredLeaveRequests.map((request) => (
-            <li key={request._id}>
-              {request.startDate} to {request.endDate} - Status: {request.status}
-            </li>
+            <tr key={request._id}>
+              <td>{request.startDate}</td>
+               <td>{request.endDate}</td>
+               <td>{request.status}</td>
+            </tr>
           ))}
-        </ul>
+        </tbody>
+          </table>
+          </div>
       </div>
       </div>
       <Footer />

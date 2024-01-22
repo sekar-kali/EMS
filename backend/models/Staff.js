@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const staffSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true, validate: {
+  password: { type: String, validate: {
     validator: function (value) {
       // Custom password validation function
       return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+])(?=.*[a-zA-Z]).{8,}$/.test(value);

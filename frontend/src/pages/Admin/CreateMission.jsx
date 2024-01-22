@@ -17,10 +17,11 @@ const CreateMission = () => {
     // Fetch staff members who are not on leave for the selected dates
     const fetchAvailableStaff = async () => {
       try {
-        const response = await fetch(`/api/admin/staff/available?startDate=${startDate}&endDate=${endDate}`);
+        const response = await fetch(`http://localhost:5000/api/admin/staff/available?startDate=${startDate}&endDate=${endDate}`);
         if (response.ok) {
           const staffData = await response.json();
           setStaffList(staffData);
+          console.log(staffData);
         } else {
           console.error('Error fetching available staff:', response.statusText);
         }

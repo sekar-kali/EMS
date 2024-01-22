@@ -38,7 +38,7 @@ const MenuAdmin = () => {
             <li className="dropdown">
                 <div className="title">
                     <div className="link">
-                        <i className='bx bx-collection'></i>
+                        <i className='bx bx-briefcase'></i>
                         <span className="name">Missions</span>
                     </div>
                     <i className='bx bxs-chevron-down'></i>

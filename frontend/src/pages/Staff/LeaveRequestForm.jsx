@@ -57,12 +57,13 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
       }
 
       // Send leave request to the backend for processing
+      const email = JSON.parse(localStorage.getItem('user'))
       const response = await fetch('http://localhost:5000/api/staff/create-leave-request', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...leaveRequestForm, documentUrl }),
+        body: JSON.stringify({ ...leaveRequestForm,email : email, documentUrl }),
       });
 
       if (response.ok) {
@@ -80,6 +81,7 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
         toast.error('Leave request creation failed:', data.message);
       }
     } catch (error) {
+      console.log(error);
       toast.error('Error during leave request creation:', error.message);
     }
   };
