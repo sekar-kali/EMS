@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Auth/Login';
-import Signup from './pages/Auth/Signup';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import StaffDashboard from './pages/Staff/StaffDashboard';
 import MissionList from './pages/Admin/MissionList';
@@ -40,7 +39,6 @@ const App = () => {
        
         {/* Auth routes */}
         <Route path="/auth/login" element={<Login />} />
-        <Route path="/auth/signup" element={<Signup />} />
         <Route path="/auth/logout" element={<Logout />} />
 
         {/* Admin routes */}

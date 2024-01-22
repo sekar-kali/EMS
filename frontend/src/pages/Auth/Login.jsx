@@ -63,10 +63,15 @@ const Login = () => {
   
 
   return (
-    <div className="login-container">
-      <div className="logo">
+    <>
+    <div className="login-container1">
+    <div className="logo">
                       <img src={logoImage} alt="logo-EMS" />
         <p>EMS</p></div>
+    <h1>Welcome to your HR services portal</h1>
+    </div>
+    <div className="login-container">
+
       <h2>Login</h2>
       <form>
       <div className="form-flex">
@@ -82,12 +87,13 @@ const Login = () => {
         </button>
       </form>
 
-      <p>
+      {/* <p>
         Don't have an account? <Link to="/auth/signup">Sign up</Link>
-      </p>
+      </p> */}
 
       <ToastContainer />
     </div>
+    </>
   );
 };
 
