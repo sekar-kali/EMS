@@ -2,6 +2,41 @@ import StaffModel from '../models/Staff.js';
 import MissionModel from '../models/Mission.js';
 import LeaveRequestModel from '../models/LeaveRequest.js';
 
+// Fetch total missions for the current month
+export const getTotalMissions = async (req, res) => {
+  try {
+    const { staffEmail } = req.body;
+    const currentMonthStart = moment().startOf('month');
+    const totalMissions = await MissionModel.countDocuments({
+      assignedTo: ObjectId(staffEmail),
+      createdAt: { $gte: currentMonthStart },
+    });
+
+    res.json({ total: totalMissions });
+  } catch (error) {
+    console.error('Error fetching total missions:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+// Fetch total approved leave requests for the current month
+export const getTotalApprovedLeaveRequests = async (req, res) => {
+  try {
+    const { staffEmail } = req.body;
+    const currentMonthStart = moment().startOf('month');
+    const totalApprovedLeaveRequests = await LeaveRequestModel.countDocuments({
+      staff: ObjectId(staffEmail),
+      status: 'Approved',
+      updatedAt: { $gte: currentMonthStart },
+    });
+
+    res.json({ total: totalApprovedLeaveRequests });
+  } catch (error) {
+    console.error('Error fetching total approved leave requests:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 export const getStaffInfo = async (req, res) => {
   try {
     const { email } = req.params;
@@ -61,14 +96,17 @@ export const createLeaveRequest = async (req, res) => {
   try {
     const { email, startDate, endDate, reason, description, documentUrl } = req.body;
 
-    const staff = await StaffModel.findOne({ email});
-    console.log(email);
+    // Fetch staff information including firstName and lastName
+    const staff = await StaffModel.findOne({ email }, 'firstName lastName');
+
     if (!staff) {
       return res.status(404).json({ message: 'Staff not found' });
     }
 
     const newLeaveRequest = new LeaveRequestModel({
       staffId: staff._id,
+      firstName: staff.firstName,
+      lastName: staff.lastName,
       startDate,
       endDate,
       reason,
@@ -85,6 +123,7 @@ export const createLeaveRequest = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 
 export const uploadDocument = async (req, res) => {
   try {

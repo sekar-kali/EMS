@@ -6,13 +6,21 @@ import MenuStaff from '../../components/MenuStaff';
 const StaffLeaveRequestList = () => {
   const [leaveRequests, setLeaveRequests] = useState([]);
   const [filteredLeaveRequests, setFilteredLeaveRequests] = useState([]);
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('All');
 
   useEffect(() => {
     // Fetch staff's leave requests
+    const authToken = localStorage.getItem('authToken');
     const fetchStaffLeaveRequests = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/staff/leave-requests');
+        const response = await fetch('http://localhost:5000/api/staff/leave-requests', {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
         if (response.ok) {
           const leaveRequestsData = await response.json();
           setLeaveRequests(leaveRequestsData);
@@ -30,7 +38,7 @@ const StaffLeaveRequestList = () => {
 
   // Apply status filter
   useEffect(() => {
-    if (statusFilter === 'all') {
+    if (statusFilter === 'All') {
       setFilteredLeaveRequests(leaveRequests);
     } else {
       const filtered = leaveRequests.filter((request) => request.status === statusFilter);
@@ -52,10 +60,10 @@ const StaffLeaveRequestList = () => {
         <div className="filter-bar">
           <label htmlFor="statusFilter">Filter by Status:</label>
           <select id="statusFilter" onChange={handleStatusFilterChange} value={statusFilter}>
-            <option value="all">All</option>
-            <option value="approved">Approved</option>
-            <option value="pending">Pending</option>
-            <option value="rejected">Rejected</option>
+            <option value="All">All</option>
+            <option value="Approved">Approved</option>
+            <option value="Pending">Pending</option>
+            <option value="Rejected">Rejected</option>
           </select>
         </div>
 

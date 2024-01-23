@@ -7,25 +7,51 @@
 } */
 
 .main-container {
-    margin: 8% 15%;
+    margin: 3% 15%;
     font-family: 'Arial', sans-serif;
     text-align: center;
+    text-shadow: 3px 3px 5px black;
   }
 
   .dashboard-stats{
-    display:flex;
+    display:grid;
+    grid-template-columns: repeat(2,1fr);
     align-items: center;
     justify-content: center;
     gap: 8px;
     margin-top: 2%;
   }
 
-  .dashboard-stat{
+  .dashboard-total-staff-stat{
     border: 1px dashed #ffffff;
-    background-color: #0685b8;
-    padding: 10px;
+    background-color: rgba(6, 133, 184,0.5);
+    padding: 20px;
+  }
+
+  .dashboard-staff-month-stat{
+    border: 1px dashed #ffffff;
+    background-color: rgba(164, 95, 45, 0.822);
+    padding: 20px;
+  }
+
+  .dashboard-mission-stat{
+    border: 1px dashed #ffffff;
+    background-color: rgba(36, 35, 33, 0.8);
+    padding: 20px;
+  }
+
+  .dashboard-leave-stat{
+    border: 1px dashed #ffffff;
+    background-color: rgba(158, 35, 35, 0.822);
+    padding: 20px;
   }
   
+  .dashboard-welcome{
+    margin-top: 10px;
+    background-color: rgba(239, 62, 201, 0.822);
+    border: 1px dashed #ffffff;
+    padding: 50px 20px;
+  }
   .app {
     display: flex;
     flex-direction: column;
@@ -60,7 +86,13 @@
     text-align: center;
   } */
 
-  .create-staff-form,.create-mission-form, .create-leave-form, .personal-info, .upcoming-missions{
+  .search-bar select {
+    margin-left: 5px;
+    border-radius: 5px;
+  }
+
+
+  .create-staff-form,.create-mission-form, .create-leave-form, .personal-info, .upcoming-missions,.update-staff-form{
       max-width: 400px;
       margin: auto;
       padding: 10px 20px;
@@ -86,9 +118,22 @@
     padding: 5px 10px;
     cursor: pointer;
     border-radius: 15px;
-    width: 60%;
-    margin: auto 25%;
+    width: 70%;
+    margin: 1% 15%;
   }
+
+  .staff-list .delete,.leave-request-list .reject-btn {
+    background-color: rgb(196, 11, 11);
+  }
+
+  .staff-list .edit {
+    background-color: rgb(196, 153, 11);
+  }
+
+  .leave-request-list .approve-btn {
+    background-color: rgb(62, 163, 11);
+  }
+
   .staff-list table,.leave-request-list table{
     border: 1px dashed white;
     border-radius: 5px;
@@ -131,12 +176,12 @@
 
   tbody tr:nth-child(odd) {
     background-color: rgba(164, 95, 45, 0.822);
-    color: rgba(227, 125, 51, 0.822);
+    color: white;
   }
   
   tbody tr:nth-child(even) {
     background-color: rgba(227, 125, 51, 0.822);
-    color:  rgba(164, 95, 45, 0.822);;
+    color: white;
   }
   .past-missions {
     max-width: 400px;
@@ -156,25 +201,25 @@
     resize:none
   }
 
-  .create-staff-form .form-flex, .create-mission-form .form-flex, .create-leave-form .form-flex,.personal-info .form-flex {
+  .create-staff-form .form-flex, .create-mission-form .form-flex, .create-leave-form .form-flex,.personal-info .form-flex .update-staff-form .form-flex{
     display: flex;
     justify-content: space-around;
     align-items: center;
   }
   
-  .create-staff-form label,.create-mission-form label,.create-leave-form label,.personal-info label{
+  .create-staff-form label,.create-mission-form label,.create-leave-form label,.personal-info label,.update-staff-form label{
     margin-bottom: 5px;
     width: 30%;
   }
   
-  .create-staff-form input,.create-mission-form input,.create-leave-form input,.create-l.personal-info input {
+  .create-staff-form input,.create-mission-form input,.create-leave-form input,.personal-info input,.update-staff-form input {
     padding: 10px;
     margin-bottom: 15px;
     border-radius: 15px;
     width: 70%;
   }
 
-  .create-mission-form select,.create-leave-form select {
+  .create-mission-form select,.create-leave-form select,.update-staff-form select {
     padding: 10px;
     margin-bottom: 15px;
     border-radius: 15px;
@@ -193,6 +238,25 @@
   
   button:hover {
     background-color: #555;
+  }
+
+  button .approve-btn{
+    background-color: green;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 15px;
+    width: 50%;
+    margin: auto 25%;
+  }
+  button .reject-btn{
+    background-color: red;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 15px;
+    width: 50%;
+    margin: auto 25%;
   }
   
   @media only screen and (max-width: 600px) {

@@ -10,9 +10,17 @@ const StaffMissionsList = () => {
 
   useEffect(() => {
     // Fetch staff's missions
+    const authToken = localStorage.getItem('authToken');
     const fetchStaffMissions = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/staff/staff-missions');
+        const response = await fetch('http://localhost:5000/api/staff/missions', {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
         if (response.ok) {
           const missionsData = await response.json();
           const currentDate = new Date();

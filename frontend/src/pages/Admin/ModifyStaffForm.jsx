@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer';
-import Header from '../../components/Header';
 import MenuAdmin from '../../components/MenuAdmin';
 
 const ModifyStaffForm = ({ staffId }) => {
-  const navigate = useNavigate();
-
   const [staffDetails, setStaffDetails] = useState({
     firstName: '',
     lastName: '',
+    email: '',
+    role: '',
   });
 
   useEffect(() => {
@@ -31,12 +29,17 @@ const ModifyStaffForm = ({ staffId }) => {
         const data = await response.json();
         setStaffDetails(data);
       } catch (error) {
-        console.error('Error fetching staff details:', error);
+        console.log('Error:', error);
       }
     };
 
     fetchStaffDetails();
   }, [staffId]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setStaffDetails({ ...staffDetails, [name]: value });
+  };
 
   const handleSaveChanges = async () => {
     try {
@@ -55,8 +58,6 @@ const ModifyStaffForm = ({ staffId }) => {
       }
 
       toast.success('Staff details updated successfully!');
-      // Redirect the user to the staff list page
-      navigate('/staff-list');
     } catch (error) {
       toast.error('Error updating staff details:', error);
     }
@@ -64,38 +65,60 @@ const ModifyStaffForm = ({ staffId }) => {
 
   return (
     <>
-    <MenuAdmin />
-    <div className='main-container'>
-      <div className="personal-info">
-      <h2>Modify Staff Details</h2>
-      <form>
-      <div className='form-flex'>
-          <label>First Name:</label>
-          <input
-            type="text"
-            value={staffDetails.firstName}
-            onChange={(e) => setStaffDetails({ ...staffDetails, firstName: e.target.value })}
-          />
+      <MenuAdmin />
+      <div className="main-container">
+        <div className="update-staff-form">
+          <h1>Modify Staff</h1>
+          <form>
+            <div className='form-flex'>
+              <label>First Name:</label>
+              <input
+                type="text"
+                name="firstName"
+                value={staffDetails.firstName}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className='form-flex'>
+              <label>Last Name:</label>
+              <input
+                type="text"
+                name="lastName"
+                value={staffDetails.lastName}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className='form-flex'>
+              <label>Email:</label>
+              <input
+                type="text"
+                name="email"
+                value={staffDetails.email}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className='form-flex'>
+              <label>Role:</label>
+              <select
+                name="role"
+                value={staffDetails.role}
+                onChange={handleInputChange}
+              >
+                <option value="staff">Staff</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+            <button type="button" onClick={handleSaveChanges}>
+              Save Changes
+            </button>
+          </form>
         </div>
-        <div className='form-flex'>
-          <label>Last Name:</label>
-          <input
-            type="text"
-            value={staffDetails.lastName}
-            onChange={(e) => setStaffDetails({ ...staffDetails, lastName: e.target.value })}
-          />
-        </div>
-        
-        <button type="button" onClick={handleSaveChanges}>
-          Save Changes
-        </button>
-      </form>
       </div>
-      </div>
+      <ToastContainer />
       <Footer />
-      <ToastContainer autoClose={2000} />
     </>
   );
 };
 
 export default ModifyStaffForm;
+

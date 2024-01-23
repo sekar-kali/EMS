@@ -8,9 +8,18 @@ const MissionList = () => {
 
   useEffect(() => {
     // Fetch missions from the backend API and update the state
+    const authToken = localStorage.getItem('authToken');
     const fetchMissions = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/admin/missions-list');
+        const response = await fetch('http://localhost:5000/api/admin/missions-list',{
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+        
         if (response.ok) {
           const missionData = await response.json();
           setMissions(missionData);
@@ -23,7 +32,7 @@ const MissionList = () => {
     };
 
     fetchMissions();
-  }, []); // Empty dependency array ensures the effect runs only once on mount
+  }, []);
 
   return (
     <>

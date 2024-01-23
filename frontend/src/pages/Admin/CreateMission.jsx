@@ -51,10 +51,14 @@ const CreateMission = () => {
       };
   
       // Send a request to the backend to create a new mission
+      const authToken = localStorage.getItem('authToken');
+      
       const response = await fetch('http://localhost:5000/api/admin/create-mission', {
         method: 'POST',
         headers: {
+          Accept: 'application/json',
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify(missionData),
       });

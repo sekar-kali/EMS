@@ -52,7 +52,8 @@ const App = () => {
         <Route path="/admin/leave-request" element={<LeaveRequestList />} />
         <Route path="/admin/staff-list" element={<StaffList />} />
         <Route path="/admin/create-staff" element={<CreateStaff />} />
-        <Route path="/modify-staff/:id" render={({ match }) => <ModifyStaffForm staffId={match.params.id} />} />
+        <Route path="/update-staff/:staffId" element={<ModifyStaffForm />} />
+
 
         {/* Staff routes */}
         <Route

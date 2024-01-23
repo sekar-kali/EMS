@@ -78,7 +78,7 @@ export const createStaff = async (req, res) => {
       },
     });
 
-    const confirmationLink = `${process.env.FRONTEND_URL}/create-password?email=${email}`; // Update with your frontend URL
+    const confirmationLink = `${process.env.FRONTEND_URL}/create-password?email=${email}`;
 
     const mailOptions = {
       from: process.env.MAIL,
@@ -95,6 +95,30 @@ res.json({ message: 'Staff account created successfully. Confirmation email sent
   } catch (error) {
     console.error('Error creating staff account:', error);
     res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
+export const deleteStaff = async (req, res) => {
+  try {
+    const { staffId } = req.params;
+
+    // Check if the staffId is a valid ObjectId (for MongoDB)
+    if (!mongoose.isValidObjectId(staffId)) {
+      return res.status(400).json({ error: 'Invalid staff ID' });
+    }
+
+  
+    const deletedStaff = await StaffModel.findByIdAndDelete(staffId);
+
+    if (!deletedStaff) {
+      return res.status(404).json({ error: 'Staff not found' });
+    }
+
+    res.status(200).json({ message: 'Staff deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting staff:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
@@ -129,10 +153,23 @@ export const getLeaveRequests = async (req, res) => {
   try {
     const { status } = req.query;
     const filter = status ? { status } : {};
-    const leaveRequests = await LeaveRequestModel.find(filter).populate('staffId', '-password');
-    res.json(leaveRequests);
+    
+    // Populate 'staffId' field to get staff details
+    const leaveRequests = await LeaveRequestModel.find(filter).populate({
+      path: 'staffId',
+      select: 'firstName lastName email', // Include the fields you want to select
+    });
+
+    // Extract and format data to include 'firstName' and 'lastName' in each leave request
+    const formattedLeaveRequests = leaveRequests.map(request => ({
+      ...request._doc,
+      firstName: request.staffId.firstName,
+      lastName: request.staffId.lastName,
+    }));
+
+    res.json(formattedLeaveRequests);
   } catch (error) {
-    console.error('Error fetching leave requests:', error);
+    console.log('Error fetching leave requests:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -141,8 +178,8 @@ export const getLeaveRequests = async (req, res) => {
 export const approveLeaveRequest = async (req, res) => {
   try {
     const { leaveRequestId } = req.params;
-    const leaveRequest = await LeaveRequestModel.findByIdAndUpdate(leaveRequestId, { status: 'approved' });
-    // Send approval email here (replace with your logic)
+    const leaveRequest = await LeaveRequestModel.findByIdAndUpdate(leaveRequestId, { status: 'Approved' });
+    // Send approval email here
     res.json({ message: 'Leave request approved successfully' });
   } catch (error) {
     console.error('Error approving leave request:', error);
@@ -154,8 +191,8 @@ export const approveLeaveRequest = async (req, res) => {
 export const rejectLeaveRequest = async (req, res) => {
   try {
     const { leaveRequestId } = req.params;
-    const leaveRequest = await LeaveRequestModel.findByIdAndUpdate(leaveRequestId, { status: 'rejected' });
-    // Send rejection email here (replace with your logic)
+    const leaveRequest = await LeaveRequestModel.findByIdAndUpdate(leaveRequestId, { status: 'Rejected' });
+    
     res.json({ message: 'Leave request rejected successfully' });
   } catch (error) {
     console.error('Error rejecting leave request:', error);
@@ -356,5 +393,35 @@ export const sendEmail = async (emailOptions) => {
   } catch (error) {
     console.error('Error sending email:', error);
     return { ok: false, statusText: 'Internal server error' };
+  }
+};
+
+// Update staff details
+export const updateStaff = async (req, res) => {
+  const { staffId } = req.params;
+  const { firstName, lastName, role, email } = req.body;
+
+  try {
+    // Fetch the staff by ID from the database
+    const staff = await StaffModel.findById(staffId);
+
+    if (!staff) {
+      return res.status(404).json({ message: 'Staff not found' });
+    }
+
+    // Update staff details
+    staff.firstName = firstName;
+    staff.lastName = lastName;
+    staff.role = role;
+    staff.email = email;
+
+
+    // Save the updated staff details
+    await staff.save();
+
+    res.json({ message: 'Staff details updated successfully' });
+  } catch (error) {
+    console.error('Error updating staff details:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };

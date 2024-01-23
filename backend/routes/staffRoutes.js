@@ -6,7 +6,10 @@ import {
   changeDetailsRequest,
   getStaffInfo,
   uploadDocument,
+  getTotalApprovedLeaveRequests,
+  getTotalMissions,
 } from '../controllers/staffController.js';
+import authMiddleware from '../middleware/authMiddleware.js';
 
 const staffRoutes = express.Router();
 
@@ -20,5 +23,7 @@ staffRoutes.post('/change-details-request', changeDetailsRequest);
 staffRoutes.post('/create-leave-request', createLeaveRequest);
 staffRoutes.post('/leave-request/upload-document', uploadDocument);
 staffRoutes.post('/change-details-request', changeDetailsRequest);
+staffRoutes.post('/leave-requests/approved',authMiddleware,getTotalApprovedLeaveRequests)
+staffRoutes.post('/missions/total',authMiddleware,getTotalMissions)
 
 export default staffRoutes;

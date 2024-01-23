@@ -44,26 +44,29 @@ const AdminDashboard = () => {
         <h1>Admin Dashboard</h1>
         
         <div className="dashboard-stats">
-          <div className="dashboard-stat">
+          <div className="dashboard-total-staff-stat">
             <h2>Total Staff</h2>
             <p>{dashboardStats.totalStaff}</p>
           </div>
           
-          <div className="dashboard-stat">
+          <div className="dashboard-staff-month-stat">
             <h2>New Staff This Month</h2>
             <p>{dashboardStats.newStaffThisMonth}</p>
           </div>
           
-          <div className="dashboard-stat">
+          <div className="dashboard-mission-stat">
             <h2>Total Missions This Month</h2>
             <p>{dashboardStats.totalMissionsThisMonth}</p>
           </div>
           
-          <div className="dashboard-stat">
+          <div className="dashboard-leave-stat">
             <h2>Staff On Leave This Month</h2>
             <p>{dashboardStats.staffOnLeaveThisMonth}</p>
           </div>
         </div>
+        <div className="dashboard-welcome">
+            <h2>Welcome ADMIN</h2>
+          </div>
       </div>
       <Footer />
     </>

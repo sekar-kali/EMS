@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 
 const authMiddleware = (req, res, next) => {
   let token = req.header('Authorization');
-  token = token.split(' ')[1];
+  token = token && token.split(' ')[1];
 
   if (!token) {
     return res.status(401).json({ message: 'Authorization token missing' });
