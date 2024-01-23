@@ -126,12 +126,28 @@
     background-color: rgb(196, 11, 11);
   }
 
+  .staff-list .delete:hover,.leave-request-list .reject-btn:hover {
+    background-color: rgb(235, 76, 76);
+    color: #333;
+  }
+
   .staff-list .edit {
     background-color: rgb(196, 153, 11);
   }
 
+  .staff-list .edit:hover {
+    background-color: rgb(223, 190, 79);
+    color: #333;
+  }
+
   .leave-request-list .approve-btn {
     background-color: rgb(62, 163, 11);
+  
+  }
+
+  .leave-request-list .approve-btn:hover {
+    background-color: rgb(105, 207, 53);
+    color: #333;
   }
 
   .staff-list table,.leave-request-list table{

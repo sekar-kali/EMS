@@ -10,6 +10,7 @@ const StaffDashboard = () => {
   const [staffInfo, setStaffInfo] = useState({
     firstName: '',
     lastName: '',
+    email: '', 
   });
 
   const [totalMissions, setTotalMissions] = useState(0);
@@ -20,15 +21,16 @@ const StaffDashboard = () => {
     const authToken = localStorage.getItem('authToken');
     const fetchStaffInfo = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/staff/info/:email',{
+        // Use template literal to include the email in the URL
+        const response = await fetch(`http://localhost:5000/api/staff/info/${staffInfo.email}`, {
           method: 'GET',
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
             Authorization: `Bearer ${authToken}`,
           },
-          })
-        
+        });
+
         if (response.ok) {
           const staffInfoData = await response.json();
           setStaffInfo(staffInfoData);
@@ -111,7 +113,7 @@ const StaffDashboard = () => {
           </div>
         </div>
         <div className="dashboard-welcome">
-            <h2>Welcome {staffInfo.firstName} {staffInfo.lastName}</h2>
+            <h2>Welcome {staffInfo.firstName} {staffInfo.lastName} {staffInfo.email}</h2>
           </div>
       </div>
       <Footer />

@@ -157,7 +157,7 @@ export const getLeaveRequests = async (req, res) => {
     // Populate 'staffId' field to get staff details
     const leaveRequests = await LeaveRequestModel.find(filter).populate({
       path: 'staffId',
-      select: 'firstName lastName email', // Include the fields you want to select
+      select: 'firstName lastName email',
     });
 
     // Extract and format data to include 'firstName' and 'lastName' in each leave request
