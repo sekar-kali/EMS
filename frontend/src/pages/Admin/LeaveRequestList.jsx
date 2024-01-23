@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import '../../styles.css';
 import MenuAdmin from '../../components/MenuAdmin';
 import Footer from '../../components/Footer';
@@ -70,7 +71,7 @@ const LeaveRequestList = () => {
   const handleApproveLeaveRequest = async (leaveRequestId) => {
     try {
       // Send request to approve leave request to the backend
-      const response = await fetch(`http://localhost:5000/api/admin/approved-leave-request/${leaveRequestId}`, {
+      const response = await fetch(`http://localhost:5000/api/admin/approve-leave-request/${leaveRequestId}`, {
         method: 'PUT',
         headers: {
           Accept: 'application/json',
@@ -95,7 +96,7 @@ const LeaveRequestList = () => {
   const handleRejectLeaveRequest = async (leaveRequestId) => {
     try {
       // Send request to reject leave request to the backend
-      const response = await fetch(`http://localhost:5000/api/admin/rejected-leave-request/${leaveRequestId}`, {
+      const response = await fetch(`http://localhost:5000/api/admin/reject-leave-request/${leaveRequestId}`, {
         method: 'PUT',
         headers: {
           Accept: 'application/json',
@@ -115,6 +116,9 @@ const LeaveRequestList = () => {
     } catch (error) {
       console.error('Error rejecting leave request:', error);
     }
+  };
+  const formatDate = (date) => {
+    return moment(date).format('DD/MM/YYYY');
   };
 
   return (
@@ -158,11 +162,12 @@ const LeaveRequestList = () => {
                 </tr>
               </thead>
               <tbody>
-              {filteredLeaveRequests.length > 0 ? (Array.isArray(filteredLeaveRequests) && filteredLeaveRequests.map((request) => (
+              {filteredLeaveRequests.length > 0 ? (
+                Array.isArray(filteredLeaveRequests) && filteredLeaveRequests.map((request) => (
                   <tr key={request._id}>
                     <td>{request.firstName} {request.lastName}</td>
-                    <td>{request.startDate}</td>
-                    <td>{request.endDate}</td>
+                    <td>{formatDate(request.startDate)}</td>
+                    <td>{formatDate(request.endDate)}</td>
                     <td>{request.status}</td>
                     <td>
                       {request.documentUrl && (
@@ -184,11 +189,12 @@ const LeaveRequestList = () => {
                       )}
                     </td>
                   </tr>
-                ))):(
-                  <tr>
-                    <td colSpan="2">No matching staff found.</td>
-                  </tr>
-                )}
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="2">No matching staff found.</td>
+                </tr>
+              )}
               </tbody>
             </table>
           </div>

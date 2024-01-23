@@ -174,12 +174,82 @@ export const getLeaveRequests = async (req, res) => {
   }
 };
 
-// Approve leave request
+export const sendApprovalEmail = async (leaveRequestId) => {
+  try {
+    // Fetch leave request details
+    const leaveRequest = await LeaveRequestModel.findById(leaveRequestId).populate('staffId');
+
+    // Set up nodemailer transporter
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      port: 587,
+      host: 'smtp.gmail.com',
+      auth: {
+        user: process.env.MAIL,
+        pass: process.env.MAIL_PASSWORD,
+      },
+    });
+
+    // Compose email options
+    const mailOptions = {
+      from: process.env.MAIL,
+      to: leaveRequest.staffId.email,
+      subject: 'Leave Request Approved',
+      text: `Your leave request has been approved.`,
+    };
+
+    // Send email
+    await transporter.sendMail(mailOptions);
+
+    console.log(`Approval email sent for leave request ${leaveRequestId}`);
+  } catch (error) {
+    console.error('Error sending approval email:', error);
+    throw error;
+  }
+};
+
+export const sendRejectionEmail = async (leaveRequestId) => {
+  try {
+    // Fetch leave request details
+    const leaveRequest = await LeaveRequestModel.findById(leaveRequestId).populate('staffId');
+
+    // Set up nodemailer transporter
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      port: 587,
+      host: 'smtp.gmail.com',
+      auth: {
+        user: process.env.MAIL,
+        pass: process.env.MAIL_PASSWORD,
+      },
+    });
+
+    // Compose email options
+    const mailOptions = {
+      from: process.env.MAIL,
+      to: leaveRequest.staffId.email,
+      subject: 'Leave Request Rejected',
+      text: `Your leave request has been rejected.`,
+    };
+
+    // Send email
+    await transporter.sendMail(mailOptions);
+
+    console.log(`Rejection email sent for leave request ${leaveRequestId}`);
+  } catch (error) {
+    console.error('Error sending rejection email:', error);
+    throw error;
+  }
+};
+
 export const approveLeaveRequest = async (req, res) => {
   try {
     const { leaveRequestId } = req.params;
     const leaveRequest = await LeaveRequestModel.findByIdAndUpdate(leaveRequestId, { status: 'Approved' });
-    // Send approval email here
+
+    // Send approval email
+    sendApprovalEmail(leaveRequestId);
+
     res.json({ message: 'Leave request approved successfully' });
   } catch (error) {
     console.error('Error approving leave request:', error);
@@ -187,12 +257,14 @@ export const approveLeaveRequest = async (req, res) => {
   }
 };
 
-// Reject leave request
 export const rejectLeaveRequest = async (req, res) => {
   try {
     const { leaveRequestId } = req.params;
     const leaveRequest = await LeaveRequestModel.findByIdAndUpdate(leaveRequestId, { status: 'Rejected' });
-    
+
+    // Send rejection email
+    sendRejectionEmail(leaveRequestId);
+
     res.json({ message: 'Leave request rejected successfully' });
   } catch (error) {
     console.error('Error rejecting leave request:', error);
@@ -200,9 +272,9 @@ export const rejectLeaveRequest = async (req, res) => {
   }
 };
 
+
 export const createMission = async (req, res) => {
   try {
-    // Assuming to receive the mission details from the request body
     const { title, description, staffId, startDate, endDate } = req.body;
 
     // Fetch staff information from the database using Mongoose
@@ -226,11 +298,15 @@ export const createMission = async (req, res) => {
       return res.status(400).json({ message: 'Staff is already assigned to another mission during this time period' });
     }
 
+    // // Format the dates to "dd mm yyyy" format
+    // const formattedStartDate = new Date(startDate).toLocaleDateString('en-GB');
+    // const formattedEndDate = new Date(endDate).toLocaleDateString('en-GB');
+
     // Create a new mission and save it to the database
     const newMission = new MissionModel({
       title,
       description,
-      staffId: staff._id,
+      assignedTo: staff._id,
       startDate,
       endDate,
     });
@@ -247,10 +323,7 @@ export const createMission = async (req, res) => {
 
 export const getAllMissions = async (req, res) => {
   try {
-    // Fetch all missions from the database, populating staff details for each mission
-    const missions = await MissionModel.find().populate('staffId', '-password');
-
-    // Return the list of missions as JSON
+    const missions = await MissionModel.find().populate('assignedTo', '-password');
     res.json(missions);
   } catch (error) {
     console.error('Error fetching missions:', error);
@@ -296,73 +369,6 @@ const getStaffOnMission = async (startDate, endDate) => {
   }
 };
 
-export const sendApprovalEmail = async (leaveRequestId) => {
-  try {
-    // Fetch leave request details
-    const leaveRequest = await LeaveRequestModel.findById(leaveRequestId).populate('staffId');
-
-    // Set up nodemailer transporter
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      port : 587,
-      host : 'smtp.gmail.com',
-      auth: {
-        user: process.env.MAIL,
-        pass: process.env.MAIL_PASSWORD,
-      },
-    });
-
-    // Compose email options
-    const mailOptions = {
-      from: process.env.MAIL,
-      to: leaveRequest.staffId.email,
-      subject: 'Leave Request Approved',
-      text: `Your leave request has been approved.`,
-    };
-
-    // Send email
-    await transporter.sendMail(mailOptions);
-
-    console.log(`Approval email sent for leave request ${leaveRequestId}`);
-  } catch (error) {
-    console.error('Error sending approval email:', error);
-    throw error;
-  }
-};
-
-export const sendRejectionEmail = async (leaveRequestId) => {
-  try {
-    // Fetch leave request details
-    const leaveRequest = await LeaveRequestModel.findById(leaveRequestId).populate('staffId');
-
-    // Set up nodemailer transporter
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      port : 587,
-      host : 'smtp.gmail.com',
-      auth: {
-        user: process.env.MAIL,
-        pass: process.env.MAIL_PASSWORD,
-      },
-    });
-
-    // Compose email options
-    const mailOptions = {
-      from: process.env.MAIL,
-      to: leaveRequest.staffId.email,
-      subject: 'Leave Request Rejected',
-      text: `Your leave request has been rejected.`,
-    };
-
-    // Send email
-    await transporter.sendMail(mailOptions);
-
-    console.log(`Rejection email sent for leave request ${leaveRequestId}`);
-  } catch (error) {
-    console.error('Error sending rejection email:', error);
-    throw error;
-  }
-};
 
 // Define sendEmail function
 export const sendEmail = async (emailOptions) => {

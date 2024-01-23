@@ -64,7 +64,7 @@ const CreateMission = () => {
       });
   
       if (response.ok) {
-        toast.success('Mission created successfully!', { position: toast.POSITION.TOP_RIGHT });
+        toast.success('Mission created successfully!');
         // Reset the form after successful submission
         setTitle('');
         setDescription('');

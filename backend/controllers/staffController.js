@@ -64,7 +64,7 @@ export const getStaffMissions = async (req, res) => {
       return res.status(404).json({ message: 'Staff not found' });
     }
 
-    const missions = await MissionModel.find({ staffId: staff._id });
+    const missions = await MissionModel.find({ assignedTo: staff._id });
 
     res.json(missions);
   } catch (error) {
@@ -77,15 +77,13 @@ export const getStaffLeaveRequests = async (req, res) => {
   try {
     const staffEmail = req.query.email;
 
-    const staff = await StaffModel.findOne({ email: staffEmail });
+    const staff = await StaffModel.findOne({ email: staffEmail }).populate('leaveRequests');
 
     if (!staff) {
       return res.status(404).json({ message: 'Staff not found' });
     }
 
-    const leaveRequests = await LeaveRequestModel.find({ staffId: staff._id });
-
-    res.json(leaveRequests);
+    res.json(staff.leaveRequests);
   } catch (error) {
     console.error('Error fetching staff leave requests:', error);
     res.status(500).json({ message: 'Internal server error' });

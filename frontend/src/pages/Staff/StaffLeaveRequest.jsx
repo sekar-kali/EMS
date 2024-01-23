@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import MenuStaff from '../../components/MenuStaff';
@@ -50,6 +51,10 @@ const StaffLeaveRequestList = () => {
     setStatusFilter(e.target.value);
   };
 
+  const formatDate = (date) => {
+    return moment(date).format('DD/MM/YYYY');
+  };
+
   return (
     <>
       <MenuStaff />
@@ -79,8 +84,8 @@ const StaffLeaveRequestList = () => {
             <tbody>
           {filteredLeaveRequests.map((request) => (
             <tr key={request._id}>
-              <td>{request.startDate}</td>
-               <td>{request.endDate}</td>
+              <td>{formatDate(request.startDate)}</td>
+               <td>{formatDate(request.endDate)}</td>
                <td>{request.status}</td>
             </tr>
           ))}

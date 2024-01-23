@@ -17,8 +17,8 @@ adminRoutes.post('/create-staff', authMiddleware, createStaff);
 adminRoutes.post('/update-staff', authMiddleware, updateStaff);
 
 //Put method routes
-adminRoutes.put('/approved-leave-request', authMiddleware, approveLeaveRequest);
-adminRoutes.put('/rejected-leave-request', authMiddleware, rejectLeaveRequest);
+adminRoutes.put('/approve-leave-request', authMiddleware, approveLeaveRequest);
+adminRoutes.put('/reject-leave-request', authMiddleware, rejectLeaveRequest);
 
 //Delete method routes
 adminRoutes.delete('/delete-staff', authMiddleware, deleteStaff);
