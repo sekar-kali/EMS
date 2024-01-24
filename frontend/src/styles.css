@@ -48,10 +48,24 @@
   
   .dashboard-welcome{
     margin-top: 10px;
-    background-color: rgba(239, 62, 201, 0.822);
+    background-color: rgba(27, 171, 104, 0.822);
     border: 1px dashed #ffffff;
     padding: 50px 20px;
   }
+
+.pagination{
+  
+  margin-top: 1%;
+  display: flex;
+  justify-content: end;
+}
+
+.pagination button{
+  margin-top: 1%;
+  margin: 0;
+  width: 10%;
+  padding: 1% 3%;
+}
   .app {
     display: flex;
     flex-direction: column;

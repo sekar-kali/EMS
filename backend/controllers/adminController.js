@@ -70,20 +70,27 @@ export const createStaff = async (req, res) => {
     const transporter = nodemailer.createTransport({
       // Nodemailer transporter
       service: 'gmail',
-      port : 587,
-      host : 'smtp.gmail.com',
-      auth: {
-        user: process.env.MAIL,
-        pass: process.env.MAIL_PASSWORD,
-      },
-    });
+  auth: {
+    user: process.env.MAIL,
+    pass: process.env.MAIL_PASSWORD
+  }
+});
+      
+    //   service: 'gmail',
+    //   port : 587,
+    //   host : 'smtp.gmail.com',
+    //   auth: {
+    //     user: process.env.MAIL,
+    //     pass: process.env.MAIL_PASSWORD,
+    //   },
+    // });
 
     const confirmationLink = `${process.env.FRONTEND_URL}/create-password?email=${email}`;
 
     const mailOptions = {
       from: process.env.MAIL,
       to: email,
-      subject: 'Account Confirmation',
+      subject: 'Account Password Creation',
       text: `Welcome to our platform! Click the following link to create your password: ${confirmationLink}`,
     };
 
@@ -182,13 +189,11 @@ export const sendApprovalEmail = async (leaveRequestId) => {
     // Set up nodemailer transporter
     const transporter = nodemailer.createTransport({
       service: 'gmail',
-      port: 587,
-      host: 'smtp.gmail.com',
-      auth: {
-        user: process.env.MAIL,
-        pass: process.env.MAIL_PASSWORD,
-      },
-    });
+  auth: {
+    user: process.env.MAIL,
+    pass: process.env.MAIL_PASSWORD
+  }
+});
 
     // Compose email options
     const mailOptions = {
@@ -216,13 +221,11 @@ export const sendRejectionEmail = async (leaveRequestId) => {
     // Set up nodemailer transporter
     const transporter = nodemailer.createTransport({
       service: 'gmail',
-      port: 587,
-      host: 'smtp.gmail.com',
       auth: {
         user: process.env.MAIL,
-        pass: process.env.MAIL_PASSWORD,
-      },
-    });
+        pass: process.env.MAIL_PASSWORD
+      }
+    });;
 
     // Compose email options
     const mailOptions = {
@@ -376,12 +379,10 @@ export const sendEmail = async (emailOptions) => {
     // Create a nodemailer transporter
     const transporter = nodemailer.createTransport({
       service: 'gmail',
-      port : 587,
-      host : 'smtp.gmail.com',
       auth: {
         user: process.env.MAIL,
-        pass: process.env.MAIL_PASSWORD,
-      },
+        pass: process.env.MAIL_PASSWORD
+      }
     });
 
     // Compose email options

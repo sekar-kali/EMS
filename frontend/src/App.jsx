@@ -14,6 +14,7 @@ import StaffPersonalInfo from './pages/Staff/StaffPersonalInfo';
 import StaffMissionsList from './pages/Staff/StaffMissionsList';
 import StaffLeaveRequestList from './pages/Staff/StaffLeaveRequest';
 import ModifyStaffForm from './pages/Admin/ModifyStaffForm';
+import CreatePasswordPage from './pages/Auth/CreatePassword';
 
 const PrivateRoute = ({ children }) => {
   const authToken = localStorage.getItem('authToken');
@@ -40,6 +41,7 @@ const App = () => {
         {/* Auth routes */}
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/logout" element={<Logout />} />
+        <Route path="/create-password/:email" component={CreatePasswordPage} />
 
         {/* Admin routes */}
         <Route

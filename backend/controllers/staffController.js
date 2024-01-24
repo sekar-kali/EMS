@@ -1,6 +1,8 @@
 import StaffModel from '../models/Staff.js';
 import MissionModel from '../models/Mission.js';
 import LeaveRequestModel from '../models/LeaveRequest.js';
+import moment from 'moment';
+import mongoose from 'mongoose';
 
 // Fetch total missions for the current month
 export const getTotalMissions = async (req, res) => {
@@ -8,7 +10,7 @@ export const getTotalMissions = async (req, res) => {
     const { staffEmail } = req.body;
     const currentMonthStart = moment().startOf('month');
     const totalMissions = await MissionModel.countDocuments({
-      assignedTo: ObjectId(staffEmail),
+      assignedTo: req.staffId,
       createdAt: { $gte: currentMonthStart },
     });
 
@@ -25,7 +27,7 @@ export const getTotalApprovedLeaveRequests = async (req, res) => {
     const { staffEmail } = req.body;
     const currentMonthStart = moment().startOf('month');
     const totalApprovedLeaveRequests = await LeaveRequestModel.countDocuments({
-      staff: ObjectId(staffEmail),
+      staff: req.staffId,
       status: 'Approved',
       updatedAt: { $gte: currentMonthStart },
     });
@@ -56,7 +58,7 @@ export const getStaffInfo = async (req, res) => {
 
 export const getStaffMissions = async (req, res) => {
   try {
-    const staffEmail = req.query.email;
+    const staffEmail = req.staffId;
 
     const staff = await StaffModel.findOne({ email: staffEmail });
 
@@ -75,7 +77,7 @@ export const getStaffMissions = async (req, res) => {
 
 export const getStaffLeaveRequests = async (req, res) => {
   try {
-    const staffEmail = req.query.email;
+    const staffEmail = req.staffId;
 
     // Find the staff member using the email
     const staff = await StaffModel.findOne({ email: staffEmail }).populate('leaveRequests');

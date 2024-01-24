@@ -19,10 +19,11 @@ const StaffDashboard = () => {
   useEffect(() => {
     // Fetch staff's information
     const authToken = localStorage.getItem('authToken');
+    const email = JSON.parse(localStorage.getItem('user'));
     const fetchStaffInfo = async () => {
       try {
         // Use template literal to include the email in the URL
-        const response = await fetch(`http://localhost:5000/api/staff/info/${staffInfo.email}`, {
+        const response = await fetch(`http://localhost:5000/api/staff/info/${email}`, {
           method: 'GET',
           headers: {
             Accept: 'application/json',
@@ -113,7 +114,7 @@ const StaffDashboard = () => {
           </div>
         </div>
         <div className="dashboard-welcome">
-            <h2>Welcome {staffInfo.firstName} {staffInfo.lastName} {staffInfo.email}</h2>
+            <h2>Welcome {staffInfo.firstName} {staffInfo.lastName}</h2>
           </div>
       </div>
       <Footer />

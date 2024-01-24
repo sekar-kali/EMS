@@ -123,11 +123,11 @@ export const requestPasswordReset = async (req, res) => {
     const transporter = nodemailer.createTransport({
       // Configure nodemailer transporter
       service: 'gmail',
-      auth: {
-        user: process.env.MAIL,
-        pass: process.env.MAIL_PASSWORD,
-      },
-    });
+    auth: {
+    user: process.env.MAIL,
+    pass: process.env.MAIL_PASSWORD
+  }
+});
 
     const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
 
@@ -174,6 +174,58 @@ export const resetPassword = async (req, res) => {
     res.json({ message: 'Password reset successfully' });
   } catch (error) {
     console.error('Error resetting password:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+export const createPassword = async (req, res) => {
+  try {
+    const { email } = req.params;
+    const { password } = req.body;
+
+    // Validate password
+    if (!password) {
+      return res.status(400).json({ message: 'Password is required' });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Update staff member's password in the database
+    const updatedStaff = await StaffModel.findOneAndUpdate(
+      { email },
+      { password: hashedPassword },
+      { new: true }
+    );
+
+    if (!updatedStaff) {
+      return res.status(404).json({ message: 'Staff member not found' });
+    }
+
+    const transporter = nodemailer.createTransport({
+      // Nodemailer transporter
+      service: 'gmail',
+  auth: {
+    user: process.env.MAIL,
+    pass: process.env.MAIL_PASSWORD
+  }
+});
+
+const loginLink = `${process.env.FRONTEND_URL}/auth/login`;
+
+const mailOptions = {
+  from: process.env.MAIL,
+  to: email,
+  subject: 'Account Confirmation',
+  text: `Welcome to our platform! Click the following link to login :${loginLink}`,
+};
+
+
+await transporter.sendMail(mailOptions);
+
+    res.json({ message: 'Password created successfully' });
+  } catch (error) {
+    console.error('Error creating password:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };

@@ -7,6 +7,8 @@ const MissionList = () => {
   const [missions, setMissions] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterChoice, setFilterChoice] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [missionPerPage] = useState(10); // Set your desired number of missions per page
 
   useEffect(() => {
     const authToken = localStorage.getItem('authToken');
@@ -42,10 +44,12 @@ const MissionList = () => {
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
+    setCurrentPage(1); 
   };
 
   const handleFilterChange = (e) => {
     setFilterChoice(e.target.value);
+    setCurrentPage(1);
   };
 
   const filterMissions = (mission) => {
@@ -75,7 +79,22 @@ const MissionList = () => {
     }
   };
 
-  const filteredMissions = missions.filter(filterMissions);
+  const indexOfLastMission = currentPage * missionPerPage;
+  const indexOfFirstMission = indexOfLastMission - missionPerPage;
+  const currentMissionList = missions.filter(filterMissions).slice(indexOfFirstMission, indexOfLastMission);
+
+  const renderMissionList = currentMissionList.map((mission, index) => (
+    <tr key={mission._id}>
+      <td>{indexOfFirstMission + index + 1}</td>
+      <td>{mission.title}</td>
+      <td>{mission.description}</td>
+      <td>{formatDate(mission.startDate)}</td>
+      <td>{formatDate(mission.endDate)}</td>
+      <td>{mission.assignedTo ? `${mission.assignedTo.firstName} ${mission.assignedTo.lastName}` : 'N/A'}</td>
+    </tr>
+  ));
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <>
@@ -102,6 +121,7 @@ const MissionList = () => {
           <table>
             <thead>
               <tr>
+                <th>Number</th>
                 <th>Title</th>
                 <th>Description</th>
                 <th>Start Date</th>
@@ -110,17 +130,16 @@ const MissionList = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredMissions.map((mission) => (
-                <tr key={mission._id}>
-                  <td>{mission.title}</td>
-                  <td>{mission.description}</td>
-                  <td>{formatDate(mission.startDate)}</td>
-                  <td>{formatDate(mission.endDate)}</td>
-                  <td>{mission.assignedTo ? `${mission.assignedTo.firstName} ${mission.assignedTo.lastName}` : 'N/A'}</td>
-                </tr>
-              ))}
+              {renderMissionList}
             </tbody>
           </table>
+        </div>
+        <div className="pagination">
+          {Array.from({ length: Math.ceil(missions.filter(filterMissions).length / missionPerPage) }, (_, index) => (
+            <button key={index + 1} onClick={() => paginate(index + 1)}>
+              {index + 1}
+            </button>
+          ))}
         </div>
       </div>
       <Footer />

@@ -14,14 +14,14 @@ adminRoutes.get('/staff/available', getAvailableStaff);
 //Post method routes
 adminRoutes.post('/create-mission', authMiddleware, createMission);
 adminRoutes.post('/create-staff', authMiddleware, createStaff);
-adminRoutes.post('/update-staff', authMiddleware, updateStaff);
+adminRoutes.post('/update-staff/:staffId', authMiddleware, updateStaff);
 
 //Put method routes
-adminRoutes.put('/approve-leave-request', authMiddleware, approveLeaveRequest);
-adminRoutes.put('/reject-leave-request', authMiddleware, rejectLeaveRequest);
+adminRoutes.put('/approve-leave-request/:leaveRequestId', authMiddleware, approveLeaveRequest);
+adminRoutes.put('/reject-leave-request/:leaveRequestId', authMiddleware, rejectLeaveRequest);
 
 //Delete method routes
-adminRoutes.delete('/delete-staff', authMiddleware, deleteStaff);
+adminRoutes.delete('/delete-staff/:id', authMiddleware, deleteStaff);
 
 
 

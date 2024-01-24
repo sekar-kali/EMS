@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import MenuAdmin from '../../components/MenuAdmin';
 import Footer from '../../components/Footer';
 
 const StaffList = () => {
   const [staffList, setStaffList] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterOption, setFilterOption] = useState('name'); // Default filter option
+  const [filterOption, setFilterOption] = useState('name');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [staffPerPage] = useState(10);
   const navigate = useNavigate();
 
   const fetchStaffList = async () => {
     try {
       const authToken = localStorage.getItem('authToken');
-
-      const response = await fetch('http://localhost:5000/api/admin/staff-list', {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
+      const response = await fetch(
+        `http://localhost:5000/api/admin/staff-list?page=${currentPage}&limit=${staffPerPage}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error('Error fetching staff list');
@@ -32,7 +36,7 @@ const StaffList = () => {
 
   useEffect(() => {
     fetchStaffList();
-  }, []);
+  }, [currentPage]); // Update the staff list when the page changes
 
   const filteredStaffList = staffList.filter((staff) => {
     const searchValue = searchTerm.toLowerCase();
@@ -66,7 +70,6 @@ const StaffList = () => {
   };
 
   const handleDeleteClick = async (staffId) => {
-    // Show a confirmation dialog before deleting
     const confirmDelete = window.confirm('Are you sure you want to delete this staff member?');
 
     if (confirmDelete) {
@@ -91,68 +94,77 @@ const StaffList = () => {
     }
   };
 
+  // Pagination
+  const indexOfLastStaff = currentPage * staffPerPage;
+  const indexOfFirstStaff = indexOfLastStaff - staffPerPage;
+  const currentStaffList = filteredStaffList.slice(indexOfFirstStaff, indexOfLastStaff);
+
+
+  const renderStaffList = currentStaffList.map((staff, index) => (
+    <tr key={staff._id}>
+      <td>{indexOfFirstStaff + index + 1}</td>
+      <td>
+        {staff.firstName} {staff.lastName}
+      </td>
+      <td>{staff.email}</td>
+      <td>{staff.serviceName}</td>
+      <td>{staff.role}</td>
+      <td>
+        <button className="edit" onClick={() => handleModifyClick(staff._id)}>
+          Edit
+        </button>
+        <button className="delete" onClick={() => handleDeleteClick(staff._id)}>
+          Delete
+        </button>
+      </td>
+    </tr>
+  ));
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <>
       <MenuAdmin />
       <div className="main-container">
-      <div className="search-bar"> 
-        <h1>Staff List</h1>
+        <div className="search-bar">
+          <h1>Staff List</h1>
 
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
 
-        <select value={filterOption} onChange={handleFilterChange}>
-          <option value="name">Name</option>
-          <option value="email">Email</option>
-          <option value="serviceName">Service Name</option>
-          <option value="role">Role</option>
-        </select>
+          <select value={filterOption} onChange={handleFilterChange}>
+            <option value="name">Name</option>
+            <option value="email">Email</option>
+            <option value="serviceName">Service Name</option>
+            <option value="role">Role</option>
+          </select>
 
-        <div className="staff-list">
-          <table>
-            <thead>
-              <tr>
-                <th>Staff Name</th>
-                <th>Email</th>
-                <th>Service Name</th>
-                <th>Role</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredStaffList.length > 0 ? (
-                filteredStaffList.map((staff) => (
-                  <tr key={staff._id}>
-                    <td>
-                        {staff.firstName} {staff.lastName}
-                    </td>
-                    <td>
-                        {staff.email}
-                    </td>
-                    <td>
-                        {staff.serviceName}
-                    </td>
-                    <td>
-                        {staff.role}
-                    </td>
-                    <td>
-                      <button className="edit" onClick={() => handleModifyClick(staff._id)}>Edit</button>
-                      <button className="delete" onClick={() => handleDeleteClick(staff._id)}>Delete</button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
+          <div className="staff-list">
+            <table>
+              <thead>
                 <tr>
-                  <td colSpan="3">No matching staff found.</td>
+                  <th>Number</th>
+                  <th>Staff Name</th>
+                  <th>Email</th>
+                  <th>Service Name</th>
+                  <th>Role</th>
+                  <th>Action</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>{renderStaffList}</tbody>
+            </table>
+          </div>
+
+          <div className="pagination">
+            {Array.from({ length: Math.ceil(filteredStaffList.length / staffPerPage) }, (_, index) => (
+              <button key={index + 1} onClick={() => paginate(index + 1)}>
+                {index + 1}
+              </button>
+            ))}
           </div>
         </div>
       </div>
@@ -162,3 +174,6 @@ const StaffList = () => {
 };
 
 export default StaffList;
+
+
+

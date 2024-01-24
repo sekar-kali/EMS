@@ -19,12 +19,12 @@ const StaffPersonalInfo = () => {
     lastName: '',
     serviceName: '',
   });
-
+  const email = JSON.parse(localStorage.getItem('user'));
   useEffect(() => {
     // Fetch staff's information
     const fetchStaffInfo = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/staff/info/:email');
+        const response = await fetch(`http://localhost:5000/api/staff/info/${email}`);
         if (response.ok) {
           const staffInfoData = await response.json();
           setStaffInfo(staffInfoData);

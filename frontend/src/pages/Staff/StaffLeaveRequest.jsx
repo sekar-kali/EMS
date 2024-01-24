@@ -8,6 +8,8 @@ const StaffLeaveRequestList = () => {
   const [leaveRequests, setLeaveRequests] = useState([]);
   const [filteredLeaveRequests, setFilteredLeaveRequests] = useState([]);
   const [statusFilter, setStatusFilter] = useState('All');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [staffLeaveRequestPerPage] = useState(10); // Set your desired number of staff leave requests per page
 
   useEffect(() => {
     // Fetch staff's leave requests
@@ -45,6 +47,7 @@ const StaffLeaveRequestList = () => {
       const filtered = leaveRequests.filter((request) => request.status === statusFilter);
       setFilteredLeaveRequests(filtered);
     }
+    setCurrentPage(1); // Reset page to 1 when filter changes
   }, [statusFilter, leaveRequests]);
 
   const handleStatusFilterChange = (e) => {
@@ -55,44 +58,63 @@ const StaffLeaveRequestList = () => {
     return moment(date).format('DD/MM/YYYY');
   };
 
+  // Pagination
+  const indexOfLastStaffLeaveRequest = currentPage * staffLeaveRequestPerPage;
+  const indexOfFirstStaffLeaveRequest = indexOfLastStaffLeaveRequest - staffLeaveRequestPerPage;
+  const currentStaffLeaveRequestList = filteredLeaveRequests.slice(indexOfFirstStaffLeaveRequest, indexOfLastStaffLeaveRequest);
+
+  const renderStaffLeaveRequestList = currentStaffLeaveRequestList.map((request, index) => (
+    <tr key={request._id}>
+      <td>{indexOfFirstStaffLeaveRequest + index + 1}</td>
+      <td>{formatDate(request.startDate)}</td>
+      <td>{formatDate(request.endDate)}</td>
+      <td>{request.status}</td>
+    </tr>
+  ));
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <>
       <MenuStaff />
       <div className="main-container">
-      <div className="leave-request-list">
-        <h1>Leave Request List</h1>
+        <div className="leave-request-list">
+          <h1>Leave Request List</h1>
 
-        <div className="filter-bar">
-          <label htmlFor="statusFilter">Filter by Status:</label>
-          <select id="statusFilter" onChange={handleStatusFilterChange} value={statusFilter}>
-            <option value="All">All</option>
-            <option value="Approved">Approved</option>
-            <option value="Pending">Pending</option>
-            <option value="Rejected">Rejected</option>
-          </select>
-        </div>
+          <div className="filter-bar">
+            <label htmlFor="statusFilter">Filter by Status:</label>
+            <select id="statusFilter" onChange={handleStatusFilterChange} value={statusFilter}>
+              <option value="All">All</option>
+              <option value="Approved">Approved</option>
+              <option value="Pending">Pending</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
 
-        <div className='leave-request-list'>
-          <table>
-            <thead>
-              <tr>
-                <th>Leave starting date</th>
-                <th>Leave ending date</th>
-                <th>Status</th>
+          <div className='leave-request-list'>
+            <table>
+              <thead>
+                <tr>
+                  <th>Number</th>
+                  <th>Leave starting date</th>
+                  <th>Leave ending date</th>
+                  <th>Status</th>
                 </tr>
               </thead>
-            <tbody>
-          {filteredLeaveRequests.map((request) => (
-            <tr key={request._id}>
-              <td>{formatDate(request.startDate)}</td>
-               <td>{formatDate(request.endDate)}</td>
-               <td>{request.status}</td>
-            </tr>
-          ))}
-        </tbody>
-          </table>
+              <tbody>
+                {renderStaffLeaveRequestList}
+              </tbody>
+            </table>
           </div>
-      </div>
+
+          <div className="pagination">
+            {Array.from({ length: Math.ceil(filteredLeaveRequests.length / staffLeaveRequestPerPage) }, (_, index) => (
+              <button key={index + 1} onClick={() => paginate(index + 1)}>
+                {index + 1}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
       <Footer />
     </>

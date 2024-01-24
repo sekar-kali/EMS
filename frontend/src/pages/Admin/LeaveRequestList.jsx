@@ -9,11 +9,14 @@ const LeaveRequestList = () => {
   const [filteredLeaveRequests, setFilteredLeaveRequests] = useState([]);
   const [filterStatus, setFilterStatus] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [leaveRequestPerPage] = useState(10); // Set your desired number of leave requests per page
 
   useEffect(() => {
     // Fetch all leave requests on component mount
     fetchLeaveRequests();
   }, []);
+
   const authToken = localStorage.getItem('authToken');
 
   const fetchLeaveRequests = async () => {
@@ -26,11 +29,16 @@ const LeaveRequestList = () => {
           Authorization: `Bearer ${authToken}`,
         },
       });
-      const data = await response.json();
-      setLeaveRequests(data);
-      setFilteredLeaveRequests(data);
+
+      if (response.ok) {
+        const data = await response.json();
+        setLeaveRequests(data);
+        setFilteredLeaveRequests(data);
+      } else {
+        console.error('Error fetching leave requests:', response.statusText);
+      }
     } catch (error) {
-      console.error('Error fetching leave requests:', error);
+      console.error('Error fetching leave requests:', error.message);
     }
   };
 
@@ -46,28 +54,28 @@ const LeaveRequestList = () => {
 
   const filterLeaveRequests = (status, query) => {
     let filtered = leaveRequests;
-  
+
     // Apply status filter
     if (status !== 'All') {
       filtered = filtered.filter((request) => request.status === status);
     }
-  
+
     // Apply search filter
     if (query) {
       const lowercaseQuery = query.toLowerCase();
       filtered = filtered.filter((request) => {
         const firstNameIncludes = request.firstName && request.firstName.toLowerCase().includes(lowercaseQuery);
         const lastNameIncludes = request.lastName && request.lastName.toLowerCase().includes(lowercaseQuery);
-        const startDateIncludes = request.startDate && request.startDate.includes(lowercaseQuery);
-        const endDateIncludes = request.endDate && request.endDate.includes(lowercaseQuery);
-  
+        const startDateIncludes = request.startDate && moment(request.startDate).format('DD/MM/YYYY').includes(lowercaseQuery);
+        const endDateIncludes = request.endDate && moment(request.endDate).format('DD/MM/YYYY').includes(lowercaseQuery);
+
         return firstNameIncludes || lastNameIncludes || startDateIncludes || endDateIncludes;
       });
     }
-  
+
     setFilteredLeaveRequests(filtered);
   };
-  
+
   const handleApproveLeaveRequest = async (leaveRequestId) => {
     try {
       // Send request to approve leave request to the backend
@@ -117,9 +125,46 @@ const LeaveRequestList = () => {
       console.error('Error rejecting leave request:', error);
     }
   };
+
   const formatDate = (date) => {
     return moment(date).format('DD/MM/YYYY');
   };
+
+  // Pagination
+  const indexOfLastLeaveRequest = currentPage * leaveRequestPerPage;
+  const indexOfFirstLeaveRequest = indexOfLastLeaveRequest - leaveRequestPerPage;
+  const currentLeaveRequestList = filteredLeaveRequests.slice(indexOfFirstLeaveRequest, indexOfLastLeaveRequest);
+
+  const renderLeaveRequestList = currentLeaveRequestList.map((request, index) => (
+    <tr key={request._id}>
+      <td>{indexOfFirstLeaveRequest + index + 1}</td>
+      <td>{request.firstName} {request.lastName}</td>
+      <td>{formatDate(request.startDate)}</td>
+      <td>{formatDate(request.endDate)}</td>
+      <td>{request.status}</td>
+      <td>
+        {request.documentUrl && (
+          <a href={request.documentUrl} target="_blank" rel="noopener noreferrer">
+            View Document
+          </a>
+        )}
+      </td>
+      <td>
+        {request.status === 'Pending' && (
+          <>
+            <button className="approve-btn" onClick={() => handleApproveLeaveRequest(request._id)}>
+              Approve
+            </button>
+            <button className="reject-btn" onClick={() => handleRejectLeaveRequest(request._id)}>
+              Reject
+            </button>
+          </>
+        )}
+      </td>
+    </tr>
+  ));
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div>
@@ -153,6 +198,7 @@ const LeaveRequestList = () => {
             <table>
               <thead>
                 <tr>
+                  <th>Number</th>
                   <th>Staff Name</th>
                   <th>Start Date</th>
                   <th>End Date</th>
@@ -162,41 +208,17 @@ const LeaveRequestList = () => {
                 </tr>
               </thead>
               <tbody>
-              {filteredLeaveRequests.length > 0 ? (
-                Array.isArray(filteredLeaveRequests) && filteredLeaveRequests.map((request) => (
-                  <tr key={request._id}>
-                    <td>{request.firstName} {request.lastName}</td>
-                    <td>{formatDate(request.startDate)}</td>
-                    <td>{formatDate(request.endDate)}</td>
-                    <td>{request.status}</td>
-                    <td>
-                      {request.documentUrl && (
-                        <a href={request.documentUrl} target="_blank" rel="noopener noreferrer">
-                          View Document
-                        </a>
-                      )}
-                    </td>
-                    <td>
-                      {request.status === 'Pending' && (
-                        <>
-                          <button className="approve-btn" onClick={() => handleApproveLeaveRequest(request._id)}>
-                            Approve
-                          </button>
-                          <button className="reject-btn" onClick={() => handleRejectLeaveRequest(request._id)}>
-                            Reject
-                          </button>
-                        </>
-                      )}
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="2">No matching staff found.</td>
-                </tr>
-              )}
+                {renderLeaveRequestList}
               </tbody>
             </table>
+          </div>
+
+          <div className="pagination">
+            {Array.from({ length: Math.ceil(filteredLeaveRequests.length / leaveRequestPerPage) }, (_, index) => (
+              <button key={index + 1} onClick={() => paginate(index + 1)}>
+                {index + 1}
+              </button>
+            ))}
           </div>
         </div>
       </div>
