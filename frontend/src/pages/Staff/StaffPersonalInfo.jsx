@@ -83,7 +83,7 @@ const StaffPersonalInfo = () => {
   return (
     <>
       <MenuStaff />
-      <div className='main-container'>
+      <div className='main-container bounce-in'>
         <div className="personal-info">
           <h1>Staff Personal Information</h1>
           <div className='form-flex'>

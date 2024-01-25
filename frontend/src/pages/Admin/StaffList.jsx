@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Spinner from '../../components/Spinner.jsx';
 import MenuAdmin from '../../components/MenuAdmin';
 import Footer from '../../components/Footer';
 
 const StaffList = () => {
+  const [loading, setLoading] = useState(true);
   const [staffList, setStaffList] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterOption, setFilterOption] = useState('name');
@@ -29,8 +31,10 @@ const StaffList = () => {
 
       const data = await response.json();
       setStaffList(data);
+      setLoading(false);
     } catch (error) {
       console.error('Error:', error);
+      setLoading(false);
     }
   };
 
@@ -71,7 +75,7 @@ const StaffList = () => {
 
   const handleDeleteClick = async (staffId) => {
     const confirmDelete = window.confirm('Are you sure you want to delete this staff member?');
-
+  
     if (confirmDelete) {
       try {
         const authToken = localStorage.getItem('authToken');
@@ -81,24 +85,25 @@ const StaffList = () => {
             Authorization: `Bearer ${authToken}`,
           },
         });
-
+  
         if (!response.ok) {
           throw new Error('Error deleting staff');
         }
-
+  
         // Refresh the staff list after deletion
         fetchStaffList();
       } catch (error) {
-        console.error('Error deleting staff:', error);
+        console.log('Error deleting staff:', error);
+        console.log(staffId);
       }
     }
   };
+  
 
   // Pagination
   const indexOfLastStaff = currentPage * staffPerPage;
   const indexOfFirstStaff = indexOfLastStaff - staffPerPage;
   const currentStaffList = filteredStaffList.slice(indexOfFirstStaff, indexOfLastStaff);
-
 
   const renderStaffList = currentStaffList.map((staff, index) => (
     <tr key={staff._id}>
@@ -125,7 +130,7 @@ const StaffList = () => {
   return (
     <>
       <MenuAdmin />
-      <div className="main-container">
+      <div className="main-container fade-in">
         <div className="search-bar">
           <h1>Staff List</h1>
 
@@ -144,19 +149,23 @@ const StaffList = () => {
           </select>
 
           <div className="staff-list">
-            <table>
-              <thead>
-                <tr>
-                  <th>Number</th>
-                  <th>Staff Name</th>
-                  <th>Email</th>
-                  <th>Service Name</th>
-                  <th>Role</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>{renderStaffList}</tbody>
-            </table>
+            {loading ? (
+              <Spinner />
+            ) : (
+              <table>
+                <thead>
+                  <tr>
+                    <th>Number</th>
+                    <th>Staff Name</th>
+                    <th>Email</th>
+                    <th>Service Name</th>
+                    <th>Role</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>{renderStaffList}</tbody>
+              </table>
+            )}
           </div>
 
           <div className="pagination">
@@ -174,6 +183,3 @@ const StaffList = () => {
 };
 
 export default StaffList;
-
-
-

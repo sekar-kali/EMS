@@ -75,24 +75,24 @@ const CreateStaff = ({ updateStaffList, displayToast }) => {
   return (
     <>
     <MenuAdmin />
-    <div className="main-container">
+    <div className="main-container bounce-in">
     <div className="create-staff-form">
       <h2>Create Staff Account</h2>
       <div className='form-flex'>
-      <label>Email:</label>
-      <input type="email" name="email" value={staffDetails.email} onChange={handleInputChange} />
+      <label for="email">Email:</label>
+      <input type="email"  id="email" name="email" value={staffDetails.email} onChange={handleInputChange} />
       </div>
       <div className='form-flex'>
-      <label>First Name:</label>
-      <input type="text" name="firstName" value={staffDetails.firstName} onChange={handleInputChange} />
+      <label for="firstName">First Name:</label>
+      <input type="text"  id="firstName" name="firstName" value={staffDetails.firstName} onChange={handleInputChange} />
       </div>
       <div className='form-flex'>
-      <label>Last Name:</label>
-      <input type="text" name="lastName" value={staffDetails.lastName} onChange={handleInputChange} />
+      <label for="lastName">Last Name:</label>
+      <input type="text" id="lastName" value={staffDetails.lastName} onChange={handleInputChange} />
       </div>
       <div className='form-flex'>
-      <label>Service Name:</label>
-      <input type="text" name="serviceName" value={staffDetails.serviceName} onChange={handleInputChange} />
+      <label for="serviceName">Service Name:</label>
+      <input type="text" id="serviceName" value={staffDetails.serviceName} onChange={handleInputChange} />
       </div>
       <button onClick={handleCreateStaff} disabled={loading}>
         {loading ? 'Creating Staff Account...' : 'Create Staff Account'}

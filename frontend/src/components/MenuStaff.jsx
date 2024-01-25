@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import '../menu.css';
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import logoImage from '../logo.png';
 
 const MenuStaff = () => {
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [openSubMenu, setOpenSubMenu] = useState('');
 
   const toggleSidebar = () => {
@@ -37,63 +37,70 @@ const MenuStaff = () => {
             </div>
             <div className="submenu">
               <Link to={`/staff/dashboard`} className="link submenu-title">Staff Dashboard</Link>
-              </div>
+            </div>
           </li>
 
-            <li className="dropdown">
-                <div className="title">
-                    <div className="link">
-                        <i className='bx bx-briefcase'></i>
-                        <span className="name">Missions</span>
-                    </div>
-                    <i className='bx bxs-chevron-down'></i>
-                </div>
-                <div className="submenu">
-                    <span className="link submenu-title">Missions</span>
-                    <Link to={`/staff/mission-list`} className='link'>Missions List</Link>
-                </div>
-            </li>
+          <li className="dropdown">
+            <div className="title">
+              <div className="link">
+                <i className='bx bx-briefcase'></i>
+                <span className="name">Missions</span>
+              </div>
+              <i className='bx bxs-chevron-down'></i>
+            </div>
+            <div className="submenu">
+              <span className="link submenu-title">
+                <Link to={`/staff/mission-list`} className='link'>Missions List</Link>
+              </span>
+            </div>
+          </li>
 
-            <li className="dropdown">
-                <div className="title">
-                    <div className="link">
-                        <i className='bx bx-book-alt'></i>
-                        <span className="name">Leave Request</span>
-                    </div>
-                    <i className='bx bxs-chevron-down'></i>
-                </div>
-                <div className="submenu">
-                <span className="link submenu-title">Leave Request</span>
+          <li className="dropdown">
+            <div className="title">
+              <div className="link">
+                <i className='bx bx-book-alt'></i>
+                <span className="name">Leave Request</span>
+              </div>
+              <i className='bx bxs-chevron-down'></i>
+            </div>
+            <div className="submenu">
+              <span className="link submenu-title">
                 <Link to={`/staff/leave-request-list`} className='link'>Leave Request List</Link>
+              </span>
+              <span className="link submenu-title">
                 <Link to={`/staff/create-leave-request`} className='link'>Create Leave Request</Link>
-                </div>
-            </li>
+              </span>
+            </div>
+          </li>
 
-            <li>
-                <div className="title">
-                    <div className="link">
-                        <i className='bx bxs-user-detail'></i>
-                        <span className="name">Personal Info</span>
-                    </div>
-                    <i className='bx bxs-chevron-down'></i>
-                </div>
-                < div className="submenu">
-                    <span className="link submenu-title">Personal Info</span>
-                    <Link to={`/staff/personal-info`} className='link'>My Info</Link>
-                </div>
-            </li>
+          <li>
+            <div className="title">
+              <div className="link">
+                <i className='bx bxs-user-detail'></i>
+                <span className="name">Personal Info</span>
+              </div>
+              <i className='bx bxs-chevron-down'></i>
+            </div>
+            <div className="submenu">
+              <span className="link submenu-title">
+                <Link to={`/staff/personal-info`} className='link'>My Info</Link>
+              </span>
+            </div>
+          </li>
 
-            <li>
-                <div className="title">
-                    <div className="link">
-                        <i className='bx bx-log-out'></i>
-                        <span className="name">Logout</span>
-                    </div>
-                </div>
-                <div className="submenu">
-                    <Link to="/auth/logout" className='link'>Logout</Link>
-                </div>
-            </li>
+          <li>
+            <div className="title">
+              <div className="link">
+                <i className='bx bx-log-out'></i>
+                <span className="name">Logout</span>
+              </div>
+            </div>
+            <div className="submenu">
+              <span className="link submenu-title">
+                <Link to="/auth/logout" className='link'>Logout</Link>
+              </span>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
@@ -101,4 +108,3 @@ const MenuStaff = () => {
 };
 
 export default MenuStaff;
-

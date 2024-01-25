@@ -51,7 +51,7 @@ const App = () => {
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/create-mission" element={<CreateMission />} />
         <Route path="/admin/missions-list" element={<MissionList />} />
-        <Route path="/admin/leave-request" element={<LeaveRequestList />} />
+        <Route path="/admin/leave-request-list" element={<LeaveRequestList />} />
         <Route path="/admin/staff-list" element={<StaffList />} />
         <Route path="/admin/create-staff" element={<CreateStaff />} />
         <Route path="/update-staff/:staffId" element={<ModifyStaffForm />} />

@@ -54,7 +54,7 @@ const StaffDashboard = () => {
             Authorization: `Bearer ${authToken}`,
           },
         body: JSON.stringify({
-          staffEmail: staffInfo.email, 
+          staffEmail: email, 
           
         }),
       });
@@ -77,7 +77,7 @@ const StaffDashboard = () => {
           Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify({
-          staffEmail: staffInfo.email,
+          staffEmail: email,
           
         }),
       });
@@ -98,7 +98,7 @@ const StaffDashboard = () => {
   return (
     <>
       <MenuStaff />
-      <div className="main-container">
+      <div className="main-container fade-in">
         <h1>Staff Dashboard</h1>
         
         <div className="dashboard-stats">
@@ -114,8 +114,12 @@ const StaffDashboard = () => {
           </div>
         </div>
         <div className="dashboard-welcome">
-            <h2>Welcome {staffInfo.firstName} {staffInfo.lastName}</h2>
+            <h2 className='bounce-in'>Welcome {staffInfo.firstName} {staffInfo.lastName}</h2>
+            <iframe width="360" height="215" src="https://www.youtube-nocookie.com/embed/kcckpWgkhP0?si=C8MV0Dl8CuBJq7V9&amp;start=30" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
           </div>
+      </div>
+      <div className="dashboard-welcome-video">
+      
       </div>
       <Footer />
     </>

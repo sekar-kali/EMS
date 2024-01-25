@@ -103,30 +103,33 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
   return (
     <>
       <MenuStaff />
-      <div className="main-container">
+      <div className="main-container bounce-in">
         <div className='create-leave-form'>
           <h2>Leave Request Form</h2>
           <form>
             <div className='form-flex'>
-              <label>Start Date:</label>
+              <label for="startDate">Start Date:</label>
               <input
                 type="date"
+                id="startDate"
                 value={leaveRequestForm.startDate}
                 onChange={(e) => setLeaveRequestForm({ ...leaveRequestForm, startDate: e.target.value })}
               />
             </div>
             <div className='form-flex'>
-              <label>End Date:</label>
+              <label for="endDate">End Date:</label>
               <input
                 type="date"
+                id="endDate"
                 value={leaveRequestForm.endDate}
                 onChange={(e) => setLeaveRequestForm({ ...leaveRequestForm, endDate: e.target.value })}
               />
             </div>
             <div className='form-flex'>
-              <label>Reason:</label>
+              <label for="reason">Reason:</label>
               <select
                 value={leaveRequestForm.reason}
+                id="reason"
                 onChange={(e) => setLeaveRequestForm({ ...leaveRequestForm, reason: e.target.value })}
               >
                 <option value="annual">Annual Leave</option>
@@ -135,15 +138,16 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
               </select>
             </div>
             <div className='form-flex'>
-              <label>Description :</label>
+              <label for="description">Description :</label>
               <textarea
                 value={leaveRequestForm.description}
+                id="description"
                 onChange={(e) => setLeaveRequestForm({ ...leaveRequestForm, description: e.target.value })}
               />
             </div>
             <div className='form-flex'>
-              <label>Document (Optional):</label>
-              <input type="file" accept=".pdf,.doc,.docx" onChange={handleFileChange} />
+              <label for="document">Document (Optional):</label>
+              <input type="file" id="document" accept=".pdf,.doc,.docx" onChange={handleFileChange} />
             </div>
             <button type="button" onClick={handleLeaveRequest}>
               Submit Leave Request

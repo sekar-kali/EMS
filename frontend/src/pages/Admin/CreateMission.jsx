@@ -84,28 +84,28 @@ const CreateMission = () => {
   return (
     <>
       <MenuAdmin />
-      <div className="main-container">
+      <div className="main-container bounce-in">
       <div className="create-mission-form">
       <h2>Create Mission</h2>
       <div className='form-flex'>
-      <label>Title:</label>
-      <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+      <label for="title">Title:</label>
+      <input type="text"  id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
       </div>
       <div className='form-flex'>
-      <label>Description:</label>
-      <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+      <label for="description">Description:</label>
+      <textarea  id="description" value={description} onChange={(e) => setDescription(e.target.value)} />
       </div>
       <div className='form-flex'>
-      <label>Start Date:</label>
-      <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+      <label for="startDate">Start Date:</label>
+      <input type="date"  id="startDate" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
       </div>
       <div className='form-flex'>
-      <label>End Date:</label>
-      <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+      <label for="endDate">End Date:</label>
+      <input type="date"  id="endDate" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
       </div>
       <div className='form-flex'>
-      <label>Select Staff:</label>
-      <select value={selectedStaff} onChange={(e) => setSelectedStaff(e.target.value)}>
+      <label for="selectStaff">Select Staff:</label>
+      <select id="selectStaff" value={selectedStaff} onChange={(e) => setSelectedStaff(e.target.value)}>
         <option value="" disabled>Select Staff</option>
         {staffList.map((staff) => (
           <option key={staff._id} value={staff._id}>

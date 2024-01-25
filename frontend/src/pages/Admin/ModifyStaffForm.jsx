@@ -1,10 +1,13 @@
+// ModifyStaffForm.jsx
 import React, { useState, useEffect } from 'react';
+import Spinner from '../../components/Spinner.jsx';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from '../../components/Footer';
 import MenuAdmin from '../../components/MenuAdmin';
 
 const ModifyStaffForm = ({ staffId }) => {
+  const [loading, setLoading] = useState(true);
   const [staffDetails, setStaffDetails] = useState({
     firstName: '',
     lastName: '',
@@ -15,6 +18,10 @@ const ModifyStaffForm = ({ staffId }) => {
   useEffect(() => {
     const fetchStaffDetails = async () => {
       try {
+        if (!staffId) {
+          return <div>StaffId is not available.</div>;
+        }
+
         const authToken = localStorage.getItem('authToken');
         const response = await fetch(`http://localhost:5000/api/admin/staff/${staffId}`, {
           headers: {
@@ -28,8 +35,10 @@ const ModifyStaffForm = ({ staffId }) => {
 
         const data = await response.json();
         setStaffDetails(data);
+        setLoading(false);
       } catch (error) {
         console.log('Error:', error);
+        setLoading(false);
       }
     };
 
@@ -59,7 +68,7 @@ const ModifyStaffForm = ({ staffId }) => {
 
       toast.success('Staff details updated successfully!');
     } catch (error) {
-      toast.error('Error updating staff details:', error);
+      toast.error('Error updating staff details:', error.message);
     }
   };
 
@@ -67,7 +76,11 @@ const ModifyStaffForm = ({ staffId }) => {
     <>
       <MenuAdmin />
       <div className="main-container">
-        <div className="update-staff-form">
+        {loading ? (
+          <Spinner />
+        ) : (
+          <div className="update-staff-form">
+            <h1>Modify Staff</h1>
           <h1>Modify Staff</h1>
           <form>
             <div className='form-flex'>
@@ -110,9 +123,10 @@ const ModifyStaffForm = ({ staffId }) => {
             </div>
             <button type="button" onClick={handleSaveChanges}>
               Save Changes
-            </button>
-          </form>
-        </div>
+              </button>
+            </form>
+          </div>
+        )}
       </div>
       <ToastContainer />
       <Footer />

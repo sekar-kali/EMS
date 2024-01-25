@@ -9,14 +9,15 @@ const StaffLeaveRequestList = () => {
   const [filteredLeaveRequests, setFilteredLeaveRequests] = useState([]);
   const [statusFilter, setStatusFilter] = useState('All');
   const [currentPage, setCurrentPage] = useState(1);
-  const [staffLeaveRequestPerPage] = useState(10); // Set your desired number of staff leave requests per page
+  const staffLeaveRequestPerPage = 10;
 
   useEffect(() => {
-    // Fetch staff's leave requests
     const authToken = localStorage.getItem('authToken');
+    const email = JSON.parse(localStorage.getItem('user'));
+
     const fetchStaffLeaveRequests = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/staff/leave-requests', {
+        const response = await fetch(`http://localhost:5000/api/staff/leave-requests/${email}`, {
           method: 'GET',
           headers: {
             Accept: 'application/json',
@@ -26,10 +27,10 @@ const StaffLeaveRequestList = () => {
         });
         if (response.ok) {
           const leaveRequestsData = await response.json();
-          setLeaveRequests(leaveRequestsData);
-          setFilteredLeaveRequests(leaveRequestsData);
+          setLeaveRequests(leaveRequestsData || []); // Ensure it's an array, or default to an empty array
+          setFilteredLeaveRequests(leaveRequestsData || []); // Ensure it's an array, or default to an empty array
         } else {
-          console.error('Error fetching staff leave requests:', response.statusText);
+          console.log('Error fetching staff leave requests:', response.statusText);
         }
       } catch (error) {
         console.error('Error fetching staff leave requests:', error.message);
@@ -39,45 +40,48 @@ const StaffLeaveRequestList = () => {
     fetchStaffLeaveRequests();
   }, []);
 
-  // Apply status filter
   useEffect(() => {
     if (statusFilter === 'All') {
       setFilteredLeaveRequests(leaveRequests);
     } else {
-      const filtered = leaveRequests.filter((request) => request.status === statusFilter);
+      const filtered = Array.isArray(leaveRequests)
+        ? leaveRequests.filter((request) => request.status === statusFilter)
+        : [];
       setFilteredLeaveRequests(filtered);
     }
-    setCurrentPage(1); // Reset page to 1 when filter changes
+    setCurrentPage(1);
   }, [statusFilter, leaveRequests]);
 
   const handleStatusFilterChange = (e) => {
     setStatusFilter(e.target.value);
   };
 
-  const formatDate = (date) => {
-    return moment(date).format('DD/MM/YYYY');
-  };
+  const formatDate = (date) => moment(date).format('DD/MM/YYYY');
 
-  // Pagination
-  const indexOfLastStaffLeaveRequest = currentPage * staffLeaveRequestPerPage;
-  const indexOfFirstStaffLeaveRequest = indexOfLastStaffLeaveRequest - staffLeaveRequestPerPage;
-  const currentStaffLeaveRequestList = filteredLeaveRequests.slice(indexOfFirstStaffLeaveRequest, indexOfLastStaffLeaveRequest);
+// Pagination
+const indexOfLastStaffLeaveRequest = currentPage * staffLeaveRequestPerPage;
+const indexOfFirstStaffLeaveRequest = indexOfLastStaffLeaveRequest - staffLeaveRequestPerPage;
 
-  const renderStaffLeaveRequestList = currentStaffLeaveRequestList.map((request, index) => (
-    <tr key={request._id}>
-      <td>{indexOfFirstStaffLeaveRequest + index + 1}</td>
-      <td>{formatDate(request.startDate)}</td>
-      <td>{formatDate(request.endDate)}</td>
-      <td>{request.status}</td>
-    </tr>
-  ));
+
+const currentStaffLeaveRequestList = Array.isArray(filteredLeaveRequests)
+  ? filteredLeaveRequests.slice(indexOfFirstStaffLeaveRequest, indexOfLastStaffLeaveRequest)
+  : [];
+
+const renderStaffLeaveRequestList = currentStaffLeaveRequestList.map((request, index) => (
+  <tr key={request._id}>
+    <td>{indexOfFirstStaffLeaveRequest + index + 1}</td>
+    <td>{formatDate(request.startDate)}</td>
+    <td>{formatDate(request.endDate)}</td>
+    <td>{request.status}</td>
+  </tr>
+));
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <>
       <MenuStaff />
-      <div className="main-container">
+      <div className="main-container scale-in">
         <div className="leave-request-list">
           <h1>Leave Request List</h1>
 
@@ -91,7 +95,7 @@ const StaffLeaveRequestList = () => {
             </select>
           </div>
 
-          <div className='leave-request-list'>
+          <div className="leave-request-list">
             <table>
               <thead>
                 <tr>
@@ -101,9 +105,7 @@ const StaffLeaveRequestList = () => {
                   <th>Status</th>
                 </tr>
               </thead>
-              <tbody>
-                {renderStaffLeaveRequestList}
-              </tbody>
+              <tbody>{renderStaffLeaveRequestList}</tbody>
             </table>
           </div>
 

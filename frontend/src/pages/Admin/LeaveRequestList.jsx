@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
+import Spinner from '../../components/Spinner.jsx';
 import '../../styles.css';
 import MenuAdmin from '../../components/MenuAdmin';
 import Footer from '../../components/Footer';
 
 const LeaveRequestList = () => {
+  const [loading, setLoading] = useState(true);
   const [leaveRequests, setLeaveRequests] = useState([]);
   const [filteredLeaveRequests, setFilteredLeaveRequests] = useState([]);
   const [filterStatus, setFilterStatus] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [leaveRequestPerPage] = useState(10); // Set your desired number of leave requests per page
+  const [leaveRequestPerPage] = useState(10);
 
   useEffect(() => {
-    // Fetch all leave requests on component mount
     fetchLeaveRequests();
   }, []);
 
@@ -34,11 +35,11 @@ const LeaveRequestList = () => {
         const data = await response.json();
         setLeaveRequests(data);
         setFilteredLeaveRequests(data);
-      } else {
-        console.error('Error fetching leave requests:', response.statusText);
       }
     } catch (error) {
-      console.error('Error fetching leave requests:', error.message);
+      console.error('Error fetching leave requests:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -55,12 +56,10 @@ const LeaveRequestList = () => {
   const filterLeaveRequests = (status, query) => {
     let filtered = leaveRequests;
 
-    // Apply status filter
     if (status !== 'All') {
       filtered = filtered.filter((request) => request.status === status);
     }
 
-    // Apply search filter
     if (query) {
       const lowercaseQuery = query.toLowerCase();
       filtered = filtered.filter((request) => {
@@ -78,7 +77,6 @@ const LeaveRequestList = () => {
 
   const handleApproveLeaveRequest = async (leaveRequestId) => {
     try {
-      // Send request to approve leave request to the backend
       const response = await fetch(`http://localhost:5000/api/admin/approve-leave-request/${leaveRequestId}`, {
         method: 'PUT',
         headers: {
@@ -90,7 +88,6 @@ const LeaveRequestList = () => {
 
       if (response.ok) {
         console.log('Leave request approved successfully!');
-        // Refresh leave requests after approval
         fetchLeaveRequests();
       } else {
         const data = await response.json();
@@ -103,7 +100,6 @@ const LeaveRequestList = () => {
 
   const handleRejectLeaveRequest = async (leaveRequestId) => {
     try {
-      // Send request to reject leave request to the backend
       const response = await fetch(`http://localhost:5000/api/admin/reject-leave-request/${leaveRequestId}`, {
         method: 'PUT',
         headers: {
@@ -115,7 +111,6 @@ const LeaveRequestList = () => {
 
       if (response.ok) {
         console.log('Leave request rejected successfully!');
-        // Refresh leave requests after rejection
         fetchLeaveRequests();
       } else {
         const data = await response.json();
@@ -130,7 +125,6 @@ const LeaveRequestList = () => {
     return moment(date).format('DD/MM/YYYY');
   };
 
-  // Pagination
   const indexOfLastLeaveRequest = currentPage * leaveRequestPerPage;
   const indexOfFirstLeaveRequest = indexOfLastLeaveRequest - leaveRequestPerPage;
   const currentLeaveRequestList = filteredLeaveRequests.slice(indexOfFirstLeaveRequest, indexOfLastLeaveRequest);
@@ -170,7 +164,7 @@ const LeaveRequestList = () => {
     <div>
       <MenuAdmin />
       <div className="main-container">
-        <div className="leave-request-list-container">
+        <div className="leave-request-list-container scale-in">
           <h1>Leave Requests</h1>
 
           <div className="filter-bar">
@@ -195,6 +189,9 @@ const LeaveRequestList = () => {
           </div>
 
           <div className='leave-request-list'>
+          {loading ? (
+              <Spinner />
+            ) : (
             <table>
               <thead>
                 <tr>
@@ -211,8 +208,8 @@ const LeaveRequestList = () => {
                 {renderLeaveRequestList}
               </tbody>
             </table>
+            )}
           </div>
-
           <div className="pagination">
             {Array.from({ length: Math.ceil(filteredLeaveRequests.length / leaveRequestPerPage) }, (_, index) => (
               <button key={index + 1} onClick={() => paginate(index + 1)}>

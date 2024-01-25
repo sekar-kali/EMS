@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
+import Spinner from '../../components/Spinner.jsx';
 import Footer from '../../components/Footer';
 import MenuAdmin from '../../components/MenuAdmin';
 
 const MissionList = () => {
+  const [loading, setLoading] = useState(true);
   const [missions, setMissions] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterChoice, setFilterChoice] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
-  const [missionPerPage] = useState(10); // Set your desired number of missions per page
+  const [missionPerPage] = useState(10);
 
   useEffect(() => {
     const authToken = localStorage.getItem('authToken');
@@ -27,11 +29,14 @@ const MissionList = () => {
         if (response.ok) {
           const missionData = await response.json();
           setMissions(missionData);
+          setLoading(false);
         } else {
           console.error('Error fetching missions:', response.statusText);
+          setLoading(false);
         }
       } catch (error) {
         console.error('Error fetching missions:', error.message);
+        setLoading(false);
       }
     };
 
@@ -44,7 +49,7 @@ const MissionList = () => {
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
-    setCurrentPage(1); 
+    setCurrentPage(1);
   };
 
   const handleFilterChange = (e) => {
@@ -72,7 +77,7 @@ const MissionList = () => {
           mission.title.toLowerCase().includes(lowercasedQuery) ||
           (mission.assignedTo &&
             (mission.assignedTo.firstName.toLowerCase().includes(lowercasedQuery) ||
-            mission.assignedTo.lastName.toLowerCase().includes(lowercasedQuery))) ||
+              mission.assignedTo.lastName.toLowerCase().includes(lowercasedQuery))) ||
           moment(mission.startDate).format('DD/MM/YYYY').includes(lowercasedQuery) ||
           moment(mission.endDate).format('DD/MM/YYYY').includes(lowercasedQuery)
         );
@@ -100,7 +105,7 @@ const MissionList = () => {
     <>
       <MenuAdmin />
 
-      <div className="main-container">
+      <div className="main-container slide-in">
         <h1>Mission List</h1>
         <div className='search-bar'>
           <input
@@ -118,21 +123,25 @@ const MissionList = () => {
           </select>
         </div>
         <div className='staff-list'>
-          <table>
-            <thead>
-              <tr>
-                <th>Number</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Assigned Staff</th>
-              </tr>
-            </thead>
-            <tbody>
-              {renderMissionList}
-            </tbody>
-          </table>
+          {loading ? (
+            <Spinner />
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  <th>Number</th>
+                  <th>Title</th>
+                  <th>Description</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Assigned Staff</th>
+                </tr>
+              </thead>
+              <tbody>
+                {renderMissionList}
+              </tbody>
+            </table>
+          )}
         </div>
         <div className="pagination">
           {Array.from({ length: Math.ceil(missions.filter(filterMissions).length / missionPerPage) }, (_, index) => (

@@ -58,7 +58,7 @@ export const getStaffInfo = async (req, res) => {
 
 export const getStaffMissions = async (req, res) => {
   try {
-    const staffEmail = req.staffId;
+    const staffEmail = req.params.email;
 
     const staff = await StaffModel.findOne({ email: staffEmail });
 
@@ -75,35 +75,32 @@ export const getStaffMissions = async (req, res) => {
   }
 };
 
+
 export const getStaffLeaveRequests = async (req, res) => {
   try {
-    const staffEmail = req.staffId;
+    const staffEmail = req.params.email;
 
     // Find the staff member using the email
-    const staff = await StaffModel.findOne({ email: staffEmail }).populate('leaveRequests');
+    const staff = await StaffModel.findOne({ email: staffEmail }).populate({
+      path: 'leaveRequests',
+      select: 'startDate endDate status',
+    });
 
     if (!staff) {
       return res.status(404).json({ message: 'Staff not found' });
     }
 
     if (!staff.leaveRequests || staff.leaveRequests.length === 0) {
-      return res.status(200).json({ message: 'No leave requests found for the staff' });
+      return res.status(200).json([]);
     }
 
-    // Extract and format data to include 'firstName' and 'lastName' in each leave request
-    const formattedLeaveRequests = staff.leaveRequests.map(request => ({
-      ...request.toObject(), 
-      firstName: staff.firstName,
-      lastName: staff.lastName,
-      email: staff.email,
-    }));
-
-    res.json(formattedLeaveRequests);
+    res.json(staff.leaveRequests);
   } catch (error) {
     console.error('Error fetching staff leave requests:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 
 
 export const createLeaveRequest = async (req, res) => {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import MenuAdmin from '../../components/MenuAdmin';
+import '../../styles.css';
 
 const AdminDashboard = () => {
   // State to store dashboard statistics
@@ -40,33 +41,33 @@ const AdminDashboard = () => {
   return (
     <>
       <MenuAdmin />
-      <div className="main-container">
+      <div className="main-container fade-in">
         <h1>Admin Dashboard</h1>
-        
+
         <div className="dashboard-stats">
           <div className="dashboard-total-staff-stat">
             <h2>Total Staff</h2>
             <p>{dashboardStats.totalStaff}</p>
           </div>
-          
+
           <div className="dashboard-staff-month-stat">
             <h2>New Staff This Month</h2>
             <p>{dashboardStats.newStaffThisMonth}</p>
           </div>
-          
+
           <div className="dashboard-mission-stat">
             <h2>Total Missions This Month</h2>
             <p>{dashboardStats.totalMissionsThisMonth}</p>
           </div>
-          
+
           <div className="dashboard-leave-stat">
             <h2>Staff On Leave This Month</h2>
             <p>{dashboardStats.staffOnLeaveThisMonth}</p>
           </div>
         </div>
         <div className="dashboard-welcome">
-            <h2>Welcome ADMIN</h2>
-          </div>
+          <h2 className='bounce-in'>Welcome ADMIN</h2>
+        </div>
       </div>
       <Footer />
     </>

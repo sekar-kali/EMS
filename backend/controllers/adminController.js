@@ -3,6 +3,7 @@ import StaffModel from '../models/Staff.js';
 import LeaveRequestModel from '../models/LeaveRequest.js';
 import dotenv from 'dotenv';
 import MissionModel from '../models/Mission.js';
+import mongoose from 'mongoose';
 
 dotenv.config();  
 
@@ -75,15 +76,7 @@ export const createStaff = async (req, res) => {
     pass: process.env.MAIL_PASSWORD
   }
 });
-      
-    //   service: 'gmail',
-    //   port : 587,
-    //   host : 'smtp.gmail.com',
-    //   auth: {
-    //     user: process.env.MAIL,
-    //     pass: process.env.MAIL_PASSWORD,
-    //   },
-    // });
+    
 
     const confirmationLink = `${process.env.FRONTEND_URL}/create-password?email=${email}`;
 
@@ -110,12 +103,10 @@ export const deleteStaff = async (req, res) => {
   try {
     const { staffId } = req.params;
 
-    // Check if the staffId is a valid ObjectId (for MongoDB)
     if (!mongoose.isValidObjectId(staffId)) {
-      return res.status(400).json({ error: 'Invalid staff ID' });
+      return res.status(400).json({ error: 'Invalid staff ID format' });
     }
 
-  
     const deletedStaff = await StaffModel.findByIdAndDelete(staffId);
 
     if (!deletedStaff) {
@@ -125,9 +116,15 @@ export const deleteStaff = async (req, res) => {
     res.status(200).json({ message: 'Staff deleted successfully' });
   } catch (error) {
     console.error('Error deleting staff:', error);
+
+    if (error instanceof mongoose.Error.CastError) {
+      return res.status(400).json({ error: 'Invalid staff ID format' });
+    }
+
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
 
 export const getStaffList = async (req, res) => {
   try {
@@ -404,11 +401,18 @@ export const sendEmail = async (emailOptions) => {
 };
 
 // Update staff details
+// Assuming you have required/imported your StaffModel
+
 export const updateStaff = async (req, res) => {
   const { staffId } = req.params;
   const { firstName, lastName, role, email } = req.body;
 
   try {
+    // Validate if staffId is a valid ObjectId (assumes you're using Mongoose)
+    if (!mongoose.Types.ObjectId.isValid(staffId)) {
+      return res.status(400).json({ message: 'Invalid staffId' });
+    }
+
     // Fetch the staff by ID from the database
     const staff = await StaffModel.findById(staffId);
 
@@ -421,7 +425,6 @@ export const updateStaff = async (req, res) => {
     staff.lastName = lastName;
     staff.role = role;
     staff.email = email;
-
 
     // Save the updated staff details
     await staff.save();

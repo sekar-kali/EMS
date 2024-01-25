@@ -4,7 +4,7 @@ import { Link} from 'react-router-dom';
 import logoImage from '../logo.png';
 
 const MenuAdmin = () => {
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
@@ -60,7 +60,7 @@ const MenuAdmin = () => {
                 </div>
                 <div className="submenu">
                 <span className="link submenu-title">Leave Request</span>
-                <Link to={`/admin/leave-request`} className='link'>Leave Request List</Link>
+                <Link to={`/admin/leave-request-list`} className='link'>Leave Request List</Link>
                 </div>
             </li>
 

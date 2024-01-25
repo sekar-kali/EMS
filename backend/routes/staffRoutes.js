@@ -15,8 +15,8 @@ const staffRoutes = express.Router();
 
 //Get method routes
 staffRoutes.get('/info/:email', getStaffInfo);
-staffRoutes.get('/missions', getStaffMissions);
-staffRoutes.get('/leave-requests', getStaffLeaveRequests);
+staffRoutes.get('/missions/:email', getStaffMissions);
+staffRoutes.get('/leave-requests/:email', getStaffLeaveRequests);
 
 //Post method routes
 staffRoutes.post('/change-details-request', changeDetailsRequest);

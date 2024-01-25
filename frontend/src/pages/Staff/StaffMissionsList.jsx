@@ -12,9 +12,11 @@ const StaffMissionsList = () => {
 
   useEffect(() => {
     // Fetch staff's missions
+    const authToken = localStorage.getItem('authToken');
+    const email = JSON.parse(localStorage.getItem('user'));
     const fetchStaffMissions = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/staff/missions', {
+        const response = await fetch(`http://localhost:5000/api/staff/missions/${email}`, {
           method: 'GET',
           headers: {
             Accept: 'application/json',
@@ -50,7 +52,7 @@ const StaffMissionsList = () => {
   return (
     <>
       <MenuStaff />
-      <div className="main-container">
+      <div className="main-container slide-in">
         <div className="missions-list">
           <h1>Missions List</h1>
           <div className='form-flex'>
