@@ -24,6 +24,7 @@ const StaffMissionsList = () => {
             Authorization: `Bearer ${authToken}`,
           },
         });
+    
         if (response.ok) {
           const missionsData = await response.json();
           const currentDate = new Date();
@@ -38,6 +39,7 @@ const StaffMissionsList = () => {
 
           setUpcomingMissions(upcoming);
           setPastMissions(past);
+          console.log(upcoming);
         } else {
           console.error('Error fetching staff missions:', response.statusText);
         }

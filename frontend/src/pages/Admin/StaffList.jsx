@@ -149,9 +149,9 @@ const StaffList = () => {
           </select>
 
           <div className="staff-list">
-            {loading ? (
+            {/* {loading === 'abc' ? (
               <Spinner />
-            ) : (
+            ) : ( */}
               <table>
                 <thead>
                   <tr>
@@ -165,7 +165,7 @@ const StaffList = () => {
                 </thead>
                 <tbody>{renderStaffList}</tbody>
               </table>
-            )}
+            {/* )} */}
           </div>
 
           <div className="pagination">

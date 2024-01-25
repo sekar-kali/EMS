@@ -6,7 +6,7 @@ import MenuStaff from '../../components/MenuStaff';
 
 const StaffLeaveRequestList = () => {
   const [leaveRequests, setLeaveRequests] = useState([]);
-  const [filteredLeaveRequests, setFilteredLeaveRequests] = useState([]);
+  const [StaffFilteredLeaveRequests, setStaffFilteredLeaveRequests] = useState([]);
   const [statusFilter, setStatusFilter] = useState('All');
   const [currentPage, setCurrentPage] = useState(1);
   const staffLeaveRequestPerPage = 10;
@@ -27,8 +27,9 @@ const StaffLeaveRequestList = () => {
         });
         if (response.ok) {
           const leaveRequestsData = await response.json();
-          setLeaveRequests(leaveRequestsData || []); // Ensure it's an array, or default to an empty array
-          setFilteredLeaveRequests(leaveRequestsData || []); // Ensure it's an array, or default to an empty array
+          console.log(leaveRequestsData);
+          setLeaveRequests(leaveRequestsData || []);
+          setStaffFilteredLeaveRequests(leaveRequestsData || []);
         } else {
           console.log('Error fetching staff leave requests:', response.statusText);
         }
@@ -42,12 +43,12 @@ const StaffLeaveRequestList = () => {
 
   useEffect(() => {
     if (statusFilter === 'All') {
-      setFilteredLeaveRequests(leaveRequests);
+      setStaffFilteredLeaveRequests(leaveRequests);
     } else {
       const filtered = Array.isArray(leaveRequests)
         ? leaveRequests.filter((request) => request.status === statusFilter)
         : [];
-      setFilteredLeaveRequests(filtered);
+      setStaffFilteredLeaveRequests(filtered);
     }
     setCurrentPage(1);
   }, [statusFilter, leaveRequests]);
@@ -63,8 +64,8 @@ const indexOfLastStaffLeaveRequest = currentPage * staffLeaveRequestPerPage;
 const indexOfFirstStaffLeaveRequest = indexOfLastStaffLeaveRequest - staffLeaveRequestPerPage;
 
 
-const currentStaffLeaveRequestList = Array.isArray(filteredLeaveRequests)
-  ? filteredLeaveRequests.slice(indexOfFirstStaffLeaveRequest, indexOfLastStaffLeaveRequest)
+const currentStaffLeaveRequestList = Array.isArray(StaffFilteredLeaveRequests)
+  ? StaffFilteredLeaveRequests.slice(indexOfFirstStaffLeaveRequest, indexOfLastStaffLeaveRequest)
   : [];
 
 const renderStaffLeaveRequestList = currentStaffLeaveRequestList.map((request, index) => (
@@ -110,7 +111,7 @@ const renderStaffLeaveRequestList = currentStaffLeaveRequestList.map((request, i
           </div>
 
           <div className="pagination">
-            {Array.from({ length: Math.ceil(filteredLeaveRequests.length / staffLeaveRequestPerPage) }, (_, index) => (
+            {Array.from({ length: Math.ceil(StaffFilteredLeaveRequests.length / staffLeaveRequestPerPage) }, (_, index) => (
               <button key={index + 1} onClick={() => paginate(index + 1)}>
                 {index + 1}
               </button>

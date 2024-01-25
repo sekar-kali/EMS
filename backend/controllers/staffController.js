@@ -79,22 +79,18 @@ export const getStaffMissions = async (req, res) => {
 export const getStaffLeaveRequests = async (req, res) => {
   try {
     const staffEmail = req.params.email;
-
     // Find the staff member using the email
-    const staff = await StaffModel.findOne({ email: staffEmail }).populate({
-      path: 'leaveRequests',
+    const staff = await LeaveRequestModel.findOne({ email: staffEmail }).populate({
+      path: 'staffId',
       select: 'startDate endDate status',
     });
-
+    console.log(staff);
     if (!staff) {
       return res.status(404).json({ message: 'Staff not found' });
     }
 
-    if (!staff.leaveRequests || staff.leaveRequests.length === 0) {
-      return res.status(200).json([]);
-    }
 
-    res.json(staff.leaveRequests);
+    res.json(staff);
   } catch (error) {
     console.error('Error fetching staff leave requests:', error);
     res.status(500).json({ message: 'Internal server error' });

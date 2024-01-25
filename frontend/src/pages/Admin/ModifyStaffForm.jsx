@@ -5,8 +5,9 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from '../../components/Footer';
 import MenuAdmin from '../../components/MenuAdmin';
+import { useParams } from 'react-router-dom';
 
-const ModifyStaffForm = ({ staffId }) => {
+const ModifyStaffForm = () => {
   const [loading, setLoading] = useState(true);
   const [staffDetails, setStaffDetails] = useState({
     firstName: '',
@@ -14,10 +15,11 @@ const ModifyStaffForm = ({ staffId }) => {
     email: '',
     role: '',
   });
-
+  const {staffId}=useParams();
   useEffect(() => {
     const fetchStaffDetails = async () => {
       try {
+       
         if (!staffId) {
           return <div>StaffId is not available.</div>;
         }
@@ -28,12 +30,13 @@ const ModifyStaffForm = ({ staffId }) => {
             Authorization: `Bearer ${authToken}`,
           },
         });
-
+        
         if (!response.ok) {
           throw new Error('Error fetching staff details');
         }
-
+        
         const data = await response.json();
+        
         setStaffDetails(data);
         setLoading(false);
       } catch (error) {
@@ -43,6 +46,7 @@ const ModifyStaffForm = ({ staffId }) => {
     };
 
     fetchStaffDetails();
+  
   }, [staffId]);
 
   const handleInputChange = (e) => {
@@ -76,9 +80,9 @@ const ModifyStaffForm = ({ staffId }) => {
     <>
       <MenuAdmin />
       <div className="main-container">
-        {loading ? (
+        {/* {loading ? (
           <Spinner />
-        ) : (
+        ) : ( */}
           <div className="update-staff-form">
             <h1>Modify Staff</h1>
           <h1>Modify Staff</h1>
@@ -126,7 +130,7 @@ const ModifyStaffForm = ({ staffId }) => {
               </button>
             </form>
           </div>
-        )}
+        {/* )} */}
       </div>
       <ToastContainer />
       <Footer />
