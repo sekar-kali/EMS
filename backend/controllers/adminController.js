@@ -277,6 +277,14 @@ export const createMission = async (req, res) => {
   try {
     const { title, description, staffId, startDate, endDate } = req.body;
 
+    if (new Date(endDate) < new Date(startDate)) {
+      return res.status(400).json({ message: 'End date must not be anterior to start date' });
+    }
+
+    if (new Date(startDate) < new Date()) {
+      return res.status(400).json({ message: 'Start date must not be anterior to today' });
+    }
+
     // Fetch staff information from the database using Mongoose
     const staff = await StaffModel.findById(staffId);
 
@@ -287,20 +295,13 @@ export const createMission = async (req, res) => {
     // Check if the staff is already assigned to another mission during the same time period
     const existingMission = await MissionModel.findOne({
       staffId,
-      $or: [
-        { startDate: { $lte: endDate }, endDate: { $gte: startDate } }, // Mission overlaps in start and end dates
-        { startDate: { $gte: startDate, $lte: endDate } }, // Mission starts during the existing mission
-        { endDate: { $gte: startDate, $lte: endDate } }, // Mission ends during the existing mission
-      ],
+      startDate: { $lte: endDate },
+      endDate: { $gte: startDate },
     });
 
     if (existingMission) {
       return res.status(400).json({ message: 'Staff is already assigned to another mission during this time period' });
     }
-
-    // // Format the dates to "dd mm yyyy" format
-    // const formattedStartDate = new Date(startDate).toLocaleDateString('en-GB');
-    // const formattedEndDate = new Date(endDate).toLocaleDateString('en-GB');
 
     // Create a new mission and save it to the database
     const newMission = new MissionModel({
@@ -321,6 +322,7 @@ export const createMission = async (req, res) => {
   }
 };
 
+
 export const getAllMissions = async (req, res) => {
   try {
     const missions = await MissionModel.find().populate('assignedTo', '-password');
@@ -337,7 +339,7 @@ export const getAvailableStaff = async (req, res) => {
 
     // Fetch staff members who are not on leave or assigned to a mission for the selected dates
     const availableStaff = await StaffModel.find({
-      onLeave: { $ne: true }, // Find staff members who are not on leave
+      onLeave: { $ne: true },
       _id: {
         $nin: await getStaffOnMission(startDate, endDate),
       },

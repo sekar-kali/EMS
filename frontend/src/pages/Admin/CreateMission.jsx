@@ -17,7 +17,15 @@ const CreateMission = () => {
     // Fetch staff members who are not on leave for the selected dates
     const fetchAvailableStaff = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/admin/staff/available?startDate=${startDate}&endDate=${endDate}`);
+        const authToken = localStorage.getItem('authToken');
+          const response = await fetch(
+                `http://localhost:5000/api/admin/staff/available?startDate=${startDate}&endDate=${endDate}`,
+  {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  }
+);
         if (response.ok) {
           const staffData = await response.json();
           setStaffList(staffData);
@@ -64,7 +72,7 @@ const CreateMission = () => {
       });
   
       if (response.ok) {
-        toast.success('Mission created successfully!');
+        toast.success('Mission created successfully!',);
         // Reset the form after successful submission
         setTitle('');
         setDescription('');
@@ -88,24 +96,24 @@ const CreateMission = () => {
       <div className="create-mission-form">
       <h2>Create Mission</h2>
       <div className='form-flex'>
-      <label for="title">Title:</label>
-      <input type="text"  id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
+      <label>Title:</label>
+      <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
       </div>
       <div className='form-flex'>
-      <label for="description">Description:</label>
-      <textarea  id="description" value={description} onChange={(e) => setDescription(e.target.value)} />
+      <label>Description:</label>
+      <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
       </div>
       <div className='form-flex'>
-      <label for="startDate">Start Date:</label>
-      <input type="date"  id="startDate" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+      <label>Start Date:</label>
+      <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
       </div>
       <div className='form-flex'>
-      <label for="endDate">End Date:</label>
-      <input type="date"  id="endDate" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+      <label>End Date:</label>
+      <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
       </div>
       <div className='form-flex'>
-      <label for="selectStaff">Select Staff:</label>
-      <select id="selectStaff" value={selectedStaff} onChange={(e) => setSelectedStaff(e.target.value)}>
+      <label>Select Staff:</label>
+      <select value={selectedStaff} onChange={(e) => setSelectedStaff(e.target.value)}>
         <option value="" disabled>Select Staff</option>
         {staffList.map((staff) => (
           <option key={staff._id} value={staff._id}>

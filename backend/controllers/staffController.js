@@ -114,6 +114,17 @@ export const createLeaveRequest = async (req, res) => {
       return res.status(404).json({ message: 'Staff not found' });
     }
 
+    // Check if there is an overlapping leave request for the same period
+    const existingLeaveRequest = await LeaveRequestModel.findOne({
+      staffId: staff._id,
+      startDate: { $lte: endDate },
+      endDate: { $gte: startDate },
+    });
+
+    if (existingLeaveRequest) {
+      return res.status(400).json({ message: 'Leave request for the same period already exists' });
+    }
+
     const newLeaveRequest = new LeaveRequestModel({
       staffId: staff._id,
       firstName: staff.firstName,
@@ -134,6 +145,7 @@ export const createLeaveRequest = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 
 
 export const uploadDocument = async (req, res) => {
