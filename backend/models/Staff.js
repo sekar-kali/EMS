@@ -15,6 +15,7 @@ const staffSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   serviceName: { type: String, default: "IT", required: true },
+  address: { type: String},
   role: {
     type: String,
     enum: ["staff", "admin"],

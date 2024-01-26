@@ -1,4 +1,3 @@
-// MenuAdmin.js
 import React, { useState } from 'react';
 import { Link} from 'react-router-dom';
 import logoImage from '../logo.png';
@@ -31,7 +30,7 @@ const MenuAdmin = () => {
                     </div>
                 </div>
                 <div className="submenu">
-                    <Link to={`/admin/dashboard`} className="link submenu-title">Admin Dashboard</Link>
+                    <Link to={`/admin/dashboard`} className="link">Admin Dashboard</Link>
                 </div>
             </li>
 
@@ -78,7 +77,17 @@ const MenuAdmin = () => {
                     <Link to={`/admin/create-staff`} className='link'>Create Staff</Link>
                 </div>
             </li>
-
+            <li>
+                <div className="title">
+                    <div className="link">
+                        <i className='bx bx-cog'></i>
+                        <span className="name">Settings</span>
+                    </div>
+                </div>
+                <div className="submenu">
+                    <Link to="/admin/profile" className='link'>Profile</Link>
+                </div>
+            </li>
             <li>
                 <div className="title">
                     <div className="link">

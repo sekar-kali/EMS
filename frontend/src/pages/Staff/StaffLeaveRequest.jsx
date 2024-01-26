@@ -3,10 +3,11 @@ import moment from 'moment';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import MenuStaff from '../../components/MenuStaff';
+import '../../styles.css'
 
 const StaffLeaveRequestList = () => {
   const [leaveRequests, setLeaveRequests] = useState([]);
-  const [StaffFilteredLeaveRequests, setStaffFilteredLeaveRequests] = useState([]);
+  const [staffFilteredLeaveRequests, setStaffFilteredLeaveRequests] = useState([]);
   const [statusFilter, setStatusFilter] = useState('All');
   const [currentPage, setCurrentPage] = useState(1);
   const staffLeaveRequestPerPage = 10;
@@ -59,23 +60,23 @@ const StaffLeaveRequestList = () => {
 
   const formatDate = (date) => moment(date).format('DD/MM/YYYY');
 
-// Pagination
-const indexOfLastStaffLeaveRequest = currentPage * staffLeaveRequestPerPage;
-const indexOfFirstStaffLeaveRequest = indexOfLastStaffLeaveRequest - staffLeaveRequestPerPage;
+  // Pagination
+  const indexOfLastStaffLeaveRequest = currentPage * staffLeaveRequestPerPage;
+  const indexOfFirstStaffLeaveRequest = indexOfLastStaffLeaveRequest - staffLeaveRequestPerPage;
 
+  const currentStaffLeaveRequestList = Array.isArray(staffFilteredLeaveRequests)
+    ? staffFilteredLeaveRequests.slice(indexOfFirstStaffLeaveRequest, indexOfLastStaffLeaveRequest)
+    : [];
 
-const currentStaffLeaveRequestList = Array.isArray(StaffFilteredLeaveRequests)
-  ? StaffFilteredLeaveRequests.slice(indexOfFirstStaffLeaveRequest, indexOfLastStaffLeaveRequest)
-  : [];
-
-const renderStaffLeaveRequestList = currentStaffLeaveRequestList.map((request, index) => (
-  <tr key={request._id}>
-    <td>{indexOfFirstStaffLeaveRequest + index + 1}</td>
-    <td>{formatDate(request.startDate)}</td>
-    <td>{formatDate(request.endDate)}</td>
-    <td>{request.status}</td>
-  </tr>
-));
+    const renderStaffLeaveRequestList = currentStaffLeaveRequestList.map((request,index) => (
+      <tr key={index}>
+        <td>{indexOfFirstStaffLeaveRequest + index + 1}</td>
+        <td>{formatDate(request.startDate)}</td>
+        <td>{formatDate(request.endDate)}</td>
+        <td>{request.status}</td>
+      </tr>
+    ));
+    
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -111,7 +112,7 @@ const renderStaffLeaveRequestList = currentStaffLeaveRequestList.map((request, i
           </div>
 
           <div className="pagination">
-            {Array.from({ length: Math.ceil(StaffFilteredLeaveRequests.length / staffLeaveRequestPerPage) }, (_, index) => (
+            {Array.from({ length: Math.ceil(staffFilteredLeaveRequests.length / staffLeaveRequestPerPage) }, (_, index) => (
               <button key={index + 1} onClick={() => paginate(index + 1)}>
                 {index + 1}
               </button>

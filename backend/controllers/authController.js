@@ -116,9 +116,15 @@ export const requestPasswordReset = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Generate a unique reset token (you may want to store this in the database)
+    // Generate a unique reset token
     const resetToken = jwt.sign({ userId: user._id }, process.env.RESET_SECRET, { expiresIn: process.env.JWT_EXPIRES_TOKEN });
 
+    // // Generate a reset token and save it to the user's document
+    // const resetToken = generateResetToken();
+    // user.resetToken = resetToken;
+    // user.resetTokenExpiry = Date.now() + 3600000; 
+
+    await user.save();
     // Send a password reset email with the reset token
     const transporter = nodemailer.createTransport({
       // Configure nodemailer transporter
@@ -135,7 +141,7 @@ export const requestPasswordReset = async (req, res) => {
       from: process.env.MAIL,
       to: user.email,
       subject: 'Password Reset',
-      text: `Click the following link to reset your password: ${resetLink}`,
+      text: `Click <a href="${resetLink}">here</a> to reset your password`,
     };
 
     await transporter.sendMail(mailOptions);
@@ -229,3 +235,60 @@ await transporter.sendMail(mailOptions);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+// Generate a random alphanumeric string for the reset token
+const generateResetToken = () => {
+  const tokenLength = 32;
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let token = '';
+  for (let i = 0; i < tokenLength; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    token += characters.charAt(randomIndex);
+  }
+  return token;
+};
+    
+
+// export const forgetPassword = async (req, res) => {
+  // if (!user) {
+    //   return res.status(404).json({ message: 'User not found' });
+    // }
+
+//   try {
+//     const { email } = req.body;
+
+//     // Check if the email exists in the database
+//     const user = await StaffModel.findOne({ email });
+
+//     // Generate a reset token and save it to the user's document
+//     const resetToken = generateResetToken();
+//     user.resetToken = resetToken;
+//     user.resetTokenExpiry = Date.now() + 3600000; 
+
+//     await user.save();
+
+//     // Send a password reset email to the user
+//     const transporter = nodemailer.createTransport({
+//       service: 'gmail',
+//       auth: {
+//     user: process.env.MAIL,
+//     pass: process.env.MAIL_PASSWORD
+//   }
+// });
+
+//     const resetLink = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+//     const mailOptions = {
+//       from: process.env.MAIL,
+//       to: email,
+//       subject: 'Password Reset',
+//       html: `<p>Click <a href="${resetLink}">here</a> to reset your password.</p>`,
+//     };
+
+//     await transporter.sendMail(mailOptions);
+
+//     res.json({ message: 'Password reset email sent successfully' });
+//   } catch (error) {
+//     console.error('Error in forgetPassword:', error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// };

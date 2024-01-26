@@ -13,6 +13,7 @@ const ModifyStaffForm = () => {
     firstName: '',
     lastName: '',
     email: '',
+    address: '',
     role: '',
   });
   const {staffId}=useParams();
@@ -76,16 +77,16 @@ const ModifyStaffForm = () => {
     }
   };
 
+
   return (
     <>
       <MenuAdmin />
-      <div className="main-container">
-        {/* {loading ? (
+      <div className="main-container bounce-in">
+        {loading ? (
           <Spinner />
-        ) : ( */}
+        ) : (
           <div className="update-staff-form">
             <h1>Modify Staff</h1>
-          <h1>Modify Staff</h1>
           <form>
             <div className='form-flex'>
               <label>First Name:</label>
@@ -115,6 +116,15 @@ const ModifyStaffForm = () => {
               />
             </div>
             <div className='form-flex'>
+              <label>Address:</label>
+              <input
+                type="text"
+                name="address"
+                value={staffDetails.address}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className='form-flex'>
               <label>Role:</label>
               <select
                 name="role"
@@ -130,7 +140,7 @@ const ModifyStaffForm = () => {
               </button>
             </form>
           </div>
-        {/* )} */}
+         )}
       </div>
       <ToastContainer />
       <Footer />

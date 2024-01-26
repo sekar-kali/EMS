@@ -11,6 +11,7 @@ const CreateStaff = ({ updateStaffList, displayToast }) => {
     firstName: '',
     lastName: '',
     serviceName: '',
+    address:'',
   });
 
   const handleInputChange = (e) => {
@@ -26,7 +27,7 @@ const CreateStaff = ({ updateStaffList, displayToast }) => {
   const handleCreateStaff = async () => {
     try {
       // Validate staff details
-      if (!staffDetails.email || !staffDetails.firstName || !staffDetails.lastName || !staffDetails.serviceName) {
+      if (!staffDetails.email || !staffDetails.firstName || !staffDetails.lastName || !staffDetails.serviceName || !staffDetails.address) {
         toast.error('Please fill all staff details.');
         return;
       }
@@ -54,6 +55,7 @@ const CreateStaff = ({ updateStaffList, displayToast }) => {
           firstName: '',
           lastName: '',
           serviceName: '',
+          address: '',
         });
 
         // Update the staff list by calling the provided function
@@ -89,6 +91,10 @@ const CreateStaff = ({ updateStaffList, displayToast }) => {
       <div className='form-flex'>
       <label for="lastName">Last Name:</label>
       <input type="text" id="lastName" value={staffDetails.lastName} onChange={handleInputChange} />
+      </div>
+      <div className='form-flex'>
+      <label for="address">Address:</label>
+      <input type="text" id="address" value={staffDetails.address} onChange={handleInputChange} />
       </div>
       <div className='form-flex'>
       <label for="serviceName">Service Name:</label>

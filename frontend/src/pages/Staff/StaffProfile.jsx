@@ -1,3 +1,4 @@
+// StaffProfile.jsx
 import React, { useEffect, useState } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -5,21 +6,27 @@ import MenuStaff from '../../components/MenuStaff';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const StaffPersonalInfo = () => {
+const StaffProfile = () => {
   const [staffInfo, setStaffInfo] = useState({
     firstName: '',
     lastName: '',
     email: '',
+    address: '',
+    password: '',
     serviceName: '',
   });
 
-  // State to track modified details
   const [modifiedDetails, setModifiedDetails] = useState({
     firstName: '',
     lastName: '',
+    address: '',
+    password: '',
+    confirmPassword: '',
     serviceName: '',
   });
+
   const email = JSON.parse(localStorage.getItem('user'));
+
   useEffect(() => {
     // Fetch staff's information
     const fetchStaffInfo = async () => {
@@ -33,6 +40,9 @@ const StaffPersonalInfo = () => {
           setModifiedDetails({
             firstName: staffInfoData.firstName,
             lastName: staffInfoData.lastName,
+            address: staffInfoData.address,
+            password: '',
+            confirmPassword: '',
             serviceName: staffInfoData.serviceName,
           });
         } else {
@@ -44,31 +54,48 @@ const StaffPersonalInfo = () => {
     };
 
     fetchStaffInfo();
-  }, []);
+  }, [email]);
 
-  const handleModifyDetails = () => {
-    // Make a POST request to the server
-    fetch('http://localhost:5000/api/staff/change-details-request', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: staffInfo.email,
-        newFirstName: modifiedDetails.firstName,
-        newLastName: modifiedDetails.lastName,
-        newServiceName: modifiedDetails.serviceName,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
+  const handleModifyDetails = async () => {
+    try {
+      const authToken = localStorage.getItem('authToken');
+
+      // Check if password and confirmPassword match
+      if (modifiedDetails.password !== modifiedDetails.confirmPassword) {
+        toast.error('Password and Confirm Password do not match');
+        return;
+      }
+
+      // Make a POST request to the server
+      const response = await fetch('http://localhost:5000/api/staff/change-details-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({
+          email: staffInfo.email,
+          newFirstName: modifiedDetails.firstName,
+          newLastName: modifiedDetails.lastName,
+          newAddress: modifiedDetails.address,
+          newPassword: modifiedDetails.password,
+          newServiceName: modifiedDetails.serviceName,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
         console.log(data.message);
         // Show success toast
         toast.success('Your details have been modified successfully!');
-      })
-      .catch((error) => {
-        toast.error(`Error updating details: ${error.message}`);
-      });
+      } else {
+        const data = await response.json();
+        toast.error(`Error updating details: ${data.message}`);
+      }
+    } catch (error) {
+      console.error('Error updating details:', error.message);
+      toast.error('Error updating details');
+    }
   };
 
   const handleInputChange = (e) => {
@@ -110,6 +137,39 @@ const StaffPersonalInfo = () => {
           </div>
           <div className='form-flex'>
             <p>
+              Address: {staffInfo.address}{' '}
+              <input
+                type="text"
+                name="address"
+                value={modifiedDetails.address}
+                onChange={handleInputChange}
+              />
+            </p>
+          </div>
+          <div className='form-flex'>
+            <p>
+              Password:{' '}
+              <input
+                type="password"
+                name="password"
+                value={modifiedDetails.password}
+                onChange={handleInputChange}
+              />
+            </p>
+          </div>
+          <div className='form-flex'>
+            <p>
+              Confirm Password:{' '}
+              <input
+                type="password"
+                name="confirmPassword"
+                value={modifiedDetails.confirmPassword}
+                onChange={handleInputChange}
+              />
+            </p>
+          </div>
+          <div className='form-flex'>
+            <p>
               Service Name: {staffInfo.serviceName}{' '}
               <input
                 type="text"
@@ -128,4 +188,4 @@ const StaffPersonalInfo = () => {
   );
 };
 
-export default StaffPersonalInfo;
+export default StaffProfile;

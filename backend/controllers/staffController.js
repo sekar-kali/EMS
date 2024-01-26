@@ -2,6 +2,9 @@ import StaffModel from '../models/Staff.js';
 import MissionModel from '../models/Mission.js';
 import LeaveRequestModel from '../models/LeaveRequest.js';
 import moment from 'moment';
+import bcrypt from'bcrypt';
+import dotenv from 'dotenv';
+import nodemailer from 'nodemailer';
 import mongoose from 'mongoose';
 
 // Fetch total missions for the current month
@@ -75,27 +78,54 @@ export const getStaffMissions = async (req, res) => {
   }
 };
 
-
 export const getStaffLeaveRequests = async (req, res) => {
   try {
     const staffEmail = req.params.email;
+    
     // Find the staff member using the email
-    const staff = await LeaveRequestModel.findOne({ email: staffEmail }).populate({
-      path: 'staffId',
-      select: 'startDate endDate status',
-    });
-    console.log(staff);
+    const staff = await StaffModel.findOne({ email: staffEmail });
+
     if (!staff) {
       return res.status(404).json({ message: 'Staff not found' });
     }
 
+    // Find leave requests for the staff member
+    const leaveRequests = await LeaveRequestModel.find({ staffId: staff._id });
 
-    res.json(staff);
+    const leaveRequestInfo = leaveRequests.map((request) => ({
+      startDate: request.startDate,
+      endDate: request.endDate,
+      status: request.status,
+    }));
+
+    res.json(leaveRequestInfo);
   } catch (error) {
     console.error('Error fetching staff leave requests:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+
+// export const getStaffLeaveRequests = async (req, res) => {
+//   try {
+//     const staffEmail = req.params.email;
+//     // Find the staff member using the email
+//     const staff = await LeaveRequestModel.findOne({ email: staffEmail }).populate({
+//       path: 'staffId',
+//       select: 'startDate endDate status',
+//     });
+//     console.log(staff);
+//     if (!staff) {
+//       return res.status(404).json({ message: 'Staff not found' });
+//     }
+
+
+//     res.json(staff);
+//   } catch (error) {
+//     console.error('Error fetching staff leave requests:', error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// };
 
 
 
@@ -172,9 +202,10 @@ export const uploadDocument = async (req, res) => {
   }
 };
 
+
 export const changeDetailsRequest = async (req, res) => {
   try {
-    const { email, newFirstName, newLastName } = req.body;
+    const { email, newFirstName, newLastName, newAddress, newPassword, newServiceName } = req.body;
 
     const staff = await StaffModel.findOne({ email });
 
@@ -182,10 +213,49 @@ export const changeDetailsRequest = async (req, res) => {
       return res.status(404).json({ message: 'Staff not found' });
     }
 
-    staff.firstName = newFirstName;
-    staff.lastName = newLastName;
+    // Get the current date and time
+    const currentDate = new Date().toLocaleString();
+
+    // Create a string to hold the details that are changed
+    let changedDetails = '';
+
+    // Update details
+    if (newFirstName && newFirstName !== staff.firstName) {
+      staff.firstName = newFirstName;
+      changedDetails += 'First Name, ';
+    }
+
+    if (newLastName && newLastName !== staff.lastName) {
+      staff.lastName = newLastName;
+      changedDetails += 'Last Name, ';
+    }
+
+    if (newAddress && newAddress !== staff.address) {
+      staff.address = newAddress;
+      changedDetails += 'Address, ';
+    }
+
+    if (newServiceName && newServiceName !== staff.serviceName) {
+      staff.serviceName = newServiceName;
+      changedDetails += 'Service Name, ';
+    }
+
+    // Check if a new password is provided
+    if (newPassword && newPassword.trim() !== '') {
+      // Hash the new password
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      staff.password = hashedPassword;
+      changedDetails += 'Password, ';
+    }
 
     await staff.save();
+
+    // Remove the trailing comma and space from changedDetails
+    changedDetails = changedDetails.trim().slice(0, -1);
+
+    // Send emails to staff and admin
+    sendEmail(process.env.MAIL, 'Details Changed by Staff', `Staff with email ${email} changed their details at ${currentDate}. Details changed: ${changedDetails}.`);
+    sendEmail(email, 'Details Changed Successfully', `Your details were changed successfully at ${currentDate}. Details changed: ${changedDetails}. If you didn't make this change, please contact ${process.env.MAIL}.`);
 
     res.json({ message: 'Change details request submitted successfully' });
   } catch (error) {
@@ -194,3 +264,30 @@ export const changeDetailsRequest = async (req, res) => {
   }
 };
 
+// Function to send emails
+const sendEmail = async (to, subject, text) => {
+  // Create a nodemailer transporter
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.MAIL, 
+      pass: process.env.MAIL_PASSWORD,
+    },
+  });
+
+  // Define the email options
+  const mailOptions = {
+    from: process.env.MAIL,
+    to,
+    subject,
+    text,
+  };
+
+  // Send the email
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully');
+  } catch (error) {
+    console.error('Error sending email:', error);
+  }
+};

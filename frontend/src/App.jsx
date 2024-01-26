@@ -10,11 +10,14 @@ import CreateMission from './pages/Admin/CreateMission';
 import CreateStaff from './pages/Admin/CreateStaff';
 import LeaveRequestList from './pages/Admin/LeaveRequestList';
 import Logout from './pages/Auth/Logout';
-import StaffPersonalInfo from './pages/Staff/StaffPersonalInfo';
+import StaffPersonalInfo from './pages/Staff/StaffProfile';
 import StaffMissionsList from './pages/Staff/StaffMissionsList';
 import StaffLeaveRequestList from './pages/Staff/StaffLeaveRequest';
 import ModifyStaffForm from './pages/Admin/ModifyStaffForm';
 import CreatePasswordPage from './pages/Auth/CreatePassword';
+import AdminProfile from './pages/Admin/AdminProfile';
+import ResetPassword from './pages/Auth/ResetPassword';
+import ForgetPassword from './pages/Auth/ForgetPassword';
 
 const PrivateRoute = ({ children }) => {
   const authToken = localStorage.getItem('authToken');
@@ -41,6 +44,8 @@ const App = () => {
         {/* Auth routes */}
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/logout" element={<Logout />} />
+        <Route path="/auth/reset-password" element={<ResetPassword />} />
+        <Route path="/auth/forget-password" element={<ForgetPassword />} />
         <Route path="/create-password/:email" component={CreatePasswordPage} />
 
         {/* Admin routes */}
@@ -55,7 +60,7 @@ const App = () => {
         <Route path="/admin/staff-list" element={<StaffList />} />
         <Route path="/admin/create-staff" element={<CreateStaff />} />
         <Route path="/update-staff/:staffId" element={<ModifyStaffForm />} />
-
+        <Route path="/admin/profile" element={<AdminProfile/>} />
 
         {/* Staff routes */}
         <Route

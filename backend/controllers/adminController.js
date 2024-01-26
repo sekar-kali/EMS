@@ -47,7 +47,7 @@ export const getDashboardStats = async (req, res) => {
 export const createStaff = async (req, res) => {
   try {
     // Assuming to receive staff details from the request body
-    const { email, firstName, lastName, serviceName } = req.body;
+    const { email, firstName, lastName, serviceName, address } = req.body;
 
     // Check if the email is already registered
     const existingUser = await StaffModel.findOne({ email });
@@ -60,6 +60,7 @@ export const createStaff = async (req, res) => {
       email,
       firstName,
       lastName,
+      address,
       serviceName,
       isStaff: true,
     });
@@ -403,14 +404,13 @@ export const sendEmail = async (emailOptions) => {
 };
 
 // Update staff details
-// Assuming you have required/imported your StaffModel
 
 export const updateStaff = async (req, res) => {
   const { staffId } = req.params;
-  const { firstName, lastName, role, email } = req.body;
+  const { firstName, lastName, role, email, address } = req.body;
 
   try {
-    // Validate if staffId is a valid ObjectId (assumes you're using Mongoose)
+    // Validate if staffId is a valid ObjectId
     if (!mongoose.Types.ObjectId.isValid(staffId)) {
       return res.status(400).json({ message: 'Invalid staffId' });
     }
@@ -425,6 +425,7 @@ export const updateStaff = async (req, res) => {
     // Update staff details
     staff.firstName = firstName;
     staff.lastName = lastName;
+    staff.address = address;
     staff.role = role;
     staff.email = email;
 
@@ -434,6 +435,108 @@ export const updateStaff = async (req, res) => {
     res.json({ message: 'Staff details updated successfully' });
   } catch (error) {
     console.error('Error updating staff details:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
+
+export const changeAdminDetailsRequest = async (req, res) => {
+  try {
+    const { email, newFirstName, newLastName, newAddress, newPassword, newServiceName } = req.body;
+
+    const admin = await StaffModel.findOne({ email });
+
+    if (!staff) {
+      return res.status(404).json({ message: 'Staff not found' });
+    }
+
+    // Get the current date and time
+    const currentDate = new Date().toLocaleString();
+
+    // Create a string to hold the details that are changed
+    let changedDetails = '';
+
+    // Update details
+    if (newFirstName && newFirstName !== admin.firstName) {
+      admin.firstName = newFirstName;
+      changedDetails += 'First Name, ';
+    }
+
+    if (newLastName && newLastName !== admin.lastName) {
+      admin.lastName = newLastName;
+      changedDetails += 'Last Name, ';
+    }
+
+    if (newAddress && newAddress !== admin.address) {
+      admin.address = newAddress;
+      changedDetails += 'Address, ';
+    }
+
+    if (newServiceName && newServiceName !== admin.serviceName) {
+      admin.serviceName = newServiceName;
+      changedDetails += 'Service Name, ';
+    }
+
+    // Check if a new password is provided
+    if (newPassword && newPassword.trim() !== '') {
+      // Hash the new password
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      admin.password = hashedPassword;
+      changedDetails += 'Password, ';
+    }
+
+    await admin.save();
+
+    // Remove the trailing comma and space from changedDetails
+    changedDetails = changedDetails.trim().slice(0, -1);
+
+    // Send emails to staff and admin
+    sendEmail(process.env.MAIL, 'Details Changed by Admin', `Admin with email ${email} changed their details at ${currentDate}. Details changed: ${changedDetails}.`);
+    sendEmail(email, 'Details Changed Successfully', `Your details were changed successfully at ${currentDate}. Details changed: ${changedDetails}. If you didn't make this change, please contact ${process.env.MAIL}.`);
+
+    res.json({ message: 'Change details request submitted successfully' });
+  } catch (error) {
+    console.error('Error handling change details request:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
+export const getAdminInfo = async (req, res) => {
+  try {
+    const { email } = req.params;
+
+    const adminInfo = await StaffModel.findOne({ email });
+
+    if (!adminInfo) {
+      return res.status(404).json({ message: 'Admin not found' });
+    }
+
+    res.json(adminInfo);
+  } catch (error) {
+    console.error('Error fetching admin information:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+export const getStaffInfoById = async (req, res) => {
+  try {
+    const { staffId } = req.params;
+
+    if (!mongoose.isValidObjectId(staffId)) {
+      return res.status(400).json({ error: 'Invalid staff ID format' });
+    }
+
+    const staffInfo = await StaffModel.findById(staffId, { password: 0 }); // Exclude password from the response
+
+    if (!staffInfo) {
+      return res.status(404).json({ message: 'Staff not found' });
+    }
+
+    res.json(staffInfo);
+  } catch (error) {
+    console.error('Error fetching staff information by ID:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };

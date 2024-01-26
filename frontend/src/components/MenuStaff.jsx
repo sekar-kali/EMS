@@ -5,15 +5,11 @@ import logoImage from '../logo.png';
 
 const MenuStaff = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const [openSubMenu, setOpenSubMenu] = useState('');
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
-
-  const handleSubMenuToggle = (menu) => {
-    setOpenSubMenu(openSubMenu === menu ? '' : menu);
-  };
+  
 
   return (
     <div className={`toggle-sidebar sidebar ${isSidebarOpen ? '' : 'close'}`}>
@@ -26,17 +22,18 @@ const MenuStaff = () => {
           <p className="logo-name">EMS</p>
         </div>
 
+
         <ul className="sidebar-list">
           <li>
-            <div className="title" onClick={() => handleSubMenuToggle('dashboard')}>
+            <div className="title">
               <div className="link">
                 <i className='bx bx-grid-alt'></i>
                 <span className="name">Dashboard</span>
               </div>
-              <i className={`bx bxs-chevron-down ${openSubMenu === 'dashboard' ? 'rotate' : ''}`}></i>
+              <i className='bx bxs-chevron-down'></i>
             </div>
             <div className="submenu">
-              <Link to={`/staff/dashboard`} className="link submenu-title">Staff Dashboard</Link>
+              <Link to={`/staff/dashboard`} className="link">Staff Dashboard</Link>
             </div>
           </li>
 
@@ -76,14 +73,14 @@ const MenuStaff = () => {
           <li>
             <div className="title">
               <div className="link">
-                <i className='bx bxs-user-detail'></i>
-                <span className="name">Personal Info</span>
+                <i className='bx bxs-cog'></i>
+                <span className="name">Settings</span>
               </div>
               <i className='bx bxs-chevron-down'></i>
             </div>
             <div className="submenu">
               <span className="link submenu-title">
-                <Link to={`/staff/personal-info`} className='link'>My Info</Link>
+                <Link to={`/staff/personal-info`} className='link'>Profile</Link>
               </span>
             </div>
           </li>

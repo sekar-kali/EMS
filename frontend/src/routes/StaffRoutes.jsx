@@ -5,7 +5,7 @@ import StaffDashboard from '../pages/Staff/StaffDashboard';
 import LeaveRequestForm from '../pages/Staff/LeaveRequestForm';
 import StaffLeaveRequestList from '../pages/Staff/StaffLeaveRequest';
 import StaffMissionsList from '../pages/Staff/StaffMissionsList';
-import StaffPersonalInfo from '../pages/Staff/StaffPersonalInfo';
+import StaffPersonalInfo from '../pages/Staff/StaffProfile';
 
 const StaffRoutes = () => {
   return (
