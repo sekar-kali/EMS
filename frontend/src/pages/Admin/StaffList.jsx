@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Spinner from '../../components/Spinner.jsx';
 import MenuAdmin from '../../components/MenuAdmin';
 import Footer from '../../components/Footer';
+import { ToastContainer, toast } from 'react-toastify';
 
 const StaffList = () => {
   const [loading, setLoading] = useState(true);
@@ -89,7 +90,7 @@ const StaffList = () => {
         if (!response.ok) {
           throw new Error('Error deleting staff');
         }
-  
+        toast.success('Staff deleted successfully!');
         // Refresh the staff list after deletion
         fetchStaffList();
       } catch (error) {
@@ -177,6 +178,7 @@ const StaffList = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
       <Footer />
     </>
   );

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Footer from '../../components/Footer';
-import Header from '../../components/Header';
 import MenuAdmin from '../../components/MenuAdmin';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

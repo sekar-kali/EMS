@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import MenuStaff from '../../components/MenuStaff';
-import LeaveRequestForm from './LeaveRequestForm';
 import '../../menu.css';
 import '../../styles.css';
 
@@ -115,7 +113,7 @@ const StaffDashboard = () => {
         </div>
         <div className="dashboard-welcome">
             <h2 className='bounce-in'>Welcome {staffInfo.firstName} {staffInfo.lastName}</h2>
-            <iframe width="360" height="215" src="https://www.youtube-nocookie.com/embed/kcckpWgkhP0?si=C8MV0Dl8CuBJq7V9&amp;start=30" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+            <iframe width="360" height="215" src="https://www.youtube-nocookie.com/embed/kcckpWgkhP0?si=C8MV0Dl8CuBJq7V9&amp;start=30" title="YouTube video player" autoPlay allowFullScreen></iframe>
           </div>
       </div>
       <div className="dashboard-welcome-video">

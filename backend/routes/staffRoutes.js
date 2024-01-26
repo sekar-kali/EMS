@@ -8,6 +8,7 @@ import {
   uploadDocument,
   getTotalApprovedLeaveRequests,
   getTotalMissions,
+  deleteStaffLeaveRequest,
 } from '../controllers/staffController.js';
 import authMiddleware from '../middleware/authMiddleware.js';
 
@@ -26,4 +27,6 @@ staffRoutes.post('/leave-request/upload-document', uploadDocument);
 staffRoutes.post('/leave-requests/approved',authMiddleware,getTotalApprovedLeaveRequests)
 staffRoutes.post('/missions/total',authMiddleware,getTotalMissions)
 
+// Delete method routes
+staffRoutes.delete('/delete-leave-request/:leaveRequestId',authMiddleware,deleteStaffLeaveRequest)
 export default staffRoutes;

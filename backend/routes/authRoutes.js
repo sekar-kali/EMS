@@ -6,7 +6,7 @@ import { createPassword, login, requestPasswordReset, resetPassword, signup } fr
 authRoutes.post('/signup', signup);
 authRoutes.post('/login', login);
 authRoutes.post('/reset-password', resetPassword);
-authRoutes.post('/forget-password', requestPasswordReset);
+authRoutes.post('/forgot-password', requestPasswordReset);
 authRoutes.post('/create-password/:email', createPassword);
 
 export default authRoutes;

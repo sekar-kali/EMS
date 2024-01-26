@@ -1,6 +1,5 @@
 // StaffProfile.jsx
 import React, { useEffect, useState } from 'react';
-import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import MenuStaff from '../../components/MenuStaff';
 import { toast, ToastContainer } from 'react-toastify';

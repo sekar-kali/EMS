@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Auth/Login';
 import AdminDashboard from './pages/Admin/AdminDashboard';
@@ -17,13 +17,45 @@ import ModifyStaffForm from './pages/Admin/ModifyStaffForm';
 import CreatePasswordPage from './pages/Auth/CreatePassword';
 import AdminProfile from './pages/Admin/AdminProfile';
 import ResetPassword from './pages/Auth/ResetPassword';
-import ForgetPassword from './pages/Auth/ForgetPassword';
+import ForgotPassword from './pages/Auth/ForgotPassword';
+// import jwt from 'jsonwebtoken'; // Import jwt library for decoding JWT tokens
+
+
+// const PrivateRoute = ({ children }) => {
+//   const authToken = localStorage.getItem('authToken');
+
+//   // Check if authToken is present and not expired
+//   if (authToken) {
+//     try {
+//       const decodedToken = jwt.decode(authToken);
+
+//       // Check if the token is expired
+//       if (decodedToken && decodedToken.exp * 1000 < Date.now()) {
+//         // Token is expired, redirect to login
+//         return <Navigate to="/auth/login" />;
+//       }
+//     } catch (error) {
+//       console.error('Error decoding token:', error);
+//     }
+//   }
+
+//   return authToken ? children : <Navigate to="/auth/login" />;
+// };
+// const CenteredContent = ({ children }) => {
+//   return (
+//     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+//       {children}
+//     </div>
+//   );
+// };
+
 
 const PrivateRoute = ({ children }) => {
   const authToken = localStorage.getItem('authToken');
 
   return authToken ? children : <Navigate to="/auth/login" />;
 };
+
 
 const CenteredContent = ({ children }) => {
   return (
@@ -45,7 +77,7 @@ const App = () => {
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/logout" element={<Logout />} />
         <Route path="/auth/reset-password" element={<ResetPassword />} />
-        <Route path="/auth/forget-password" element={<ForgetPassword />} />
+        <Route path="/auth/forgot-password" element={<ForgotPassword />} />
         <Route path="/create-password/:email" component={CreatePasswordPage} />
 
         {/* Admin routes */}

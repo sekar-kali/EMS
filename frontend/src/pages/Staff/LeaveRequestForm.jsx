@@ -108,7 +108,7 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
           <h2>Leave Request Form</h2>
           <form>
             <div className='form-flex'>
-              <label for="startDate">Start Date:</label>
+              <label htmlFor="startDate">Start Date:</label>
               <input
                 type="date"
                 id="startDate"
@@ -117,7 +117,7 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
               />
             </div>
             <div className='form-flex'>
-              <label for="endDate">End Date:</label>
+              <label htmlFor="endDate">End Date:</label>
               <input
                 type="date"
                 id="endDate"
@@ -126,7 +126,7 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
               />
             </div>
             <div className='form-flex'>
-              <label for="reason">Reason:</label>
+              <label htmlFor="reason">Reason:</label>
               <select
                 value={leaveRequestForm.reason}
                 id="reason"
@@ -138,7 +138,7 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
               </select>
             </div>
             <div className='form-flex'>
-              <label for="description">Description :</label>
+              <label htmlFor="description">Description :</label>
               <textarea
                 value={leaveRequestForm.description}
                 id="description"
@@ -146,7 +146,7 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
               />
             </div>
             <div className='form-flex'>
-              <label for="document">Document (Optional):</label>
+              <label htmlFor="document">Document (Optional):</label>
               <input type="file" id="document" accept=".pdf,.doc,.docx" onChange={handleFileChange} />
             </div>
             <button type="button" onClick={handleLeaveRequest}>

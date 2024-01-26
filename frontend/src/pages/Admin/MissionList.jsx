@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import Spinner from '../../components/Spinner.jsx';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Footer from '../../components/Footer';
 import MenuAdmin from '../../components/MenuAdmin';
+
 
 const MissionList = () => {
   const [loading, setLoading] = useState(true);
@@ -83,6 +86,30 @@ const MissionList = () => {
         );
     }
   };
+  
+  const handleDeleteMission = async (missionId) => {
+    try {
+      const authToken = localStorage.getItem('authToken');
+      const response = await fetch(`http://localhost:5000/api/admin/delete-mission/${missionId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+  
+      if (response.ok) {
+        // Remove the deleted mission from the local state
+        setMissions((prevMissions) => prevMissions.filter((mission) => mission._id !== missionId));
+        toast.success('Mission deleted successfully!');
+      } else {
+        toast.error('Error deleting mission:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error deleting mission:', error.message);
+    }
+  };
+  
+  
 
   const indexOfLastMission = currentPage * missionPerPage;
   const indexOfFirstMission = indexOfLastMission - missionPerPage;
@@ -96,6 +123,10 @@ const MissionList = () => {
       <td>{formatDate(mission.startDate)}</td>
       <td>{formatDate(mission.endDate)}</td>
       <td>{mission.assignedTo ? `${mission.assignedTo.firstName} ${mission.assignedTo.lastName}` : 'N/A'}</td>
+      <td>
+      <button className="delete" onClick={() => handleDeleteMission(mission._id)}>Delete</button>
+      </td>
+
     </tr>
   ));
 
@@ -135,6 +166,7 @@ const MissionList = () => {
                   <th>Start Date</th>
                   <th>End Date</th>
                   <th>Assigned Staff</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -151,6 +183,7 @@ const MissionList = () => {
           ))}
         </div>
       </div>
+      <ToastContainer />
       <Footer />
     </>
   );

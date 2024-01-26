@@ -4,13 +4,13 @@ import logoImage from '../../logo.png';
 import 'react-toastify/dist/ReactToastify.css';
 import '../../auth.css';
 
-const ForgetPassword = () => {
+const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
 
-  const handleForgetPassword = async () => {
+  const handleForgotPassword = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/forget-password', {
+      const response = await fetch('http://localhost:5000/api/auth/forgot-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -39,12 +39,12 @@ const ForgetPassword = () => {
     <h1>Welcome to your HR services portal</h1>
     </div>
     <div className="login-container">
-      <h1>Forget Password</h1>
+      <h1>Forgot Password</h1>
       <div className="form-flex">
         <label>Email:</label>
         <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
       </div>
-      <button onClick={handleForgetPassword}>Send Reset Email</button>
+      <button onClick={handleForgotPassword}>Send Reset Email</button>
       <div>{message}</div>
       <ToastContainer />
     </div>
@@ -52,4 +52,4 @@ const ForgetPassword = () => {
   );
 };
 
-export default ForgetPassword;
+export default ForgotPassword;

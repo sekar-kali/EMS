@@ -5,6 +5,7 @@ import {
   changeAdminDetailsRequest,
   createMission,
   createStaff,
+  deleteMission,
   deleteStaff,
   getAdminInfo,
   getAllMissions,
@@ -28,19 +29,21 @@ adminRoutes.get('/leave-request', authMiddleware, getLeaveRequests);
 adminRoutes.get('/staff/available', authMiddleware, getAvailableStaff);
 adminRoutes.get('/info/:email',authMiddleware,getAdminInfo);
 adminRoutes.get('/staff/:staffId', getStaffInfoById);
+adminRoutes.get('/mission/:missionId');
 
 // Post method routes
 adminRoutes.post('/create-mission', authMiddleware, createMission);
 adminRoutes.post('/create-staff', authMiddleware, createStaff);
-adminRoutes.put('/update-staff/:staffId', authMiddleware, updateStaff);
 adminRoutes.post('/change-details-request', authMiddleware, changeAdminDetailsRequest)
 
 // Put method routes
+adminRoutes.put('/update-staff/:staffId', authMiddleware, updateStaff);
 adminRoutes.put('/approve-leave-request/:leaveRequestId', authMiddleware, approveLeaveRequest);
 adminRoutes.put('/reject-leave-request/:leaveRequestId', authMiddleware, rejectLeaveRequest);
 
 // Delete method routes
 adminRoutes.delete('/delete-staff/:staffId', authMiddleware, deleteStaff);
+adminRoutes.delete('/delete-mission/:missionId', authMiddleware, deleteMission)
 
 export default adminRoutes;
 

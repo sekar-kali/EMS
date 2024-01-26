@@ -373,6 +373,31 @@ const getStaffOnMission = async (startDate, endDate) => {
 };
 
 
+export const deleteMission = async (req, res) => {
+  try {
+    const { missionId } = req.params;
+
+    // Validate if missionId is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(missionId)) {
+      return res.status(400).json({ message: 'Invalid missionId' });
+    }
+
+    // Delete the mission from the database
+    const result = await MissionModel.findByIdAndDelete(missionId);
+
+    if (!result) {
+      return res.status(404).json({ message: 'Mission not found' });
+    }
+
+    res.json({ message: 'Mission deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting mission:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
+
 // Define sendEmail function
 export const sendEmail = async (emailOptions) => {
   try {

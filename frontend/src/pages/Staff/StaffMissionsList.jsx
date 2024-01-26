@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
-import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import MenuStaff from '../../components/MenuStaff';
 import '../../auth.css';

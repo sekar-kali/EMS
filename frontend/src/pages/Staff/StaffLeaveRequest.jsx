@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
-import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import MenuStaff from '../../components/MenuStaff';
-import '../../styles.css'
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import '../../styles.css';
 
 const StaffLeaveRequestList = () => {
   const [leaveRequests, setLeaveRequests] = useState([]);
@@ -43,6 +44,7 @@ const StaffLeaveRequestList = () => {
   }, []);
 
   useEffect(() => {
+    
     if (statusFilter === 'All') {
       setStaffFilteredLeaveRequests(leaveRequests);
     } else {
@@ -59,7 +61,34 @@ const StaffLeaveRequestList = () => {
   };
 
   const formatDate = (date) => moment(date).format('DD/MM/YYYY');
+  const handleDeleteLeaveRequest = async (leaveRequestId) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this leave request ?');
+    const authToken = localStorage.getItem('authToken');
+    
+    try {
+      const response = await fetch(`http://localhost:5000/api/staff/delete-leave-request/${leaveRequestId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+  
+      if (response.ok) {
+        // Remove the deleted leave request from the local state
+        setLeaveRequests((prevLeaveRequests) => prevLeaveRequests.filter(request => request.leaveRequestId !== leaveRequestId));
+        setStaffFilteredLeaveRequests((prevFilteredRequests) => prevFilteredRequests.filter(request => request.leaveRequestId !== leaveRequestId));
+        toast.success('Leave request deleted successfully!');
+        // Refresh the staff list after deletion
+        fetchStaffLeaveRequests();
+      } else {
+        toast.error('Error deleting leave request:', response.statusText);
+      }
+    } catch (error) {
+      toast.error('Error deleting leave request:', error.message);
+    }
+  };
 
+  
   // Pagination
   const indexOfLastStaffLeaveRequest = currentPage * staffLeaveRequestPerPage;
   const indexOfFirstStaffLeaveRequest = indexOfLastStaffLeaveRequest - staffLeaveRequestPerPage;
@@ -68,15 +97,19 @@ const StaffLeaveRequestList = () => {
     ? staffFilteredLeaveRequests.slice(indexOfFirstStaffLeaveRequest, indexOfLastStaffLeaveRequest)
     : [];
 
-    const renderStaffLeaveRequestList = currentStaffLeaveRequestList.map((request,index) => (
-      <tr key={index}>
-        <td>{indexOfFirstStaffLeaveRequest + index + 1}</td>
-        <td>{formatDate(request.startDate)}</td>
-        <td>{formatDate(request.endDate)}</td>
-        <td>{request.status}</td>
-      </tr>
-    ));
-    
+  const renderStaffLeaveRequestList = currentStaffLeaveRequestList.map((request, index) => (
+    <tr key={index}>
+      <td>{indexOfFirstStaffLeaveRequest + index + 1}</td>
+      <td>{formatDate(request.startDate)}</td>
+      <td>{formatDate(request.endDate)}</td>
+      <td>{request.status}</td>
+      <td>
+        {request.status === 'Pending' && (
+          <button className="delete" onClick={() => handleDeleteLeaveRequest(request.leaveRequestId)}>Delete</button>
+        )}
+      </td>
+    </tr>
+  ));
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -105,12 +138,12 @@ const StaffLeaveRequestList = () => {
                   <th>Leave starting date</th>
                   <th>Leave ending date</th>
                   <th>Status</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>{renderStaffLeaveRequestList}</tbody>
             </table>
-          </div>
-
+        </div>
           <div className="pagination">
             {Array.from({ length: Math.ceil(staffFilteredLeaveRequests.length / staffLeaveRequestPerPage) }, (_, index) => (
               <button key={index + 1} onClick={() => paginate(index + 1)}>
@@ -120,6 +153,7 @@ const StaffLeaveRequestList = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
       <Footer />
     </>
   );

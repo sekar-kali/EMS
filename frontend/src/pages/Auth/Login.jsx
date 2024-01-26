@@ -79,7 +79,7 @@ const Login = () => {
         <label>Email:</label>
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
-        <Link className='forget-password' to="/auth/forget-password">Forget Password ?</Link>
+        <Link className='forgot-password' to="/auth/forgot-password">Forgot Password ?</Link>
         <div className="form-flex">
         <label>Password:</label>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />

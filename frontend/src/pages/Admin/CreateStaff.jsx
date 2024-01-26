@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Footer from '../../components/Footer';
 import MenuAdmin from '../../components/MenuAdmin';
-import Header from '../../components/Header';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

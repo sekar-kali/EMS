@@ -81,7 +81,7 @@ export const getStaffMissions = async (req, res) => {
 export const getStaffLeaveRequests = async (req, res) => {
   try {
     const staffEmail = req.params.email;
-    
+
     // Find the staff member using the email
     const staff = await StaffModel.findOne({ email: staffEmail });
 
@@ -93,6 +93,7 @@ export const getStaffLeaveRequests = async (req, res) => {
     const leaveRequests = await LeaveRequestModel.find({ staffId: staff._id });
 
     const leaveRequestInfo = leaveRequests.map((request) => ({
+      leaveRequestId: request._id,
       startDate: request.startDate,
       endDate: request.endDate,
       status: request.status,
@@ -105,29 +106,34 @@ export const getStaffLeaveRequests = async (req, res) => {
   }
 };
 
+// Delete staff leave request by ID
+export const deleteStaffLeaveRequest = async (req, res) => {
+  try {
+    const { leaveRequestId } = req.params;
 
-// export const getStaffLeaveRequests = async (req, res) => {
-//   try {
-//     const staffEmail = req.params.email;
-//     // Find the staff member using the email
-//     const staff = await LeaveRequestModel.findOne({ email: staffEmail }).populate({
-//       path: 'staffId',
-//       select: 'startDate endDate status',
-//     });
-//     console.log(staff);
-//     if (!staff) {
-//       return res.status(404).json({ message: 'Staff not found' });
-//     }
+    // Check if the provided ID is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(leaveRequestId)) {
+      return res.status(400).json({ message: 'Invalid leave request ID' });
+    }
 
+    const leaveRequest = await LeaveRequestModel.findByIdAndDelete(leaveRequestId);
 
-//     res.json(staff);
-//   } catch (error) {
-//     console.error('Error fetching staff leave requests:', error);
-//     res.status(500).json({ message: 'Internal server error' });
-//   }
-// };
+    if (!leaveRequest) {
+      return res.status(404).json({ message: 'Leave request not found' });
+    }
 
+    // Check if the leave request is in "Pending" status
+    if (leaveRequest.status !== 'Pending') {
+      return res.status(400).json({ message: 'Cannot delete leave request with status other than "Pending"' });
+    }
 
+    await leaveRequest.remove();
+    res.status(200).json({ message: 'Leave request deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting staff leave request:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
 
 export const createLeaveRequest = async (req, res) => {
   try {
@@ -138,6 +144,15 @@ export const createLeaveRequest = async (req, res) => {
 
     if (!staff) {
       return res.status(404).json({ message: 'Staff not found' });
+    }
+
+    // Validate startDate and endDate
+    const today = new Date();
+    const parsedStartDate = new Date(startDate);
+    const parsedEndDate = new Date(endDate);
+
+    if (isNaN(parsedStartDate) || isNaN(parsedEndDate) || parsedStartDate > parsedEndDate || parsedStartDate < today) {
+      return res.status(400).json({ message: 'Invalid startDate or endDate' });
     }
 
     // Check if there is an overlapping leave request for the same period
@@ -152,7 +167,7 @@ export const createLeaveRequest = async (req, res) => {
     }
 
     const newLeaveRequest = new LeaveRequestModel({
-      staffId: staff._id,
+      leaveRequestId: staff._id,
       firstName: staff.firstName,
       lastName: staff.lastName,
       startDate,
@@ -171,7 +186,6 @@ export const createLeaveRequest = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
-
 
 
 export const uploadDocument = async (req, res) => {
@@ -291,3 +305,6 @@ const sendEmail = async (to, subject, text) => {
     console.error('Error sending email:', error);
   }
 };
+
+
+

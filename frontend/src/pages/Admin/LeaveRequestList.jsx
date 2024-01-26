@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import Spinner from '../../components/Spinner.jsx';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import '../../styles.css';
 import MenuAdmin from '../../components/MenuAdmin';
 import Footer from '../../components/Footer';
@@ -87,11 +89,11 @@ const LeaveRequestList = () => {
       });
 
       if (response.ok) {
-        console.log('Leave request approved successfully!');
+        toast.success('Leave request approved successfully!');
         fetchLeaveRequests();
       } else {
         const data = await response.json();
-        console.error('Error approving leave request:', data.message);
+        toast.error('Error approving leave request:', data.message);
       }
     } catch (error) {
       console.error('Error approving leave request:', error);
@@ -110,11 +112,11 @@ const LeaveRequestList = () => {
       });
 
       if (response.ok) {
-        console.log('Leave request rejected successfully!');
+        toast.success('Leave request rejected successfully!');
         fetchLeaveRequests();
       } else {
         const data = await response.json();
-        console.error('Error rejecting leave request:', data.message);
+        toast.error('Error rejecting leave request:', data.message);
       }
     } catch (error) {
       console.error('Error rejecting leave request:', error);
@@ -219,6 +221,7 @@ const LeaveRequestList = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
       <Footer />
     </div>
   );
