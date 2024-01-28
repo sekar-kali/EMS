@@ -136,9 +136,9 @@ const MissionList = () => {
     <>
       <MenuAdmin />
 
-      <div className="main-container slide-in">
+      <main className="main-container slide-in">
         <h1>Mission List</h1>
-        <div className='search-bar'>
+        <article className='search-bar'>
           <input
             type="text"
             placeholder="Search by Assigned Staff, Title, Start Date, or End Date"
@@ -152,8 +152,8 @@ const MissionList = () => {
             <option value="startDate">Start Date</option>
             <option value="endDate">End Date</option>
           </select>
-        </div>
-        <div className='mission-list'>
+        </article>
+        <article className='mission-list'>
           {loading ? (
             <Spinner />
           ) : (
@@ -174,15 +174,15 @@ const MissionList = () => {
               </tbody>
             </table>
           )}
-        </div>
-        <div className="pagination">
+        </article>
+        <aside className="pagination">
           {Array.from({ length: Math.ceil(missions.filter(filterMissions).length / missionPerPage) }, (_, index) => (
             <button key={index + 1} onClick={() => paginate(index + 1)}>
               {index + 1}
             </button>
           ))}
-        </div>
-      </div>
+        </aside>
+      </main>
       <ToastContainer />
     </>
   );

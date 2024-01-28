@@ -32,22 +32,22 @@ const ForgotPassword = () => {
 
   return (
     <>
-    <div className="login-container1">
-    <div className="logo">
+    <section className="login-container1">
+    <aside className="logo">
                       <img src={logoImage} alt="logo-EMS" />
-        <p>EMS</p></div>
+        <p>EMS</p></aside>
     <h1>Welcome to your HR services portal</h1>
-    </div>
-    <div className="login-container">
+    </section>
+    <section className="login-container">
       <h1>Forgot Password</h1>
-      <div className="form-flex">
+      <article className="form-flex">
         <label>Email:</label>
         <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
-      </div>
+      </article>
       <button onClick={handleForgotPassword}>Send Reset Email</button>
-      <div>{message}</div>
+      <aside>{message}</aside>
       <ToastContainer />
-    </div>
+    </section>
     </>
   );
 };

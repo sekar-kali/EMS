@@ -76,34 +76,34 @@ const CreateStaff = ({ updateStaffList, displayToast }) => {
   return (
     <>
     <MenuAdmin />
-    <div className="main-container bounce-in">
-    <div className="create-staff-form">
+    <main className="main-container bounce-in">
+    <section className="create-staff-form">
       <h2>Create Staff Account</h2>
-      <div className='form-flex'>
+      <article className='form-flex'>
       <label htmlFor="email">Email:</label>
       <input type="email"  id="email" name="email" value={staffDetails.email} onChange={handleInputChange} />
-      </div>
-      <div className='form-flex'>
+      </article>
+      <article className='form-flex'>
       <label htmlFor="firstName">First Name:</label>
       <input type="text"  id="firstName" name="firstName" value={staffDetails.firstName} onChange={handleInputChange} />
-      </div>
-      <div className='form-flex'>
+      </article>
+      <article className='form-flex'>
       <label htmlFor="lastName">Last Name:</label>
       <input type="text" id="lastName" value={staffDetails.lastName} onChange={handleInputChange} />
-      </div>
-      <div className='form-flex'>
+      </article>
+      <article className='form-flex'>
       <label htmlFor="address">Address:</label>
       <input type="text" id="address" value={staffDetails.address} onChange={handleInputChange} />
-      </div>
-      <div className='form-flex'>
+      </article>
+      <article className='form-flex'>
       <label htmlFor="serviceName">Service Name:</label>
       <input type="text" id="serviceName" value={staffDetails.serviceName} onChange={handleInputChange} />
-      </div>
+      </article>
       <button onClick={handleCreateStaff} disabled={loading}>
         {loading ? 'Creating Staff Account...' : 'Create Staff Account'}
       </button>
-    </div>
-    </div>
+    </section>
+    </main>
     <ToastContainer autoClose={5000} />
     </>
   );

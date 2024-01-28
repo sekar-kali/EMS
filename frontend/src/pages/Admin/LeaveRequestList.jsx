@@ -163,14 +163,14 @@ const LeaveRequestList = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div>
+    <>
       <MenuAdmin />
-      <div className="main-container">
-        <div className="leave-request-list-container scale-in">
+      <main className="main-container">
+        <section className="leave-request-list-container scale-in">
           <h1>Leave Requests</h1>
 
-          <div className="filter-bar">
-            <div className="status-dropdown">
+          <article className="filter-bar">
+            <aside className="status-dropdown">
               <label>Status:</label>
               <select value={filterStatus} onChange={(e) => handleFilterStatusChange(e.target.value)}>
                 <option value="All">All</option>
@@ -178,19 +178,19 @@ const LeaveRequestList = () => {
                 <option value="Approved">Approved</option>
                 <option value="Rejected">Rejected</option>
               </select>
-            </div>
+            </aside>
 
-            <div className="search-bar">
+            <aside className="search-bar">
               <input
                 type="text"
                 placeholder="Search by staff name, start date, or end date"
                 value={searchQuery}
                 onChange={(e) => handleSearchChange(e.target.value)}
               />
-            </div>
-          </div>
+            </aside>
+          </article>
 
-          <div className='leave-request-list'>
+          <article className='leave-request-list'>
           {loading ? (
               <Spinner />
             ) : (
@@ -211,18 +211,18 @@ const LeaveRequestList = () => {
               </tbody>
             </table>
             )}
-          </div>
-          <div className="pagination">
+          </article>
+          <aside className="pagination">
             {Array.from({ length: Math.ceil(filteredLeaveRequests.length / leaveRequestPerPage) }, (_, index) => (
               <button key={index + 1} onClick={() => paginate(index + 1)}>
                 {index + 1}
               </button>
             ))}
-          </div>
-        </div>
-      </div>
+          </aside>
+        </section>
+      </main>
       <ToastContainer />
-    </div>
+    </>
   );
 };
 

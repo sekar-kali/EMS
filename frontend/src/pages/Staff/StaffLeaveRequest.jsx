@@ -116,11 +116,11 @@ const StaffLeaveRequestList = () => {
   return (
     <>
       <MenuStaff />
-      <div className="main-container scale-in">
-        <div className="leave-request-list">
+      <main className="main-container scale-in">
+        <section className="leave-request-list">
           <h1>Leave Request List</h1>
 
-          <div className="filter-bar">
+          <article className="filter-bar">
             <label htmlFor="statusFilter">Filter by Status:</label>
             <select id="statusFilter" onChange={handleStatusFilterChange} value={statusFilter}>
               <option value="All">All</option>
@@ -128,9 +128,9 @@ const StaffLeaveRequestList = () => {
               <option value="Pending">Pending</option>
               <option value="Rejected">Rejected</option>
             </select>
-          </div>
+          </article>
 
-          <div className="leave-request-list">
+          <article className="leave-request-list">
             <table>
               <thead>
                 <tr>
@@ -143,16 +143,16 @@ const StaffLeaveRequestList = () => {
               </thead>
               <tbody>{renderStaffLeaveRequestList}</tbody>
             </table>
-        </div>
-          <div className="pagination">
+        </article>
+          <article className="pagination">
             {Array.from({ length: Math.ceil(staffFilteredLeaveRequests.length / staffLeaveRequestPerPage) }, (_, index) => (
               <button key={index + 1} onClick={() => paginate(index + 1)}>
                 {index + 1}
               </button>
             ))}
-          </div>
-        </div>
-      </div>
+          </article>
+        </section>
+      </main>
       <ToastContainer />
     </>
   );

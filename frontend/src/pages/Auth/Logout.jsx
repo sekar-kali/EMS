@@ -23,15 +23,15 @@ const Logout = () => {
   }, [navigate]);
 
   return (
-    <div className="logout-container">
-        <div className="logo">
+    <section className="logout-container">
+        <aside className="logo">
                       <img src={logoImage} alt="logo-EMS" />
-        <p>EMS</p></div>
+        <p>EMS</p></aside>
         <h2>Thanks and See You Again ! Logging Out...</h2>
         <p>
           If you are not redirected, you can <a href="/auth/login">click here</a> to log in.
         </p>
-      </div>
+      </section>
   );
 };
 

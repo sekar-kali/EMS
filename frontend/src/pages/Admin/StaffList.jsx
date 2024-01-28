@@ -131,8 +131,8 @@ const StaffList = () => {
   return (
     <>
       <MenuAdmin />
-      <div className="main-container fade-in">
-        <div className="search-bar">
+      <main className="main-container fade-in">
+        <section className="search-bar">
           <h1>Staff List</h1>
 
           <input
@@ -149,7 +149,7 @@ const StaffList = () => {
             <option value="role">Role</option>
           </select>
 
-          <div className="staff-list">
+          <article className="staff-list">
             {loading === 'abc' ? (
               <Spinner />
             ) : (
@@ -167,17 +167,17 @@ const StaffList = () => {
                 <tbody>{renderStaffList}</tbody>
               </table>
             )}
-          </div>
+          </article>
 
-          <div className="pagination">
+          <article className="pagination">
             {Array.from({ length: Math.ceil(filteredStaffList.length / staffPerPage) }, (_, index) => (
               <button key={index + 1} onClick={() => paginate(index + 1)}>
                 {index + 1}
               </button>
             ))}
-          </div>
-        </div>
-      </div>
+          </article>
+        </section>
+      </main>
       <ToastContainer />
     </>
   );

@@ -109,10 +109,10 @@ const StaffProfile = () => {
   return (
     <>
       <MenuStaff />
-      <div className='main-container bounce-in'>
-        <div className="personal-info">
+      <main className='main-container bounce-in'>
+        <section className="personal-info">
           <h1>Staff Personal Information</h1>
-          <div className='form-flex'>
+          <article className='form-flex'>
             <p>
               First Name: {staffInfo.firstName}{' '}
               <input
@@ -122,8 +122,8 @@ const StaffProfile = () => {
                 onChange={handleInputChange}
               />
             </p>
-          </div>
-          <div className='form-flex'>
+          </article>
+          <article className='form-flex'>
             <p>
               Last Name: {staffInfo.lastName}{' '}
               <input
@@ -133,8 +133,8 @@ const StaffProfile = () => {
                 onChange={handleInputChange}
               />
             </p>
-          </div>
-          <div className='form-flex'>
+          </article>
+          <article className='form-flex'>
             <p>
               Address: {staffInfo.address}{' '}
               <input
@@ -144,8 +144,8 @@ const StaffProfile = () => {
                 onChange={handleInputChange}
               />
             </p>
-          </div>
-          <div className='form-flex'>
+          </article>
+          <article className='form-flex'>
             <p>
               Password:{' '}
               <input
@@ -155,8 +155,8 @@ const StaffProfile = () => {
                 onChange={handleInputChange}
               />
             </p>
-          </div>
-          <div className='form-flex'>
+          </article>
+          <article className='form-flex'>
             <p>
               Confirm Password:{' '}
               <input
@@ -166,8 +166,8 @@ const StaffProfile = () => {
                 onChange={handleInputChange}
               />
             </p>
-          </div>
-          <div className='form-flex'>
+          </article>
+          <article className='form-flex'>
             <p>
               Service Name: {staffInfo.serviceName}{' '}
               <input
@@ -177,10 +177,10 @@ const StaffProfile = () => {
                 onChange={handleInputChange}
               />
             </p>
-          </div>
+          </article>
           <button onClick={handleModifyDetails}>Request Change in Details</button>
-        </div>
-      </div>
+        </section>
+      </main>
       <ToastContainer autoClose={2000} />
     </>
   );

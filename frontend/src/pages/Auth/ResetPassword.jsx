@@ -46,26 +46,26 @@ const ResetPassword = () => {
 
   return (
     <>
-    <div className="login-container1">
-    <div className="logo">
+    <section className="login-container1">
+    <aside className="logo">
                       <img src={logoImage} alt="logo-EMS" />
-        <p>EMS</p></div>
+        <p>EMS</p></aside>
     <h1>Welcome to your HR services portal</h1>
-    </div>
-    <div className="login-container">
+    </section>
+    <section className="login-container">
       <h1>Reset Password</h1>
-      <div className="form-flex">
+      <article className="form-flex">
         <label>Password:</label>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      </div>
-      <div className="form-flex">
+      </article>
+      <article className="form-flex">
         <label>Confirm Password:</label>
         <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-      </div>
+      </article>
       <button onClick={handleResetPassword}>Reset Password</button>
-      <div>{message}</div>
+      <aside>{message}</aside>
       <ToastContainer />
-    </div>
+    </section>
     </>
   );
 };

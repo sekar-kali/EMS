@@ -96,29 +96,26 @@ const StaffDashboard = () => {
   return (
     <>
       <MenuStaff />
-      <div className="main-container fade-in">
+      <main className="main-container fade-in">
         <h1>Staff Dashboard</h1>
         
-        <div className="dashboard-stats">
+        <section className="dashboard-stats">
 
-          <div className="dashboard-mission-stat">
+          <article className="dashboard-mission-stat">
           <h2>Total Missions for the Current Month</h2>
             <p>{totalMissions}</p>
-          </div>
+          </article>
           
-          <div className="dashboard-leave-stat">
+          <article className="dashboard-leave-stat">
           <h2>Total Approved Leave Requests for the Current Month</h2>
             <p>{approvedLeaveRequests}</p>
-          </div>
-        </div>
-        <div className="dashboard-welcome">
+          </article>
+        </section>
+        <section className="dashboard-welcome">
             <h2 className='bounce-in'>Welcome {staffInfo.firstName} {staffInfo.lastName}</h2>
             <iframe width="360" height="215" src="https://www.youtube-nocookie.com/embed/kcckpWgkhP0?si=C8MV0Dl8CuBJq7V9&amp;start=30" title="YouTube video player" autoPlay allowFullScreen></iframe>
-          </div>
-      </div>
-      <div className="dashboard-welcome-video">
-      
-      </div>
+          </section>
+      </main>
     </>
   );
 };

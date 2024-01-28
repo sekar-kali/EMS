@@ -81,14 +81,14 @@ const ModifyStaffForm = () => {
   return (
     <>
       <MenuAdmin />
-      <div className="main-container bounce-in">
+      <main className="main-container bounce-in">
         {loading ? (
           <Spinner />
         ) : (
-          <div className="update-staff-form">
+          <section className="update-staff-form">
             <h1>Modify Staff</h1>
           <form>
-            <div className='form-flex'>
+            <article className='form-flex'>
               <label>First Name:</label>
               <input
                 type="text"
@@ -96,8 +96,8 @@ const ModifyStaffForm = () => {
                 value={staffDetails.firstName}
                 onChange={handleInputChange}
               />
-            </div>
-            <div className='form-flex'>
+            </article>
+            <article className='form-flex'>
               <label>Last Name:</label>
               <input
                 type="text"
@@ -105,8 +105,8 @@ const ModifyStaffForm = () => {
                 value={staffDetails.lastName}
                 onChange={handleInputChange}
               />
-            </div>
-            <div className='form-flex'>
+            </article>
+            <article className='form-flex'>
               <label>Email:</label>
               <input
                 type="text"
@@ -114,8 +114,8 @@ const ModifyStaffForm = () => {
                 value={staffDetails.email}
                 onChange={handleInputChange}
               />
-            </div>
-            <div className='form-flex'>
+            </article>
+            <article className='form-flex'>
               <label>Address:</label>
               <input
                 type="text"
@@ -123,8 +123,8 @@ const ModifyStaffForm = () => {
                 value={staffDetails.address}
                 onChange={handleInputChange}
               />
-            </div>
-            <div className='form-flex'>
+            </article>
+            <article className='form-flex'>
               <label>Role:</label>
               <select
                 name="role"
@@ -134,14 +134,14 @@ const ModifyStaffForm = () => {
                 <option value="staff">Staff</option>
                 <option value="admin">Admin</option>
               </select>
-            </div>
+            </article>
             <button type="button" onClick={handleSaveChanges}>
               Save Changes
               </button>
             </form>
-          </div>
+          </section>
          )}
-      </div>
+      </main>
       <ToastContainer />
     </>
   );

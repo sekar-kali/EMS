@@ -53,11 +53,11 @@ const StaffMissionsList = () => {
   return (
     <>
       <MenuStaff />
-      <div className="main-container slide-in">
-        <div className="missions-list">
+      <main className="main-container slide-in">
+        <section className="missions-list">
           <h1>Missions List</h1>
-          <div className='form-flex'>
-            <div className="upcoming-missions">
+          <article className='form-flex'>
+            <aside className="upcoming-missions">
               <h2>Upcoming Missions</h2>
               <ul>
                 {upcomingMissions.map((mission) => (
@@ -66,9 +66,9 @@ const StaffMissionsList = () => {
                   </li>
                 ))}
               </ul>
-            </div>
+            </aside>
 
-            <div className="past-missions">
+            <aside className="past-missions">
               <h2>Past Missions</h2>
               <ul>
                 {pastMissions.map((mission) => (
@@ -77,10 +77,10 @@ const StaffMissionsList = () => {
                   </li>
                 ))}
               </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+            </aside>
+          </article>
+        </section>
+      </main>
     </>
   );
 };

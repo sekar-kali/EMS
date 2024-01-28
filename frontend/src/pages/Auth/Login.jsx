@@ -65,25 +65,25 @@ const Login = () => {
 
   return (
     <>
-    <div className="login-container1">
-    <div className="logo">
+    <section className="login-container1">
+    <aside className="logo">
                       <img src={logoImage} alt="logo-EMS" />
-        <p>EMS</p></div>
+        <p>EMS</p></aside>
     <h1>Welcome to your HR services portal</h1>
-    </div>
-    <div className="login-container">
+    </section>
+    <section className="login-container">
 
       <h2>Login</h2>
       <form>
-      <div className="form-flex">
+      <article className="form-flex">
         <label>Email:</label>
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        </div>
+        </article>
         <Link className='forgot-password' to="/auth/forgot-password">Forgot Password ?</Link>
-        <div className="form-flex">
+        <article className="form-flex">
         <label>Password:</label>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </div> 
+        </article> 
         <button type="button" onClick={handleLogin}>
           Login
         </button>
@@ -92,7 +92,7 @@ const Login = () => {
       
 
       <ToastContainer />
-    </div>
+    </section>
     </>
   );
 };

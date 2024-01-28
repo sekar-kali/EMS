@@ -66,14 +66,14 @@ const CreatePassword = () => {
 
   return (
     <>
-      <div className="login-container1">
-        <div className="logo">
+      <section className="login-container1">
+        <aside className="logo">
           <img src={logoImage} alt="logo-EMS" />
           <p>EMS</p>
-        </div>
+        </aside>
         <h1>Welcome to your HR services portal</h1>
-      </div>
-      <div className="login-container">
+      </section>
+      <section className="login-container">
         <h2>Create Your Password</h2>
         <form onSubmit={handleSubmit}>
           <label>Password:</label>
@@ -90,7 +90,7 @@ const CreatePassword = () => {
             {loading ? 'Creating Password...' : 'Create Password'}
           </button>
         </form>
-      </div>
+      </section>
       <ToastContainer />
     </>
   );

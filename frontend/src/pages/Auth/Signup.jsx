@@ -52,28 +52,28 @@ const Signup = () => {
   return (
     <>
     <ToastContainer />
-    <div className="register-container">
-    <div className="logo">
+    <main className="register-container">
+    <aside className="logo">
                       <img src={logoImage} alt="logo-EMS" />
-        <p>EMS</p></div>
+        <p>EMS</p></aside>
       <h2>Sign up</h2>
       <form>
-        <div className="form-flex">
+        <article className="form-flex">
         <label>First Name:</label>
         <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-        </div>
-        <div className="form-flex">
+        </article>
+        <article className="form-flex">
         <label>Last Name:</label>
         <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-        </div>
-        <div className="form-flex">
+        </article>
+        <article className="form-flex">
         <label>Email:</label>
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        </div>
-        <div className="form-flex">
+        </article>
+        <article className="form-flex">
         <label>Password:</label>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </div>
+        </article>
         <button type="button" onClick={handleSignup}>
           Sign up
         </button>
@@ -82,7 +82,7 @@ const Signup = () => {
       <p>
         Already have an account? <Link to="/auth/login">Login</Link>
       </p>
-    </div>
+    </main>
     </>
   );
 };

@@ -91,26 +91,26 @@ const CreateMission = () => {
   return (
     <>
       <MenuAdmin />
-      <div className="main-container bounce-in">
-      <div className="create-mission-form">
+      <main className="main-container bounce-in">
+      <section className="create-mission-form">
       <h2>Create Mission</h2>
-      <div className='form-flex'>
+      <article className='form-flex'>
       <label>Title:</label>
       <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
-      </div>
-      <div className='form-flex'>
+      </article>
+      <article className='form-flex'>
       <label>Description:</label>
       <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
-      </div>
-      <div className='form-flex'>
+      </article>
+      <article className='form-flex'>
       <label>Start Date:</label>
       <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-      </div>
-      <div className='form-flex'>
+      </article>
+      <article className='form-flex'>
       <label>End Date:</label>
       <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-      </div>
-      <div className='form-flex'>
+      </article>
+      <article className='form-flex'>
       <label>Select Staff:</label>
       <select value={selectedStaff} onChange={(e) => setSelectedStaff(e.target.value)}>
         <option value="" disabled>Select Staff</option>
@@ -120,10 +120,10 @@ const CreateMission = () => {
           </option>
         ))}
       </select>
-      </div>
+      </article>
       <button onClick={handleCreateMission}>Create Mission</button>
-    </div>
-    </div>
+    </section>
+    </main>
     <ToastContainer autoClose={5000} />
     </>
   );

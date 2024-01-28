@@ -103,11 +103,11 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
   return (
     <>
       <MenuStaff />
-      <div className="main-container bounce-in">
-        <div className='create-leave-form'>
+      <main className="main-container bounce-in">
+        <section className='create-leave-form'>
           <h2>Leave Request Form</h2>
           <form>
-            <div className='form-flex'>
+            <article className='form-flex'>
               <label htmlFor="startDate">Start Date:</label>
               <input
                 type="date"
@@ -115,8 +115,8 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
                 value={leaveRequestForm.startDate}
                 onChange={(e) => setLeaveRequestForm({ ...leaveRequestForm, startDate: e.target.value })}
               />
-            </div>
-            <div className='form-flex'>
+            </article>
+            <article className='form-flex'>
               <label htmlFor="endDate">End Date:</label>
               <input
                 type="date"
@@ -124,8 +124,8 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
                 value={leaveRequestForm.endDate}
                 onChange={(e) => setLeaveRequestForm({ ...leaveRequestForm, endDate: e.target.value })}
               />
-            </div>
-            <div className='form-flex'>
+            </article>
+            <article className='form-flex'>
               <label htmlFor="reason">Reason:</label>
               <select
                 value={leaveRequestForm.reason}
@@ -136,25 +136,25 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
                 <option value="medical">Medical Leave</option>
                 <option value="others">Others</option>
               </select>
-            </div>
-            <div className='form-flex'>
+            </article>
+            <article className='form-flex'>
               <label htmlFor="description">Description :</label>
               <textarea
                 value={leaveRequestForm.description}
                 id="description"
                 onChange={(e) => setLeaveRequestForm({ ...leaveRequestForm, description: e.target.value })}
               />
-            </div>
-            <div className='form-flex'>
+            </article>
+            <article className='form-flex'>
               <label htmlFor="document">Document (Optional):</label>
               <input type="file" id="document" accept=".pdf,.doc,.docx" onChange={handleFileChange} />
-            </div>
+            </article>
             <button type="button" onClick={handleLeaveRequest}>
               Submit Leave Request
             </button>
           </form>
-        </div>
-      </div>
+        </section>
+      </main>
       <ToastContainer autoClose={5000} />
     </>
   );
