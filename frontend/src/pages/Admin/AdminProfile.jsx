@@ -109,7 +109,7 @@ const AdminProfile = () => {
     <>
       <MenuAdmin />
       <main className='main-container bounce-in'>
-        <section className="personal-info">
+        <form className="personal-info">
           <h1>Admin Personal Information</h1>
           <article className='form-flex'>
             <p>
@@ -178,7 +178,7 @@ const AdminProfile = () => {
             </p>
           </article>
           <button onClick={handleModifyDetails}>Request Change in Details</button>
-        </section>
+        </form>
       </main>
       <ToastContainer autoClose={2000} />
     </>

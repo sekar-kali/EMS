@@ -5,16 +5,15 @@ import moment from 'moment';
 import bcrypt from'bcrypt';
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
-import mongoose from 'mongoose';
 
 // Fetch total missions for the current month
 export const getTotalMissions = async (req, res) => {
   try {
     const { staffEmail } = req.body;
-    const currentMonthStart = moment().startOf('month');
+    const currentMonth = new Date().getMonth() + 1;
     const totalMissions = await MissionModel.countDocuments({
       assignedTo: req.staffId,
-      createdAt: { $gte: currentMonthStart },
+      startDate: { $gte: new Date(new Date().getFullYear(), currentMonth - 1, 1) },
     });
 
     res.json({ total: totalMissions });
@@ -23,6 +22,7 @@ export const getTotalMissions = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
 
 // Fetch total approved leave requests for the current month
 export const getTotalApprovedLeaveRequests = async (req, res) => {
@@ -167,7 +167,7 @@ export const createLeaveRequest = async (req, res) => {
     }
 
     const newLeaveRequest = new LeaveRequestModel({
-      leaveRequestId: staff._id,
+      staffId: staff._id,
       firstName: staff.firstName,
       lastName: staff.lastName,
       startDate,

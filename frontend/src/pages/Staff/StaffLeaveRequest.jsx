@@ -78,13 +78,11 @@ const StaffLeaveRequestList = () => {
         setLeaveRequests((prevLeaveRequests) => prevLeaveRequests.filter(request => request.leaveRequestId !== leaveRequestId));
         setStaffFilteredLeaveRequests((prevFilteredRequests) => prevFilteredRequests.filter(request => request.leaveRequestId !== leaveRequestId));
         toast.success('Leave request deleted successfully!');
-        // Refresh the staff list after deletion
-        fetchStaffLeaveRequests();
       } else {
         toast.error('Error deleting leave request:', response.statusText);
       }
     } catch (error) {
-      toast.error('Error deleting leave request:', error.message);
+      console.error('Error deleting leave request:', error.message);
     }
   };
 

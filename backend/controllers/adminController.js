@@ -26,8 +26,8 @@ export const getDashboardStats = async (req, res) => {
     // Calculate staff on leave this month
     const staffOnLeaveThisMonth = await LeaveRequestModel.countDocuments({
       status: 'Approved',
-      startDate: { $lte: new Date() },
-      endDate: { $gte: new Date() },
+      startDate: { $lte: new Date(new Date().getFullYear(), currentMonth, 0) },
+      endDate: { $gte: new Date(new Date().getFullYear(), currentMonth - 1, 1) },
     });
 
     // Send the calculated statistics as JSON
