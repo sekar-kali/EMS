@@ -143,7 +143,6 @@ const ModifyStaffForm = () => {
          )}
       </div>
       <ToastContainer />
-      <Footer />
     </>
   );
 };

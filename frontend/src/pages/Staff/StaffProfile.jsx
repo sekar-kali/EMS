@@ -181,7 +181,6 @@ const StaffProfile = () => {
           <button onClick={handleModifyDetails}>Request Change in Details</button>
         </div>
       </div>
-      <Footer />
       <ToastContainer autoClose={2000} />
     </>
   );

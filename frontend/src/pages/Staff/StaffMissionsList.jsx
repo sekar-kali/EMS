@@ -81,7 +81,6 @@ const StaffMissionsList = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

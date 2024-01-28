@@ -108,13 +108,13 @@ const StaffList = () => {
 
   const renderStaffList = currentStaffList.map((staff, index) => (
     <tr key={staff._id}>
-      <td>{indexOfFirstStaff + index + 1}</td>
-      <td>
+      <td data-label="Number">{indexOfFirstStaff + index + 1}</td>
+      <td data-label="Staff Name">
         {staff.firstName} {staff.lastName}
       </td>
-      <td>{staff.email}</td>
-      <td>{staff.serviceName}</td>
-      <td>{staff.role}</td>
+      <td data-label="Email">{staff.email}</td>
+      <td data-label="Service Name">{staff.serviceName}</td>
+      <td data-label="Role">{staff.role}</td>
       <td>
         <button className="edit" onClick={() => handleModifyClick(staff._id)}>
           Edit
@@ -179,7 +179,6 @@ const StaffList = () => {
         </div>
       </div>
       <ToastContainer />
-      <Footer />
     </>
   );
 };

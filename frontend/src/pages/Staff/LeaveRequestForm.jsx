@@ -155,7 +155,6 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
           </form>
         </div>
       </div>
-      <Footer />
       <ToastContainer autoClose={5000} />
     </>
   );

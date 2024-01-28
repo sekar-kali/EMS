@@ -119,7 +119,6 @@ const StaffDashboard = () => {
       <div className="dashboard-welcome-video">
       
       </div>
-      <Footer />
     </>
   );
 };

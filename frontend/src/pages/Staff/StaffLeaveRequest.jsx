@@ -99,10 +99,10 @@ const StaffLeaveRequestList = () => {
 
   const renderStaffLeaveRequestList = currentStaffLeaveRequestList.map((request, index) => (
     <tr key={index}>
-      <td>{indexOfFirstStaffLeaveRequest + index + 1}</td>
-      <td>{formatDate(request.startDate)}</td>
-      <td>{formatDate(request.endDate)}</td>
-      <td>{request.status}</td>
+      <td data-label="Number">{indexOfFirstStaffLeaveRequest + index + 1}</td>
+      <td data-label="From">{formatDate(request.startDate)}</td>
+      <td data-label="To">{formatDate(request.endDate)}</td>
+      <td data-label="Status">{request.status}</td>
       <td>
         {request.status === 'Pending' && (
           <button className="delete" onClick={() => handleDeleteLeaveRequest(request.leaveRequestId)}>Delete</button>
@@ -154,7 +154,6 @@ const StaffLeaveRequestList = () => {
         </div>
       </div>
       <ToastContainer />
-      <Footer />
     </>
   );
 };

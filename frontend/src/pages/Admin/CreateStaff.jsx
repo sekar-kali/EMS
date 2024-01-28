@@ -80,23 +80,23 @@ const CreateStaff = ({ updateStaffList, displayToast }) => {
     <div className="create-staff-form">
       <h2>Create Staff Account</h2>
       <div className='form-flex'>
-      <label for="email">Email:</label>
+      <label htmlFor="email">Email:</label>
       <input type="email"  id="email" name="email" value={staffDetails.email} onChange={handleInputChange} />
       </div>
       <div className='form-flex'>
-      <label for="firstName">First Name:</label>
+      <label htmlFor="firstName">First Name:</label>
       <input type="text"  id="firstName" name="firstName" value={staffDetails.firstName} onChange={handleInputChange} />
       </div>
       <div className='form-flex'>
-      <label for="lastName">Last Name:</label>
+      <label htmlFor="lastName">Last Name:</label>
       <input type="text" id="lastName" value={staffDetails.lastName} onChange={handleInputChange} />
       </div>
       <div className='form-flex'>
-      <label for="address">Address:</label>
+      <label htmlFor="address">Address:</label>
       <input type="text" id="address" value={staffDetails.address} onChange={handleInputChange} />
       </div>
       <div className='form-flex'>
-      <label for="serviceName">Service Name:</label>
+      <label htmlFor="serviceName">Service Name:</label>
       <input type="text" id="serviceName" value={staffDetails.serviceName} onChange={handleInputChange} />
       </div>
       <button onClick={handleCreateStaff} disabled={loading}>
@@ -104,7 +104,6 @@ const CreateStaff = ({ updateStaffList, displayToast }) => {
       </button>
     </div>
     </div>
-    <Footer />
     <ToastContainer autoClose={5000} />
     </>
   );

@@ -40,35 +40,34 @@ const AdminDashboard = () => {
   return (
     <>
       <MenuAdmin />
-      <div className="main-container fade-in">
+      <main className="main-container fade-in">
         <h1>Admin Dashboard</h1>
 
-        <div className="dashboard-stats">
-          <div className="dashboard-total-staff-stat">
+        <section className="dashboard-stats">
+          <article className="dashboard-total-staff-stat">
             <h2>Total Staff</h2>
             <p>{dashboardStats.totalStaff}</p>
-          </div>
+          </article>
 
-          <div className="dashboard-staff-month-stat">
+          <article className="dashboard-staff-month-stat">
             <h2>New Staff This Month</h2>
             <p>{dashboardStats.newStaffThisMonth}</p>
-          </div>
+          </article>
 
-          <div className="dashboard-mission-stat">
+          <article className="dashboard-mission-stat">
             <h2>Total Missions This Month</h2>
             <p>{dashboardStats.totalMissionsThisMonth}</p>
-          </div>
+          </article>
 
-          <div className="dashboard-leave-stat">
+          <article className="dashboard-leave-stat">
             <h2>Staff On Leave This Month</h2>
             <p>{dashboardStats.staffOnLeaveThisMonth}</p>
-          </div>
-        </div>
-        <div className="dashboard-welcome">
+          </article>
+        </section>
+        <article className="dashboard-welcome">
           <h2 className='bounce-in'>Welcome ADMIN</h2>
-        </div>
-      </div>
-      <Footer />
+        </article>
+      </main>
     </>
   );
 };

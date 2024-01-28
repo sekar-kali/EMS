@@ -124,7 +124,6 @@ const CreateMission = () => {
       <button onClick={handleCreateMission}>Create Mission</button>
     </div>
     </div>
-    <Footer />
     <ToastContainer autoClose={5000} />
     </>
   );

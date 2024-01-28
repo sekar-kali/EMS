@@ -1,4 +1,3 @@
-// StaffProfile.jsx
 import React, { useEffect, useState } from 'react';
 import Footer from '../../components/Footer';
 import { toast, ToastContainer } from 'react-toastify';
@@ -109,10 +108,10 @@ const AdminProfile = () => {
   return (
     <>
       <MenuAdmin />
-      <div className='main-container bounce-in'>
-        <div className="personal-info">
+      <main className='main-container bounce-in'>
+        <section className="personal-info">
           <h1>Admin Personal Information</h1>
-          <div className='form-flex'>
+          <article className='form-flex'>
             <p>
               First Name: {adminInfo.firstName}{' '}
               <input
@@ -122,8 +121,8 @@ const AdminProfile = () => {
                 onChange={handleInputChange}
               />
             </p>
-          </div>
-          <div className='form-flex'>
+          </article>
+          <article className='form-flex'>
             <p>
               Last Name: {adminInfo.lastName}{' '}
               <input
@@ -133,8 +132,8 @@ const AdminProfile = () => {
                 onChange={handleInputChange}
               />
             </p>
-          </div>
-          <div className='form-flex'>
+          </article>
+          <article className='form-flex'>
             <p>
               Address: {adminInfo.address}{' '}
               <input
@@ -144,8 +143,8 @@ const AdminProfile = () => {
                 onChange={handleInputChange}
               />
             </p>
-          </div>
-          <div className='form-flex'>
+          </article>
+          <article className='form-flex'>
             <p>
               Password:{' '}
               <input
@@ -155,8 +154,8 @@ const AdminProfile = () => {
                 onChange={handleInputChange}
               />
             </p>
-          </div>
-          <div className='form-flex'>
+          </article>
+          <article className='form-flex'>
             <p>
               Confirm Password:{' '}
               <input
@@ -166,8 +165,8 @@ const AdminProfile = () => {
                 onChange={handleInputChange}
               />
             </p>
-          </div>
-          <div className='form-flex'>
+          </article>
+          <article className='form-flex'>
             <p>
               Service Name: {adminInfo.serviceName}{' '}
               <input
@@ -177,11 +176,10 @@ const AdminProfile = () => {
                 onChange={handleInputChange}
               />
             </p>
-          </div>
+          </article>
           <button onClick={handleModifyDetails}>Request Change in Details</button>
-        </div>
-      </div>
-      <Footer />
+        </section>
+      </main>
       <ToastContainer autoClose={2000} />
     </>
   );

@@ -117,12 +117,12 @@ const MissionList = () => {
 
   const renderMissionList = currentMissionList.map((mission, index) => (
     <tr key={mission._id}>
-      <td>{indexOfFirstMission + index + 1}</td>
-      <td>{mission.title}</td>
-      <td>{mission.description}</td>
-      <td>{formatDate(mission.startDate)}</td>
-      <td>{formatDate(mission.endDate)}</td>
-      <td>{mission.assignedTo ? `${mission.assignedTo.firstName} ${mission.assignedTo.lastName}` : 'N/A'}</td>
+      <td data-label="Number">{indexOfFirstMission + index + 1}</td>
+      <td data-label="Title">{mission.title}</td>
+      <td data-label="Description">{mission.description}</td>
+      <td data-label="From">{formatDate(mission.startDate)}</td>
+      <td data-label="To">{formatDate(mission.endDate)}</td>
+      <td data-label="Assigned Staff">{mission.assignedTo ? `${mission.assignedTo.firstName} ${mission.assignedTo.lastName}` : 'N/A'}</td>
       <td>
       <button className="delete" onClick={() => handleDeleteMission(mission._id)}>Delete</button>
       </td>
@@ -153,7 +153,7 @@ const MissionList = () => {
             <option value="endDate">End Date</option>
           </select>
         </div>
-        <div className='staff-list'>
+        <div className='mission-list'>
           {loading ? (
             <Spinner />
           ) : (
@@ -184,7 +184,6 @@ const MissionList = () => {
         </div>
       </div>
       <ToastContainer />
-      <Footer />
     </>
   );
 };

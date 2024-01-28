@@ -133,12 +133,12 @@ const LeaveRequestList = () => {
 
   const renderLeaveRequestList = currentLeaveRequestList.map((request, index) => (
     <tr key={request._id}>
-      <td>{indexOfFirstLeaveRequest + index + 1}</td>
-      <td>{request.firstName} {request.lastName}</td>
-      <td>{formatDate(request.startDate)}</td>
-      <td>{formatDate(request.endDate)}</td>
-      <td>{request.status}</td>
-      <td>
+      <td data-label="Number">{indexOfFirstLeaveRequest + index + 1}</td>
+      <td data-label="Staff Name">{request.firstName} {request.lastName}</td>
+      <td data-label="From">{formatDate(request.startDate)}</td>
+      <td data-label="To">{formatDate(request.endDate)}</td>
+      <td data-label="Status">{request.status}</td>
+      <td data-label="Document">
         {request.documentUrl && (
           <a href={request.documentUrl} target="_blank" rel="noopener noreferrer">
             View Document
@@ -222,7 +222,6 @@ const LeaveRequestList = () => {
         </div>
       </div>
       <ToastContainer />
-      <Footer />
     </div>
   );
 };
