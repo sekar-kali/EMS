@@ -24,7 +24,7 @@ const PrivateRoute = ({ element }) => {
   const authToken = localStorage.getItem('authToken');
   const authTokenExpiration = localStorage.getItem('authTokenExpiration');
 
-  // Check if the token is present and not expired
+  // Checking if the token is present and not expired
   if (authToken && authTokenExpiration && new Date(authTokenExpiration) > new Date()) {
     return element;
   } else {
