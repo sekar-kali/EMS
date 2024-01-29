@@ -1,106 +1,87 @@
 import React, { useState } from 'react';
-import '../menu.css';
 import { Link } from 'react-router-dom';
+import '../menu.css';
 import logoImage from '../logo.png';
 
 const MenuStaff = () => {
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isSidebarClosed, setSidebarClosed] = useState( true);
+  const [activeItem, setActiveItem] = useState(null);
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!isSidebarOpen);
+  const handleListItemClick = (index) => {
+    setActiveItem(index === activeItem ? null : index);
   };
-  
+
+  const handleToggleSidebar = () => {
+    setSidebarClosed(!isSidebarClosed);
+  };
+
+  const listItems = [
+    {
+      label: 'Dashboard',
+      iconClass: 'bx bx-grid-alt',
+      submenu: [{ label: 'Staff Dashboard', to: '/staff/dashboard' }],
+    },
+    {
+      label: 'Missions',
+      iconClass: 'bx bx-briefcase',
+      submenu: [{ label: 'Missions List', to: '/staff/mission-list' }],
+    },
+    {
+      label: 'Leaves',
+      iconClass: 'bx bx-book-alt',
+      submenu: [
+        { label: 'Leave Request List', to: '/staff/leave-request-list' },
+        { label: 'Create Leave Request', to: '/staff/create-leave-request' },
+      ],
+    },
+    {
+      label: 'Settings',
+      iconClass: 'bx bxs-cog',
+      submenu: [{ label: 'Profile', to: '/staff/personal-info' }],
+    },
+    {
+      label: 'Logout',
+      iconClass: 'bx bx-log-out',
+      submenu: [{ label: 'Logout', to: '/auth/logout' }],
+    },
+  ];
 
   return (
-    <div className={`toggle-sidebar sidebar ${isSidebarOpen ? '' : 'close'}`}>
-      <div className={`sidebar ${isSidebarOpen ? '' : 'close'}`}>
-        <div className="sidebar-header" onClick={toggleSidebar}>
-          <i className={`bx ${isSidebarOpen ? 'bx-chevron-left' : 'bx-menu'}`}></i>
-        </div>
-        <div className="logo-box">
+    <main className={`toggle-sidebar sidebar ${isSidebarClosed ? 'close' : ''}`}>
+      <section className={`sidebar ${isSidebarClosed ? 'close' : ''}`}>
+        <aside className="sidebar-header" onClick={handleToggleSidebar}>
+          <i className={`bx ${isSidebarClosed ? 'bx-menu' : 'bx-chevron-left'}`}></i>
+        </aside>
+        <aside className="logo-box">
           <img src={logoImage} alt="logo-EMS" />
           <p className="logo-name">EMS</p>
-        </div>
-
-
+        </aside>
         <ul className="sidebar-list">
-          <li>
-            <div className="title">
-              <div className="link">
-                <i className='bx bx-grid-alt'></i>
-                <span className="name">Dashboard</span>
-              </div>
-              <i className='bx bxs-chevron-down'></i>
-            </div>
-            <div className="submenu">
-              <Link to={`/staff/dashboard`} className="link">Staff Dashboard</Link>
-            </div>
-          </li>
-
-          <li className="dropdown">
-            <div className="title">
-              <div className="link">
-                <i className='bx bx-briefcase'></i>
-                <span className="name">Missions</span>
-              </div>
-              <i className='bx bxs-chevron-down'></i>
-            </div>
-            <div className="submenu">
-              <span className="link submenu-title">
-                <Link to={`/staff/mission-list`} className='link'>Missions List</Link>
-              </span>
-            </div>
-          </li>
-
-          <li className="dropdown">
-            <div className="title">
-              <div className="link">
-                <i className='bx bx-book-alt'></i>
-                <span className="name">Leave Request</span>
-              </div>
-              <i className='bx bxs-chevron-down'></i>
-            </div>
-            <div className="submenu">
-              <span className="link submenu-title">
-                <Link to={`/staff/leave-request-list`} className='link'>Leave Request List</Link>
-              </span>
-              <span className="link submenu-title">
-                <Link to={`/staff/create-leave-request`} className='link'>Create Leave Request</Link>
-              </span>
-            </div>
-          </li>
-
-          <li>
-            <div className="title">
-              <div className="link">
-                <i className='bx bxs-cog'></i>
-                <span className="name">Settings</span>
-              </div>
-              <i className='bx bxs-chevron-down'></i>
-            </div>
-            <div className="submenu">
-              <span className="link submenu-title">
-                <Link to={`/staff/personal-info`} className='link'>Profile</Link>
-              </span>
-            </div>
-          </li>
-
-          <li>
-            <div className="title">
-              <div className="link">
-                <i className='bx bx-log-out'></i>
-                <span className="name">Logout</span>
-              </div>
-            </div>
-            <div className="submenu">
-              <span className="link submenu-title">
-                <Link to="/auth/logout" className='link'>Logout</Link>
-              </span>
-            </div>
-          </li>
+          {listItems.map((item, index) => (
+            <li key={index} className={index === activeItem ? 'active' : ''}>
+              <article className="title" onClick={() => handleListItemClick(index)}>
+                <aside className="link">
+                  <i className={item.iconClass}></i>
+                  <span className="name">{item.label}</span>
+                </aside>
+                {item.submenu && <i className='bx bxs-chevron-down'></i>}
+              </article>
+              {item.submenu && (
+                <article className={`submenu ${index === activeItem ? 'active' : ''}`}>
+                  {item.submenu.map((subItem, subIndex) => (
+                    <span key={subIndex} className="link submenu-title">
+                      <Link to={subItem.to} className="link">
+                        {subItem.label}
+                      </Link>
+                    </span>
+                  ))}
+                </article>
+              )}
+            </li>
+          ))}
         </ul>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 
