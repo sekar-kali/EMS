@@ -5,6 +5,7 @@ import moment from 'moment';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
+import path from 'path';
 
 dotenv.config();
 
@@ -202,14 +203,26 @@ export const uploadDocument = async (req, res) => {
       return res.status(400).json({ message: 'Document size exceeds the limit of 2MB.' });
     }
 
-    // Define the upload path
-    const uploadPath = __dirname + '/api/staff/leave-request/upload/folder/' + document.name;
+    // Check file type (example: allow only PDF, PNG, and JPG files)
+    const allowedFileTypes = ['.pdf', '.png', '.jpg'];
+    const fileExtension = path.extname(document.name).toLowerCase();
+    if (!allowedFileTypes.includes(fileExtension)) {
+      return res.status(400).json({ message: 'Invalid file type. Only PDF, PNG, and JPG files are allowed.' });
+    }
+
+    // Define the upload path using path.join
+    const uploadPath = path.join(__dirname, '..', 'api', 'staff', 'leave-request', 'upload', 'folder', document.name);
 
     // Move the uploaded file to the defined path
     await document.mv(uploadPath);
 
+    // Update the user's document field in the database (assuming you have a 'documents' field in your model)
+    const userId = req.userData.userId; // Assuming you have middleware setting userData
+    await StaffModel.findByIdAndUpdate(userId, { $push: { documents: uploadPath } });
+
     // Return the file URL
-    res.json({ url: `/api/staff/leave-request/upload/folder/${document.name}` });
+    const fileURL = `/api/staff/leave-request/upload/folder/${document.name}`;
+    res.json({ url: fileURL });
   } catch (error) {
     console.error('Error uploading document:', error);
     res.status(500).json({ message: 'Internal server error' });

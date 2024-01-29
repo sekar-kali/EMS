@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Footer from '../../components/Footer';
 import MenuStaff from '../../components/MenuStaff';
 import '../../styles.css';
 import { toast, ToastContainer } from 'react-toastify';
@@ -14,8 +13,9 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
     document: null,
   });
 
-  const handleLeaveRequest = async () => {
+  const handleLeaveRequest = async (e) => {
     try {
+      e.preventDefault();
       // Validate leave request form fields
       if (!leaveRequestForm.startDate || !leaveRequestForm.endDate) {
         toast.error('Please fill in all leave request fields.');
@@ -42,7 +42,7 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
         const formData = new FormData();
         formData.append('document', leaveRequestForm.document);
 
-        const documentResponse = await fetch('http://localhost:5000/api/leave-request/upload-document', {
+        const documentResponse = await fetch('http://localhost:5000/api/staff/leave-request/upload-document', {
           method: 'POST',
           body: formData,
         });
@@ -88,25 +88,16 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-  
-    // Check if the file size exceeds the limit
-    const maxSize = 2; // Maximum file size in MB
-    const fileSize = file.size / 1024 / 1024; // Convert size to MB
-  
-    if (fileSize > maxSize) {
-      toast.error('File size exceeds the limit of 2MB. Please choose a smaller file.');
-    } else {
-      setLeaveRequestForm({ ...leaveRequestForm, document: file });
-    }
+    setLeaveRequestForm({ ...leaveRequestForm, document: file });
   };
-  
+
   return (
     <>
       <MenuStaff />
       <main className="main-container bounce-in">
         <section className='create-leave-form'>
           <h2>Leave Request Form</h2>
-          <form>
+          <form onSubmit={handleLeaveRequest} encType="multipart/form-data">
             <article className='form-flex'>
               <label htmlFor="startDate">Start Date:</label>
               <input
@@ -147,7 +138,7 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
             </article>
             <article className='form-flex'>
               <label htmlFor="document">Document (Optional):</label>
-              <input type="file" id="document" accept=".pdf,.doc,.docx" onChange={handleFileChange} />
+              <input type="file" id="document" accept=".pdf,.png,.jpg" onChange={handleFileChange} />
             </article>
             <button type="button" onClick={handleLeaveRequest}>
               Submit Leave Request
