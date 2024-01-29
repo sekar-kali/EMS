@@ -246,6 +246,9 @@
     padding: 10px;
     text-align: center;
   } */
+p{
+  margin-bottom: 5px;
+}
 
   .search-bar select {
     margin-left: 5px;

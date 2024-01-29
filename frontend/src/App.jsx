@@ -18,44 +18,20 @@ import CreatePasswordPage from './pages/Auth/CreatePassword';
 import AdminProfile from './pages/Admin/AdminProfile';
 import ResetPassword from './pages/Auth/ResetPassword';
 import ForgotPassword from './pages/Auth/ForgotPassword';
-// import jwt from 'jsonwebtoken'; // Import jwt library for decoding JWT tokens
+import TermsAndConditions from './pages/Auth/TermsAndConditions';
 
-
-// const PrivateRoute = ({ children }) => {
-//   const authToken = localStorage.getItem('authToken');
-
-//   // Check if authToken is present and not expired
-//   if (authToken) {
-//     try {
-//       const decodedToken = jwt.decode(authToken);
-
-//       // Check if the token is expired
-//       if (decodedToken && decodedToken.exp * 1000 < Date.now()) {
-//         // Token is expired, redirect to login
-//         return <Navigate to="/auth/login" />;
-//       }
-//     } catch (error) {
-//       console.error('Error decoding token:', error);
-//     }
-//   }
-
-//   return authToken ? children : <Navigate to="/auth/login" />;
-// };
-// const CenteredContent = ({ children }) => {
-//   return (
-//     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-//       {children}
-//     </div>
-//   );
-// };
-
-
-const PrivateRoute = ({ children }) => {
+const PrivateRoute = ({ element }) => {
   const authToken = localStorage.getItem('authToken');
+  const authTokenExpiration = localStorage.getItem('authTokenExpiration');
 
-  return authToken ? children : <Navigate to="/auth/login" />;
+  // Check if the token is present and not expired
+  if (authToken && authTokenExpiration && new Date(authTokenExpiration) > new Date()) {
+    return element;
+  } else {
+    // Token is expired or not present, redirect to login
+    return <Navigate to="/auth/login" />;
+  }
 };
-
 
 const CenteredContent = ({ children }) => {
   return (
@@ -79,6 +55,7 @@ const App = () => {
         <Route path="/auth/reset-password" element={<ResetPassword />} />
         <Route path="/auth/forgot-password" element={<ForgotPassword />} />
         <Route path="/create-password/:email" component={CreatePasswordPage} />
+        <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
 
         {/* Admin routes */}
         <Route

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import logoImage from '../../logo.png';
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,6 +9,7 @@ const CreatePassword = () => {
   const { email } = useParams();
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [termsChecked, setTermsChecked] = useState(false); // Added state for checkbox
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -19,6 +20,12 @@ const CreatePassword = () => {
     // Validate passwords
     if (password !== confirmPassword) {
       setError('Passwords do not match.');
+      return;
+    }
+
+    // Validate terms and conditions checkbox
+    if (!termsChecked) {
+      setError('Please accept the terms and conditions.');
       return;
     }
 
@@ -76,12 +83,18 @@ const CreatePassword = () => {
       <section className="login-container">
         <h2>Create Your Password</h2>
         <form onSubmit={handleSubmit}>
+        <article className="form-flex">
           <label>Password:</label>
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-          <br />
-
+          </article>
+          <article className="form-flex">
           <label>Confirm Password:</label>
           <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+          </ article>
+          <label>
+            <input type="checkbox" checked={termsChecked} onChange={() => setTermsChecked(!termsChecked)} />
+            I accept the <Link to="/terms-and-conditions"> terms and conditions</Link>
+          </label>
           <br />
 
           {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -97,3 +110,4 @@ const CreatePassword = () => {
 };
 
 export default CreatePassword;
+

@@ -2,9 +2,11 @@ import StaffModel from '../models/Staff.js';
 import MissionModel from '../models/Mission.js';
 import LeaveRequestModel from '../models/LeaveRequest.js';
 import moment from 'moment';
-import bcrypt from'bcrypt';
+import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
+
+dotenv.config();
 
 // Fetch total missions for the current month
 export const getTotalMissions = async (req, res) => {
@@ -22,7 +24,6 @@ export const getTotalMissions = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
-
 
 // Fetch total approved leave requests for the current month
 export const getTotalApprovedLeaveRequests = async (req, res) => {
@@ -46,7 +47,7 @@ export const getStaffInfo = async (req, res) => {
   try {
     const { email } = req.params;
 
-    const staffInfo = await StaffModel.findOne({ email });
+    const staffInfo = await StaffModel.findOne({ email: email.trim() });
 
     if (!staffInfo) {
       return res.status(404).json({ message: 'Staff member not found' });
@@ -61,7 +62,7 @@ export const getStaffInfo = async (req, res) => {
 
 export const getStaffMissions = async (req, res) => {
   try {
-    const staffEmail = req.params.email;
+    const staffEmail = req.params.email.trim(); // Trim email
 
     const staff = await StaffModel.findOne({ email: staffEmail });
 
@@ -80,7 +81,7 @@ export const getStaffMissions = async (req, res) => {
 
 export const getStaffLeaveRequests = async (req, res) => {
   try {
-    const staffEmail = req.params.email;
+    const staffEmail = req.params.email.trim(); // Trim email
 
     // Find the staff member using the email
     const staff = await StaffModel.findOne({ email: staffEmail });
@@ -140,7 +141,7 @@ export const createLeaveRequest = async (req, res) => {
     const { email, startDate, endDate, reason, description, documentUrl } = req.body;
 
     // Fetch staff information including firstName and lastName
-    const staff = await StaffModel.findOne({ email }, 'firstName lastName');
+    const staff = await StaffModel.findOne({ email: email.trim() }, 'firstName lastName');
 
     if (!staff) {
       return res.status(404).json({ message: 'Staff not found' });
@@ -187,7 +188,6 @@ export const createLeaveRequest = async (req, res) => {
   }
 };
 
-
 export const uploadDocument = async (req, res) => {
   try {
     if (!req.files || Object.keys(req.files).length === 0) {
@@ -216,12 +216,11 @@ export const uploadDocument = async (req, res) => {
   }
 };
 
-
 export const changeDetailsRequest = async (req, res) => {
   try {
     const { email, newFirstName, newLastName, newAddress, newPassword, newServiceName } = req.body;
 
-    const staff = await StaffModel.findOne({ email });
+    const staff = await StaffModel.findOne({ email: email.trim() });
 
     if (!staff) {
       return res.status(404).json({ message: 'Staff not found' });
@@ -234,30 +233,30 @@ export const changeDetailsRequest = async (req, res) => {
     let changedDetails = '';
 
     // Update details
-    if (newFirstName && newFirstName !== staff.firstName) {
-      staff.firstName = newFirstName;
+    if (newFirstName && newFirstName.trim() !== '' && newFirstName !== staff.firstName) {
+      staff.firstName = newFirstName.trim();
       changedDetails += 'First Name, ';
     }
 
-    if (newLastName && newLastName !== staff.lastName) {
-      staff.lastName = newLastName;
+    if (newLastName && newLastName.trim() !== '' && newLastName !== staff.lastName) {
+      staff.lastName = newLastName.trim();
       changedDetails += 'Last Name, ';
     }
 
-    if (newAddress && newAddress !== staff.address) {
-      staff.address = newAddress;
+    if (newAddress && newAddress.trim() !== '' && newAddress !== staff.address) {
+      staff.address = newAddress.trim();
       changedDetails += 'Address, ';
     }
 
-    if (newServiceName && newServiceName !== staff.serviceName) {
-      staff.serviceName = newServiceName;
+    if (newServiceName && newServiceName.trim() !== '' && newServiceName !== staff.serviceName) {
+      staff.serviceName = newServiceName.trim();
       changedDetails += 'Service Name, ';
     }
 
     // Check if a new password is provided
     if (newPassword && newPassword.trim() !== '') {
       // Hash the new password
-      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      const hashedPassword = await bcrypt.hash(newPassword.trim(), 10);
       staff.password = hashedPassword;
       changedDetails += 'Password, ';
     }
@@ -268,8 +267,8 @@ export const changeDetailsRequest = async (req, res) => {
     changedDetails = changedDetails.trim().slice(0, -1);
 
     // Send emails to staff and admin
-    sendEmail(process.env.MAIL, 'Details Changed by Staff', `Staff with email ${email} changed their details at ${currentDate}. Details changed: ${changedDetails}.`);
-    sendEmail(email, 'Details Changed Successfully', `Your details were changed successfully at ${currentDate}. Details changed: ${changedDetails}. If you didn't make this change, please contact ${process.env.MAIL}.`);
+    sendEmail(process.env.MAIL, 'Details Changed by Staff', `Staff with email ${email.trim()} changed their details at ${currentDate}. Details changed: ${changedDetails}.`);
+    sendEmail(email.trim(), 'Details Changed Successfully', `Your details were changed successfully at ${currentDate}. Details changed: ${changedDetails}. If you didn't make this change, please contact ${process.env.MAIL}.`);
 
     res.json({ message: 'Change details request submitted successfully' });
   } catch (error) {
@@ -284,7 +283,7 @@ const sendEmail = async (to, subject, text) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: process.env.MAIL, 
+      user: process.env.MAIL,
       pass: process.env.MAIL_PASSWORD,
     },
   });
@@ -292,7 +291,7 @@ const sendEmail = async (to, subject, text) => {
   // Define the email options
   const mailOptions = {
     from: process.env.MAIL,
-    to,
+    to: to.trim(),
     subject,
     text,
   };
@@ -305,6 +304,3 @@ const sendEmail = async (to, subject, text) => {
     console.error('Error sending email:', error);
   }
 };
-
-
-

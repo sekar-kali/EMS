@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import MissionModel from '../models/Mission.js';
 import mongoose from 'mongoose';
 
-dotenv.config();  
+dotenv.config();
 
 export const getDashboardStats = async (req, res) => {
   try {
@@ -43,25 +43,31 @@ export const getDashboardStats = async (req, res) => {
   }
 };
 
-
 export const createStaff = async (req, res) => {
   try {
     // Assuming to receive staff details from the request body
     const { email, firstName, lastName, serviceName, address } = req.body;
 
+    // Trim inputs to remove leading and trailing whitespaces
+    const trimmedEmail = email.trim();
+    const trimmedFirstName = firstName.trim();
+    const trimmedLastName = lastName.trim();
+    const trimmedServiceName = serviceName.trim();
+    const trimmedAddress = address.trim();
+
     // Check if the email is already registered
-    const existingUser = await StaffModel.findOne({ email });
+    const existingUser = await StaffModel.findOne({ email: trimmedEmail });
     if (existingUser) {
       return res.status(400).json({ message: 'Email is already registered' });
     }
 
     // Create a new staff member
     const newStaff = new StaffModel({
-      email,
-      firstName,
-      lastName,
-      address,
-      serviceName,
+      email: trimmedEmail,
+      firstName: trimmedFirstName,
+      lastName: trimmedLastName,
+      address: trimmedAddress,
+      serviceName: trimmedServiceName,
       isStaff: true,
     });
 
@@ -72,18 +78,17 @@ export const createStaff = async (req, res) => {
     const transporter = nodemailer.createTransport({
       // Nodemailer transporter
       service: 'gmail',
-  auth: {
-    user: process.env.MAIL,
-    pass: process.env.MAIL_PASSWORD
-  }
-});
-    
+      auth: {
+        user: process.env.MAIL,
+        pass: process.env.MAIL_PASSWORD,
+      },
+    });
 
-    const confirmationLink = `${process.env.FRONTEND_URL}/create-password?email=${email}`;
+    const confirmationLink = `${process.env.FRONTEND_URL}/create-password?email=${trimmedEmail}`;
 
     const mailOptions = {
       from: process.env.MAIL,
-      to: email,
+      to: trimmedEmail,
       subject: 'Account Password Creation',
       text: `Welcome to our platform! Click the following link to create your password: ${confirmationLink}`,
     };
@@ -91,8 +96,10 @@ export const createStaff = async (req, res) => {
     await transporter.sendMail(mailOptions);
 
     // Return success message as JSON
-    console.log('Response:', { message: 'Staff account created successfully. Confirmation email sent.' });
-res.json({ message: 'Staff account created successfully. Confirmation email sent.' });
+    console.log('Response:', {
+      message: 'Staff account created successfully. Confirmation email sent.',
+    });
+    res.json({ message: 'Staff account created successfully. Confirmation email sent.' });
   } catch (error) {
     console.error('Error creating staff account:', error);
     res.status(500).json({ message: 'Internal server error' });

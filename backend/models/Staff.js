@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const staffSchema = new mongoose.Schema({
-  email: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true, lowercase: true },
   password: {
     type: String,
     validate: {
@@ -35,3 +35,4 @@ const staffSchema = new mongoose.Schema({
 const StaffModel = mongoose.model('Staff', staffSchema);
 
 export default StaffModel;
+
