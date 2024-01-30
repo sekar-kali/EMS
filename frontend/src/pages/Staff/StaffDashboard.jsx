@@ -34,10 +34,10 @@ const StaffDashboard = () => {
           const staffInfoData = await response.json();
           setStaffInfo(staffInfoData);
         } else {
-          console.error('Error fetching staff information:', response.statusText);
+          console.log('Error fetching staff information:', response.statusText);
         }
       } catch (error) {
-        console.error('Error fetching staff information:', error.message);
+        console.log('Error fetching staff information:', error.message);
       }
     };
 
@@ -61,7 +61,7 @@ const StaffDashboard = () => {
         const totalMissionsData = await response.json();
         setTotalMissions(totalMissionsData.total);
       } else {
-        console.error('Error fetching total missions:', response.statusText);
+        console.log('Error fetching total missions:', response.statusText);
       }
     };
 
@@ -84,7 +84,7 @@ const StaffDashboard = () => {
         const approvedLeaveRequestsData = await response.json();
         setApprovedLeaveRequests(approvedLeaveRequestsData.total);
       } else {
-        console.error('Error fetching approved leave requests:', response.statusText);
+        console.log('Error fetching approved leave requests:', response.statusText);
       }
     };
 

@@ -39,7 +39,7 @@ const ResetPassword = () => {
       const data = await response.json();
       setMessage(data.message);
     } catch (error) {
-      console.error('Error resetting password:', error.message);
+      console.log('Error resetting password:', error.message);
       setMessage(error.message);
     }
   };

@@ -9,7 +9,7 @@ const CreatePassword = () => {
   const { email } = useParams();
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [termsChecked, setTermsChecked] = useState(false); // Added state for checkbox
+  const [termsChecked, setTermsChecked] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -47,7 +47,7 @@ const CreatePassword = () => {
         setError('Error creating password. Please try again.');
       }
     } catch (error) {
-      console.error('Error sending password to server:', error);
+      console.log('Error sending password to server:', error);
       setError('An unexpected error occurred. Please try again.');
     } finally {
       setLoading(false);
@@ -66,7 +66,7 @@ const CreatePassword = () => {
 
       return response;
     } catch (error) {
-      console.error('Error sending password to server:', error);
+      console.log('Error sending password to server:', error);
       return { status: 500 };
     }
   };

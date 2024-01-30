@@ -43,7 +43,7 @@ export const signup = async (req, res) => {
     // Return the token and user details as JSON
     res.json({ token, userId: newUser._id, email: newUser.email, firstName: newUser.firstName, lastName: newUser.lastName, password: newUser.password });
   } catch (error) {
-    console.error('Error during signup:', error);
+    console.log('Error during signup:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -71,7 +71,7 @@ export const login = async (req, res) => {
     // Return the token and user details as JSON
     res.json({ token, userId: user._id, email: user.email, role: user.role });
   } catch (error) {
-    console.error('Error during login:', error);
+    console.log('Error during login:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -100,7 +100,7 @@ export const updateDetails = async (req, res) => {
     // Return success message as JSON
     res.json({ message: 'User details updated successfully' });
   } catch (error) {
-    console.error('Error updating user details:', error);
+    console.log('Error updating user details:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -149,7 +149,7 @@ export const requestPasswordReset = async (req, res) => {
     // Return success message as JSON
     res.json({ message: 'Password reset link sent to your email' });
   } catch (error) {
-    console.error('Error requesting password reset:', error);
+    console.log('Error requesting password reset:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -179,7 +179,7 @@ export const resetPassword = async (req, res) => {
     // Return success message as JSON
     res.json({ message: 'Password reset successfully' });
   } catch (error) {
-    console.error('Error resetting password:', error);
+    console.log('Error resetting password:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -231,7 +231,7 @@ await transporter.sendMail(mailOptions);
 
     res.json({ message: 'Password created successfully' });
   } catch (error) {
-    console.error('Error creating password:', error);
+    console.log('Error creating password:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };

@@ -30,10 +30,10 @@ const CreateMission = () => {
           setStaffList(staffData);
           console.log(staffData);
         } else {
-          console.error('Error fetching available staff:', response.statusText);
+          console.log('Error fetching available staff:', response.statusText);
         }
       } catch (error) {
-        console.error('Error fetching available staff:', error.message);
+        console.log('Error fetching available staff:', error.message);
       }
     };
 
@@ -83,7 +83,7 @@ const CreateMission = () => {
         toast.error(`Mission creation failed: ${data.message}`);
       }
     } catch (error) {
-      console.error('Error during mission creation:', error.message);
+      console.log('Error during mission creation:', error.message);
       toast.error('Error during mission creation');
     }
   };

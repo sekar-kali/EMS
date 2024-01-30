@@ -34,7 +34,7 @@ const StaffList = () => {
       setStaffList(data);
       setLoading(false);
     } catch (error) {
-      console.error('Error:', error);
+      console.log('Error:', error);
       setLoading(false);
     }
   };

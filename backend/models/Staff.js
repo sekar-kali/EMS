@@ -22,6 +22,10 @@ const staffSchema = new mongoose.Schema({
     default: "staff",
     required: true,
   },
+  documents: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'LeaveRequest',
+  }],
   assignedTo: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Mission',

@@ -25,7 +25,7 @@ const ForgotPassword = () => {
       const data = await response.json();
       setMessage(data.message);
     } catch (error) {
-      console.error('Error sending reset email:', error.message);
+      console.log('Error sending reset email:', error.message);
       setMessage('Error sending reset email. Please try again.');
     }
   };

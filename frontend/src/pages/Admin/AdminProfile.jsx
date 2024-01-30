@@ -44,10 +44,10 @@ const AdminProfile = () => {
             serviceName: adminInfoData.serviceName,
           });
         } else {
-          console.error('Error fetching staff information:', response.statusText);
+          console.log('Error fetching staff information:', response.statusText);
         }
       } catch (error) {
-        console.error('Error fetching staff information:', error.message);
+        console.log('Error fetching staff information:', error.message);
       }
     };
 
@@ -91,7 +91,7 @@ const AdminProfile = () => {
         toast.error(`Error updating details: ${data.message}`);
       }
     } catch (error) {
-      console.error('Error updating details:', error.message);
+      console.log('Error updating details:', error.message);
       toast.error('Error updating details');
     }
   };

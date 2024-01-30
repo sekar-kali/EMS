@@ -39,10 +39,10 @@ const StaffMissionsList = () => {
           setPastMissions(past);
           console.log(upcoming);
         } else {
-          console.error('Error fetching staff missions:', response.statusText);
+          console.log('Error fetching staff missions:', response.statusText);
         }
       } catch (error) {
-        console.error('Error fetching staff missions:', error.message);
+        console.log('Error fetching staff missions:', error.message);
       }
     };
 

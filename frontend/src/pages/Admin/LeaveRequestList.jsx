@@ -39,7 +39,7 @@ const LeaveRequestList = () => {
         setFilteredLeaveRequests(data);
       }
     } catch (error) {
-      console.error('Error fetching leave requests:', error);
+      console.log('Error fetching leave requests:', error);
     } finally {
       setLoading(false);
     }
@@ -96,7 +96,7 @@ const LeaveRequestList = () => {
         toast.error('Error approving leave request:', data.message);
       }
     } catch (error) {
-      console.error('Error approving leave request:', error);
+      console.log('Error approving leave request:', error);
     }
   };
 
@@ -119,7 +119,7 @@ const LeaveRequestList = () => {
         toast.error('Error rejecting leave request:', data.message);
       }
     } catch (error) {
-      console.error('Error rejecting leave request:', error);
+      console.log('Error rejecting leave request:', error);
     }
   };
 

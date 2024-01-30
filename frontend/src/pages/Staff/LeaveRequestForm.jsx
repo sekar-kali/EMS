@@ -28,7 +28,7 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
         return;
       }
 
-      // If a document is provided, check the file size and upload it to the server
+      // If a document is provided, checking the file size and upload it to the server
       let documentUrl = '';
       if (leaveRequestForm.document) {
         const fileSize = leaveRequestForm.document.size / 1024 / 1024; // Convert size to MB
@@ -41,9 +41,18 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
 
         const formData = new FormData();
         formData.append('document', leaveRequestForm.document);
+        formData.append('startDate', leaveRequestForm.startDate);
+        formData.append('endDate', leaveRequestForm.endDate);
+        formData.append('reason', leaveRequestForm.reason);
+        formData.append('description', leaveRequestForm.description);
+
+        const authToken = localStorage.getItem('authToken');
 
         const documentResponse = await fetch('http://localhost:5000/api/staff/leave-request/upload-document', {
           method: 'POST',
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
           body: formData,
         });
 
@@ -58,12 +67,14 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
 
       // Send leave request to the backend for processing
       const email = JSON.parse(localStorage.getItem('user'))
+      const authToken = localStorage.getItem('authToken');
       const response = await fetch('http://localhost:5000/api/staff/create-leave-request', {
         method: 'POST',
+        body: JSON.stringify({ ...leaveRequestForm,email : email, documentUrl }),
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`,
         },
-        body: JSON.stringify({ ...leaveRequestForm,email : email, documentUrl }),
       });
 
       if (response.ok) {

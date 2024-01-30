@@ -36,7 +36,7 @@ const StaffLeaveRequestList = () => {
           console.log('Error fetching staff leave requests:', response.statusText);
         }
       } catch (error) {
-        console.error('Error fetching staff leave requests:', error.message);
+        console.log('Error fetching staff leave requests:', error.message);
       }
     };
 
@@ -82,7 +82,7 @@ const StaffLeaveRequestList = () => {
         toast.error('Error deleting leave request:', response.statusText);
       }
     } catch (error) {
-      console.error('Error deleting leave request:', error.message);
+      console.log('Error deleting leave request:', error.message);
     }
   };
 

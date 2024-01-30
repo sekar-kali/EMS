@@ -51,13 +51,13 @@ const Login = () => {
         }, 2000);
       } else {
         // Login failed, log the error message
-        console.error('Login failed:', data.message);
+        console.log('Login failed:', data.message);
   
         // Show error toast
         toast.error(`Login failed: ${data.message}`);
       }
     } catch (error) {
-      console.error('Error during login:', error.message);
+      console.log('Error during login:', error.message);
       toast.error('Error during login. Please try again.');
     }
   };

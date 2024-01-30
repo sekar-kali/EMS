@@ -23,7 +23,7 @@ staffRoutes.get('/leave-requests/:email', getStaffLeaveRequests);
 //Post method routes
 staffRoutes.post('/change-details-request', changeDetailsRequest);
 staffRoutes.post('/create-leave-request', createLeaveRequest);
-staffRoutes.post('/leave-request/upload-document', uploadDocument);
+staffRoutes.post('/leave-request/upload-document',authMiddleware,uploadDocument);
 staffRoutes.post('/leave-requests/approved',authMiddleware,getTotalApprovedLeaveRequests)
 staffRoutes.post('/missions/total',authMiddleware,getTotalMissions)
 

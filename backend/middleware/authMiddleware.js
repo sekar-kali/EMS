@@ -1,3 +1,4 @@
+// authMiddleware.js
 import jwt from 'jsonwebtoken';
 
 const authMiddleware = (req, res, next) => {
@@ -7,10 +8,11 @@ const authMiddleware = (req, res, next) => {
   if (!token) {
     return res.status(401).json({ message: 'Authorization token missing' });
   }
-  console.log(token);
+
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
     req.staffId = decoded.staffId;
+    console.log("staffId",req.userId);
     next();
   } catch (error) {
     console.error(error);

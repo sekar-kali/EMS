@@ -30,7 +30,7 @@ const AdminDashboard = () => {
         const data = await response.json();
         setDashboardStats(data);
       } catch (error) {
-        console.error('Error fetching dashboard statistics:', error);
+        console.log('Error fetching dashboard statistics:', error);
       }
     };
 

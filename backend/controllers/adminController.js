@@ -38,7 +38,7 @@ export const getDashboardStats = async (req, res) => {
       staffOnLeaveThisMonth,
     });
   } catch (error) {
-    console.error('Error getting dashboard statistics:', error);
+    console.log('Error getting dashboard statistics:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -101,7 +101,7 @@ export const createStaff = async (req, res) => {
     });
     res.json({ message: 'Staff account created successfully. Confirmation email sent.' });
   } catch (error) {
-    console.error('Error creating staff account:', error);
+    console.log('Error creating staff account:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -123,7 +123,7 @@ export const deleteStaff = async (req, res) => {
 
     res.status(200).json({ message: 'Staff deleted successfully' });
   } catch (error) {
-    console.error('Error deleting staff:', error);
+    console.log('Error deleting staff:', error);
 
     if (error instanceof mongoose.Error.CastError) {
       return res.status(400).json({ error: 'Invalid staff ID format' });
@@ -142,7 +142,7 @@ export const getStaffList = async (req, res) => {
     // Return the staff list as JSON
     res.json(staffList);
   } catch (error) {
-    console.error('Error fetching staff list:', error);
+    console.log('Error fetching staff list:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -155,7 +155,7 @@ export const getAllStaff = async (req, res) => {
       // Send the list of staff members as a response
       res.json(staffMembers);
     } catch (error) {
-      console.error('Error fetching staff members:', error);
+      console.log('Error fetching staff members:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
   };
@@ -213,7 +213,7 @@ export const sendApprovalEmail = async (leaveRequestId) => {
 
     console.log(`Approval email sent for leave request ${leaveRequestId}`);
   } catch (error) {
-    console.error('Error sending approval email:', error);
+    console.log('Error sending approval email:', error);
     throw error;
   }
 };
@@ -245,7 +245,7 @@ export const sendRejectionEmail = async (leaveRequestId) => {
 
     console.log(`Rejection email sent for leave request ${leaveRequestId}`);
   } catch (error) {
-    console.error('Error sending rejection email:', error);
+    console.log('Error sending rejection email:', error);
     throw error;
   }
 };
@@ -260,7 +260,7 @@ export const approveLeaveRequest = async (req, res) => {
 
     res.json({ message: 'Leave request approved successfully' });
   } catch (error) {
-    console.error('Error approving leave request:', error);
+    console.log('Error approving leave request:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -275,7 +275,7 @@ export const rejectLeaveRequest = async (req, res) => {
 
     res.json({ message: 'Leave request rejected successfully' });
   } catch (error) {
-    console.error('Error rejecting leave request:', error);
+    console.log('Error rejecting leave request:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -284,6 +284,14 @@ export const rejectLeaveRequest = async (req, res) => {
 export const createMission = async (req, res) => {
   try {
     const { title, description, staffId, startDate, endDate } = req.body;
+
+    // Trim title and description
+    const trimmedTitle = title.trim();
+    const trimmedDescription = description.trim();
+
+    if (!trimmedTitle || !trimmedDescription) {
+      return res.status(400).json({ message: 'Title and description are required' });
+    }
 
     if (new Date(endDate) < new Date(startDate)) {
       return res.status(400).json({ message: 'End date must not be anterior to start date' });
@@ -313,8 +321,8 @@ export const createMission = async (req, res) => {
 
     // Create a new mission and save it to the database
     const newMission = new MissionModel({
-      title,
-      description,
+      title: trimmedTitle,
+      description: trimmedDescription,
       assignedTo: staff._id,
       startDate,
       endDate,
@@ -325,7 +333,7 @@ export const createMission = async (req, res) => {
     // Return success message as JSON
     res.json({ message: 'Mission created successfully' });
   } catch (error) {
-    console.error('Error creating mission:', error);
+    console.log('Error creating mission:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -336,7 +344,7 @@ export const getAllMissions = async (req, res) => {
     const missions = await MissionModel.find().populate('assignedTo', '-password');
     res.json(missions);
   } catch (error) {
-    console.error('Error fetching missions:', error);
+    console.log('Error fetching missions:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -355,7 +363,7 @@ export const getAvailableStaff = async (req, res) => {
 
     res.json(availableStaff);
   } catch (error) {
-    console.error('Error fetching available staff:', error);
+    console.log('Error fetching available staff:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -374,7 +382,7 @@ const getStaffOnMission = async (startDate, endDate) => {
 
     return staffOnMission;
   } catch (error) {
-    console.error('Error fetching staff on mission:', error);
+    console.log('Error fetching staff on mission:', error);
     throw error;
   }
 };
@@ -398,7 +406,7 @@ export const deleteMission = async (req, res) => {
 
     res.json({ message: 'Mission deleted successfully' });
   } catch (error) {
-    console.error('Error deleting mission:', error);
+    console.log('Error deleting mission:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -430,7 +438,7 @@ export const sendEmail = async (emailOptions) => {
     
     return { ok: true, info };
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.log('Error sending email:', error);
     return { ok: false, statusText: 'Internal server error' };
   }
 };
@@ -466,7 +474,7 @@ export const updateStaff = async (req, res) => {
 
     res.json({ message: 'Staff details updated successfully' });
   } catch (error) {
-    console.error('Error updating staff details:', error);
+    console.log('Error updating staff details:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -529,7 +537,7 @@ export const changeAdminDetailsRequest = async (req, res) => {
 
     res.json({ message: 'Change details request submitted successfully' });
   } catch (error) {
-    console.error('Error handling change details request:', error);
+    console.log('Error handling change details request:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -547,7 +555,7 @@ export const getAdminInfo = async (req, res) => {
 
     res.json(adminInfo);
   } catch (error) {
-    console.error('Error fetching admin information:', error);
+    console.log('Error fetching admin information:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -568,7 +576,7 @@ export const getStaffInfoById = async (req, res) => {
 
     res.json(staffInfo);
   } catch (error) {
-    console.error('Error fetching staff information by ID:', error);
+    console.log('Error fetching staff information by ID:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };

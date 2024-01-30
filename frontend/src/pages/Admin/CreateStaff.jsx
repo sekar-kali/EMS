@@ -87,10 +87,10 @@ const CreateStaff = ({ updateStaffList, displayToast }) => {
       <label htmlFor="firstName">First Name:</label>
       <input type="text"  id="firstName" name="firstName" value={staffDetails.firstName} onChange={handleInputChange} />
       </article>
-      <article className='form-flex'>
+      <fieldset className='form-flex'>
       <label htmlFor="lastName">Last Name:</label>
       <input type="text" id="lastName" value={staffDetails.lastName} onChange={handleInputChange} />
-      </article>
+      </fieldset>
       <article className='form-flex'>
       <label htmlFor="address">Address:</label>
       <input type="text" id="address" value={staffDetails.address} onChange={handleInputChange} />

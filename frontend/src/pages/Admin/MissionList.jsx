@@ -34,11 +34,11 @@ const MissionList = () => {
           setMissions(missionData);
           setLoading(false);
         } else {
-          console.error('Error fetching missions:', response.statusText);
+          console.log('Error fetching missions:', response.statusText);
           setLoading(false);
         }
       } catch (error) {
-        console.error('Error fetching missions:', error.message);
+        console.log('Error fetching missions:', error.message);
         setLoading(false);
       }
     };
@@ -105,7 +105,7 @@ const MissionList = () => {
         toast.error('Error deleting mission:', response.statusText);
       }
     } catch (error) {
-      console.error('Error deleting mission:', error.message);
+      console.log('Error deleting mission:', error.message);
     }
   };
   

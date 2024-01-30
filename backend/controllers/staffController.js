@@ -5,7 +5,9 @@ import moment from 'moment';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
-import path from 'path';
+import path, { resolve } from 'path';
+import authMiddleware from '../middleware/authMiddleware.js';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
 
@@ -21,7 +23,7 @@ export const getTotalMissions = async (req, res) => {
 
     res.json({ total: totalMissions });
   } catch (error) {
-    console.error('Error fetching total missions:', error);
+    console.log('Error fetching total missions:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -39,7 +41,7 @@ export const getTotalApprovedLeaveRequests = async (req, res) => {
 
     res.json({ total: totalApprovedLeaveRequests });
   } catch (error) {
-    console.error('Error fetching total approved leave requests:', error);
+    console.log('Error fetching total approved leave requests:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -56,7 +58,7 @@ export const getStaffInfo = async (req, res) => {
 
     res.json(staffInfo);
   } catch (error) {
-    console.error('Error fetching staff information:', error);
+    console.log('Error fetching staff information:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -75,7 +77,7 @@ export const getStaffMissions = async (req, res) => {
 
     res.json(missions);
   } catch (error) {
-    console.error('Error fetching staff missions:', error);
+    console.log('Error fetching staff missions:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -103,7 +105,7 @@ export const getStaffLeaveRequests = async (req, res) => {
 
     res.json(leaveRequestInfo);
   } catch (error) {
-    console.error('Error fetching staff leave requests:', error);
+    console.log('Error fetching staff leave requests:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -132,7 +134,7 @@ export const deleteStaffLeaveRequest = async (req, res) => {
     await leaveRequest.remove();
     res.status(200).json({ message: 'Leave request deleted successfully' });
   } catch (error) {
-    console.error('Error deleting staff leave request:', error);
+    console.log('Error deleting staff leave request:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -210,20 +212,44 @@ export const uploadDocument = async (req, res) => {
       return res.status(400).json({ message: 'Invalid file type. Only PDF, PNG, and JPG files are allowed.' });
     }
 
-    // Define the upload path using path.join
-    const uploadPath = path.join(__dirname, '..', 'api', 'staff', 'leave-request', 'upload', 'folder', document.name);
+    // The upload path
+    const currentFile = fileURLToPath(import.meta.url);
+    const currentFolder = resolve(currentFile,"..")
+    const uploadPath = path.join(currentFolder, '..','uploads', document.name);
 
     // Move the uploaded file to the defined path
     await document.mv(uploadPath);
 
-    // Update the user's document field in the database (assuming you have a 'documents' field in your model)
-    const userId = req.userData.userId; // Assuming you have middleware setting userData
-    await StaffModel.findByIdAndUpdate(userId, { $push: { documents: uploadPath } });
+    const userId = req.staffId;
+    
+    const leaveRequest = new LeaveRequestModel({
+      staffId: userId,
+      startDate: req.body.startDate,
+      endDate: req.body.endDate,
+      reason: req.body.reason,
+      description: req.body.description,
+      documentPath: uploadPath,
+    });
+
+    // Save the LeaveRequest document
+    const savedLeaveRequest = await leaveRequest.save();
+
+     // Update the user's document field in the database
+     const updatedUser = await StaffModel.findByIdAndUpdate(
+      userId,
+      { $push: { documents: savedLeaveRequest._id } },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
     // Return the file URL
     const fileURL = `/api/staff/leave-request/upload/folder/${document.name}`;
-    res.json({ url: fileURL });
+    res.json({ message: 'Document added successfully', url: fileURL, user: updatedUser });
   } catch (error) {
+    console.log(req.userId);
     console.error('Error uploading document:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
@@ -285,7 +311,7 @@ export const changeDetailsRequest = async (req, res) => {
 
     res.json({ message: 'Change details request submitted successfully' });
   } catch (error) {
-    console.error('Error handling change details request:', error);
+    console.log('Error handling change details request:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -314,6 +340,6 @@ const sendEmail = async (to, subject, text) => {
     await transporter.sendMail(mailOptions);
     console.log('Email sent successfully');
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.log('Error sending email:', error);
   }
 };

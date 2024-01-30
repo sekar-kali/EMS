@@ -87,7 +87,7 @@ const ModifyStaffForm = () => {
         ) : (
           <section className="update-staff-form">
             <h1>Modify Staff</h1>
-          <form>
+          <form type={handleSaveChanges}>
             <article className='form-flex'>
               <label>First Name:</label>
               <input
