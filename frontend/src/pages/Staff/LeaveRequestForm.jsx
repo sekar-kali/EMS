@@ -55,10 +55,11 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
           },
           body: formData,
         });
-
+        
         if (documentResponse.ok) {
           const documentData = await documentResponse.json();
           documentUrl = documentData.url;
+          console.log(documentUrl);
         } else {
           toast.error('Error uploading document. Leave request not submitted.');
           return;
@@ -89,6 +90,7 @@ const LeaveRequestForm = ({ handleLeaveRequestSubmit }) => {
         });
       } else {
         const data = await response.json();
+        console.log(data);
         toast.error('Leave request creation failed:', data.message);
       }
     } catch (error) {

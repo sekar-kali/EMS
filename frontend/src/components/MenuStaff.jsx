@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../menu.css';
-import logoImage from '../logo.png';
+import logoImage from '../assets/logo.png';
 
 const MenuStaff = () => {
   const [isSidebarClosed, setSidebarClosed] = useState( true);
@@ -79,8 +79,9 @@ const MenuStaff = () => {
               )}
             </li>
           ))}
+          <p className='footer'>&copy; 2024 - Employee Management System</p>
         </ul>
-      </section>
+      </section> 
     </main>
   );
 };

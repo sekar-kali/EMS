@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import logoImage from '../../logo.png';
+import logoImage from '../../assets/logo.png';
 import "../../auth.css"
 
 

@@ -169,7 +169,7 @@ export const createLeaveRequest = async (req, res) => {
     if (existingLeaveRequest) {
       return res.status(400).json({ message: 'Leave request for the same period already exists' });
     }
-
+    const userId = req.staffId;
     const newLeaveRequest = new LeaveRequestModel({
       staffId: staff._id,
       firstName: staff.firstName,
@@ -181,10 +181,15 @@ export const createLeaveRequest = async (req, res) => {
       documentUrl,
       status: 'Pending',
     });
-
-    await newLeaveRequest.save();
-
-    res.json({ message: 'Leave request created successfully' });
+const savedLeaveRequest = await newLeaveRequest.save();
+    // await newLeaveRequest.save();
+// Update the user's document field in the database
+const updatedUser = await StaffModel.findByIdAndUpdate(
+  userId,
+  { $push: { documents: savedLeaveRequest._id } },
+  { new: true }
+);
+    res.json({ message: 'Leave request created successfully', updatedUser });
   } catch (error) {
     console.log('Error creating leave request:', error);
     res.status(500).json({ message: 'Internal server error' });
@@ -193,6 +198,7 @@ export const createLeaveRequest = async (req, res) => {
 
 export const uploadDocument = async (req, res) => {
   try {
+    
     if (!req.files || Object.keys(req.files).length === 0) {
       return res.status(400).json({ message: 'No files were uploaded.' });
     }
@@ -209,47 +215,40 @@ export const uploadDocument = async (req, res) => {
     const allowedFileTypes = ['.pdf', '.png', '.jpg'];
     const fileExtension = path.extname(document.name).toLowerCase();
     if (!allowedFileTypes.includes(fileExtension)) {
+      
       return res.status(400).json({ message: 'Invalid file type. Only PDF, PNG, and JPG files are allowed.' });
     }
 
     // The upload path
-    const currentFile = fileURLToPath(import.meta.url);
-    const currentFolder = resolve(currentFile,"..")
-    const uploadPath = path.join(currentFolder, '..','uploads', document.name);
-
+    const uploadPath = path.join('uploads', document.name);
+    console.log(uploadPath);
     // Move the uploaded file to the defined path
     await document.mv(uploadPath);
 
-    const userId = req.staffId;
     
-    const leaveRequest = new LeaveRequestModel({
-      staffId: userId,
-      startDate: req.body.startDate,
-      endDate: req.body.endDate,
-      reason: req.body.reason,
-      description: req.body.description,
-      documentPath: uploadPath,
-    });
+    
+    // const leaveRequest = new LeaveRequestModel({
+    //   staffId: userId,
+    //   startDate: req.body.startDate,
+    //   endDate: req.body.endDate,
+    //   reason: req.body.reason,
+    //   description: req.body.description,
+    //   documentUrl: uploadPath,
+    // });
 
     // Save the LeaveRequest document
-    const savedLeaveRequest = await leaveRequest.save();
+    
 
-     // Update the user's document field in the database
-     const updatedUser = await StaffModel.findByIdAndUpdate(
-      userId,
-      { $push: { documents: savedLeaveRequest._id } },
-      { new: true }
-    );
+     
 
-    if (!updatedUser) {
-      return res.status(404).json({ message: 'User not found' });
-    }
+    // if (!updatedUser) {
+    //   return res.status(404).json({ message: 'User not found' });
+    // }
 
     // Return the file URL
-    const fileURL = `/api/staff/leave-request/upload/folder/${document.name}`;
-    res.json({ message: 'Document added successfully', url: fileURL, user: updatedUser });
+    const fileURL = `/uploads/${document.name}`;
+    res.json({ message: 'Document added successfully', url: fileURL });
   } catch (error) {
-    console.log(req.userId);
     console.error('Error uploading document:', error);
     res.status(500).json({ message: 'Internal server error' });
   }

@@ -33,13 +33,13 @@ const PrivateRoute = ({ element }) => {
   }
 };
 
-const CenteredContent = ({ children }) => {
-  return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      {children}
-    </div>
-  );
-};
+// const CenteredContent = ({ children }) => {
+//   return (
+//     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+//       {children}
+//     </div>
+//   );
+// };
 
 const App = () => {
 
@@ -60,7 +60,7 @@ const App = () => {
         {/* Admin routes */}
         <Route
           path="/admin/*"
-          element={<PrivateRoute roles={["admin"]} element={<CenteredContent><AdminDashboard /></CenteredContent>} />}
+          element={<PrivateRoute roles={["admin"]} element={<AdminDashboard />} />}
         />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/create-mission" element={<CreateMission />} />
@@ -74,7 +74,7 @@ const App = () => {
         {/* Staff routes */}
         <Route
           path="/staff/*"
-          element={<PrivateRoute roles={["staff"]} element={<CenteredContent><StaffDashboard /></CenteredContent>} />}
+          element={<PrivateRoute roles={["staff"]} element={<StaffDashboard />} />}
         />
         <Route path="/staff/dashboard" element={<StaffDashboard />} />
         <Route path="/staff/create-leave-request" element={<LeaveRequestForm />} />
